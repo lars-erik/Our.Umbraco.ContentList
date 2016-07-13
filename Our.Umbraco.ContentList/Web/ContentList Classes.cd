@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Our.Umbraco.ContentList.Web.RenderingHtmlExtensions" Collapsed="true">
+    <Position X="10.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACBAEAA=</HashCode>
+      <FileName>Web\RenderingHtmlExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Our.Umbraco.ContentList.Web.PagingHtmlExtensions" Collapsed="true">
+    <Position X="9" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAQAAAAAAAAAAAAAAAAACAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\PagingHtmlExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Our.Umbraco.ContentList.Web.ListableContentExtensions" Collapsed="true">
+    <Position X="7.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\ListableContentExtensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Our.Umbraco.ContentList.Web.ContentListParameters">
+    <Position X="3.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAQAgAAAAAAAAAAAAABAAAAAAAAGAgAEAA=</HashCode>
+      <FileName>Web\ContentListParameters.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Columns" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="DataSourceParameters" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Our.Umbraco.ContentList.Web.ContentListColumns">
+    <Position X="5.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Web\ContentListParameters.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Our.Umbraco.ContentList.Web.DataSourceParameterValue">
+    <Position X="5.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Web\ContentListParameters.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Our.Umbraco.ContentList.Web.PreviewContentListParameters">
+    <Position X="3.25" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Web\ContentListParameters.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Our.Umbraco.ContentList.Web.JsonBinder" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\ContentListParameters.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Our.Umbraco.ContentList.Web.ContentListModel" Collapsed="true">
+    <Position X="1" Y="0.5" Width="1.5" />
+    <AssociationLine Name="Parameters" Type="Our.Umbraco.ContentList.Web.ContentListParameters" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="2.5" Y="0.904" />
+        <Point X="2.875" Y="0.904" />
+        <Point X="2.875" Y="7.032" />
+        <Point X="3.25" Y="7.032" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAEAAAgAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Web\ContentListModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Parameters" />
+      <Property Name="ColumnStyling" />
+      <Property Name="Paging" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Items" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Our.Umbraco.ContentList.Web.ContentListPaging">
+    <Position X="3.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAQAAAgAAAAAAAAAAAIQAAAAAAAGAAAAAA=</HashCode>
+      <FileName>Web\ContentListModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Our.Umbraco.ContentList.Web.ContentListColumnStyling">
+    <Position X="1" Y="1.5" Width="1.5" />
+    <Members>
+      <Method Name="Class" Hidden="true" />
+      <Method Name="IsFactor" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAABAAAAIEAIQCAgAAAAAACAAAAAgBASA=</HashCode>
+      <FileName>Web\ContentListModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Our.Umbraco.ContentList.Web.ContentListController">
+    <Position X="7.75" Y="5.5" Width="2" />
+    <Members>
+      <Method Name="ContentListController" Hidden="true" />
+      <Method Name="CreateDataSource" Hidden="true" />
+      <Method Name="CreatePagingModel" Hidden="true" />
+      <Method Name="FindPageParameter" Hidden="true" />
+      <Method Name="FindView" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAYCCAAAAAAAAAAAAAAAAAAAAAQAIAAAAAI=</HashCode>
+      <FileName>Web\ContentListController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Our.Umbraco.ContentList.Web.ContentListApiController">
+    <Position X="10" Y="5.5" Width="2" />
+    <Members>
+      <Method Name="ContentListApiController" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAACAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\ContentListApiController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Our.Umbraco.ContentList.Web.DataSources.ListableDataSourceController">
+    <Position X="12.25" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\DataSources\ListableDataSourceController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Our.Umbraco.ContentList.IPublicationMetadata">
+    <Position X="8" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>IPublicationMetadata.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Our.Umbraco.ContentList.IListableContent">
+    <Position X="3.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABIAQAgAAAAAAAAAAAgQAAAAAAAAACAAhAAEAAAA=</HashCode>
+      <FileName>IListableContent.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Our.Umbraco.ContentList.IListableContentVisibility">
+    <Position X="5.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IListableContent.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Our.Umbraco.ContentList.DataSources.Listables.IListableDataSource">
+    <Position X="7.75" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>DataSources\Listables\IListableDataSource.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

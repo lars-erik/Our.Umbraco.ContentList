@@ -1,0 +1,42 @@
+﻿@model Our.Umbraco.ContentList.Web.ContentListModel
+
+@{
+    var list = Model.Items.ToList();
+    var i = 0;
+}
+
+<div class="contentlist">
+    <div class="alert alert-info">This is an example of a list view. List views should be created as ~/Views/Partials/ContentList/[ThemeName]/List.cshtml</div>
+
+    @for (i = 0; i < list.Count; i++)
+    {
+        var listable = list[i];
+
+        <div class="@Model.ColumnStyling.ColumnClasses("col-sm-", "col-md-", "col-lg-") list-item @listable.DocumentTypeAlias ">
+
+            @if (!listable.ListImageUrl.IsNullOrWhiteSpace())
+            {
+                <a href="@listable.Url"><img class="list-image widescreen" src="@listable.ListImageUrl" /></a>
+            }
+
+            <h3>
+                <a href="@listable.Url">@listable.ListHeading</a>
+            </h3>
+            <div class="list-summary">
+                @listable.ListSummary
+            </div>
+            <div>
+                <a href="@listable.Url" class="readmore">@listable.ReadMoreText</a>
+            </div>
+
+            <div class="alert alert-info" style="margin: 5px !important;">
+                This is an example of a list item view. List item views should be created as ~/Views/Partials/ContentList/[ThemeName]/ListItem.cshtml.
+                You can create list item views for specific document types as ~/Views/Partials/ContentList/[ThemeName]/[DocumentTypeAlias].cshtml.
+                To use them from the list view, you can call @@Html.ContentListItem(itemFromModelItems).
+            </div>
+
+        </div>
+
+        
+    }
+</div>

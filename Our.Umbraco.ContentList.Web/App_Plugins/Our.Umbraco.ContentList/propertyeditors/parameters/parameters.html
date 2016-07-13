@@ -1,0 +1,29 @@
+﻿<div ng-controller="our.umbraco.contentlist.parameters.controller">
+
+    <umb-property property="property"
+                  ng-repeat="property in properties">
+        <umb-editor model="property" is-pre-value="true"></umb-editor>
+    </umb-property>
+
+<pre>
+Model
+-----------------------------------
+
+{{ model | json }}
+
+
+
+Properties
+------------------------------------
+
+{{ properties | json }}
+
+
+
+All settings
+
+{{ $parent.$parent.$parent.model.config | json }}
+
+</pre>
+</div>
+

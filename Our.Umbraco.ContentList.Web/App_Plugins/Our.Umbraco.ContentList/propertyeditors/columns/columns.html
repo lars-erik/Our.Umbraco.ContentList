@@ -1,0 +1,17 @@
+﻿<div>
+    <input type="number" id="columns" name="columns" class="umb-editor umb-textstring textstring" ng-model="model.value.medium" />
+    <label for="advancedColumns">
+        <input type="checkbox" id="advancedColumns" name="advancedColumns" ng-model="model.advancedColumns" />
+        Show advanced column settings
+    </label>
+</div>
+<div ng-show="model.advancedColumns">
+    <div class="toolbar-item">
+        <label for="smallColumns">Mobile</label>
+        <input type="number" id="smallColumns" name="smallColumns" ng-model="model.value.small" />
+        <label for="mediumColumns">Tablet</label>
+        <input type="number" id="mediumColumns" name="mediumColumns" ng-model="model.value.medium" />
+        <label for="largeColumns">Desktop</label>
+        <input type="number" id="largeColumns" name="largeColumns" ng-model="model.value.large" />
+    </div>
+</div>

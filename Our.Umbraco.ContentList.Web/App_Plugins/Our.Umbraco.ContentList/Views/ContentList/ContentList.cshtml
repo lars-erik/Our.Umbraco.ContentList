@@ -1,0 +1,9 @@
+﻿@using Newtonsoft.Json
+@using Our.Umbraco.ContentList.Web
+@inherits WebViewPage<Newtonsoft.Json.Linq.JObject>
+@{
+    var query = JsonConvert.DeserializeObject<ContentListParameters>(Model["config"].ToString());
+}
+
+
+@Html.Action("List", "ContentList", new {query, area="OurContentList"})
