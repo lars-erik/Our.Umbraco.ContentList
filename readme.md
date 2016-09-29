@@ -2,7 +2,7 @@
 
 ## Overview
 
-A responsive content list component for Umbraco.
+A responsive content list component for the Umbraco grid.
 Features templatable views and extensible data sources.
 
 ## Status
