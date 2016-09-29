@@ -257,6 +257,8 @@
     <Compile Include="DataSources\Listables\ListablesByLuceneDataSource.cs" />
     <Compile Include="DataSources\Listables\PagingParameter.cs" />
     <Compile Include="DataSources\Listables\QueryParameters.cs" />
+    <Compile Include="DataSources\PublishedContent\PublishedContentSorting.cs" />
+    <Compile Include="DataSources\PublishedContent\PublishedContentChildrenDataSource.cs" />
     <Compile Include="Install\ApplicationSetup.cs" />
     <Compile Include="Web\ContentListApiController.cs" />
     <Compile Include="Web\ContentListController.cs" />
