@@ -13,3 +13,7 @@ We only use typed models and the content list currently just do `IListableConten
 I'm working on regular `IPublishedContent` data sources and configurable mode so it can be used in any site.
 
 To be tweeted and blogged about when a beta is ready.
+
+Meanwhile, here's a teaser. :)
+
+![Screenshot of content list grid editor](doc/screenshot.png)
