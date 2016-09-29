@@ -1,13 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Our.Umbraco.ContentList", "Our.Umbraco.ContentList\Our.Umbraco.ContentList.csproj", "{ECB32C86-99B9-4568-969D-0AD9B2580C93}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Our.Umbraco.ContentList.Tests", "Our.Umbraco.ContentList.Tests\Our.Umbraco.ContentList.Tests.csproj", "{37FB0165-D5B6-48D8-A890-750074105AB7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Our.Umbraco.ContentList.Web", "Our.Umbraco.ContentList.Web\Our.Umbraco.ContentList.Web.csproj", "{AED52C4C-E4F4-4823-B1E5-9D24EDE8549A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BCC4DA24-43FC-426D-9212-4B8124AD4B01}"
+	ProjectSection(SolutionItems) = preProject
+		license.txt = license.txt
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
