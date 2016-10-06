@@ -8,7 +8,7 @@ using Umbraco.Web;
 namespace Our.Umbraco.ContentList.DataSources.PublishedContent
 {
     [DataSourceMetadata(typeof(PublishedContentChildrenMetadata))]
-    public class PublishedContentChildrenDataSource
+    public class PublishedContentChildrenDataSource : IPublishedContentDataSource
     {
         private readonly IPublishedContent contentContext;
         private readonly QueryParameters queryParameters;
