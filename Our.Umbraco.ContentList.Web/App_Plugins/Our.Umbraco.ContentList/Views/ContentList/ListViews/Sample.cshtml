@@ -7,6 +7,11 @@
 
 <div class="contentlist">
     <div class="alert alert-info">This is an example of a list view. List views should be created as ~/Views/Partials/ContentList/[ThemeName]/List.cshtml</div>
+    
+    @if (list.Count == 0)
+    {
+        <p>No items found...</p>
+    }
 
     @for (i = 0; i < list.Count; i++)
     {

@@ -38,14 +38,14 @@
         return { id: obj.key, value: obj.name };
     }
 
-    function ContentListEditorController(scope, http, datasourceService, templatesService, requestHelper) {
+    function ContentListEditorController(scope, http, q, datasourceService, templatesService, requestHelper) {
         var model,
             content,
             settings,
             parameterLoader = {};
 
         function initialize() {
-            scope.preview = "Select data source to enable preview";
+            scope.preview = "Select data source and parameters to enable preview";
             scope.datasources = [];
             model = scope.model = scope.control;
             model.config = $.extend(createConfig(), model.value, model.config);
@@ -61,7 +61,7 @@
                 datasource: {
                     "label": "Data source",
                     "key": "datasource",
-                    "description": "The source of items for the list",
+                    "description": "How to get the content. Remember to set query parameters below.",
                     "view": "/umbraco/views/propertyeditors/dropdown/dropdown.html",
                     "config": {
                         "items": [
@@ -99,7 +99,7 @@
                     }
                 },
                 showPaging: {
-                    "label": "Show Paging",
+                    "label": "Show paging",
                     "key": "showPaging",
                     "description": "",
                     "view": "/app_plugins/our.umbraco.contentlist/propertyeditors/boolean/boolean.html"
@@ -107,7 +107,7 @@
                 skip: {
                     "label": "Skip items",
                     "key": "skip",
-                    "description": "Skip the first items in the list",
+                    "description": "Enter a number of items to skip.",
                     "view": "/umbraco/views/propertyeditors/integer/integer.html",
                 },
                 parameters: {
@@ -212,14 +212,20 @@
         }
 
         function main() {
-            datasourceService.getDataSources().then(datasourcesLoaded);
-            templatesService.getTemplates().then(templatesLoaded);
+            var p1 = datasourceService.getDataSources().then(datasourcesLoaded),
+                p2 = templatesService.getTemplates().then(templatesLoaded);
             scope.$watch("model.config.datasource", initializeParametersWhenDataSourceChange);
             scope.$watch("model.config", loadPreviewIfValid, true);
             scope.$watch("parameters", updateValueParameters, true);
             scope.parameterView = parameterView;
 
             parameterLoader.update = getParametersForDataSource;
+
+            q.all(p1, p2).then(function() {
+                if (!model.config.datasource) {
+                    scope.editGridItemSettings(scope.control, 'control');
+                }
+            });
         }
 
         initialize();
@@ -319,6 +325,7 @@
     module.controller("our.umbraco.contentlist.editor.controller", [
         "$scope",
         "$http",
+        "$q",
         "our.umbraco.contentlist.datasource.service",
         "our.umbraco.contentlist.templates.service",
         "umbRequestHelper",

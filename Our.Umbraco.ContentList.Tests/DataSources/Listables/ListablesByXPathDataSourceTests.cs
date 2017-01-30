@@ -34,6 +34,9 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
             Assert.AreEqual(3, result.Count());
         }
 
+        // TODO: Orders
+        // TODO: Counts
+
         protected override void FreezeResolution()
         {
             var factoryResolver = (PublishedContentModelFactoryResolver)

@@ -12,13 +12,13 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
     {
         private readonly QueryParameters parameters;
         private readonly UmbracoContext ctx;
-        private readonly ContextualPublishedCache<IPublishedContentCache> contentService;
+        private readonly ContextualPublishedCache<IPublishedContentCache> contentCache;
 
         public ListablesByXPathDataSource(QueryParameters parameters)
         {
             this.parameters = parameters;
             ctx = UmbracoContext.Current;
-            contentService = ctx.ContentCache;
+            contentCache = ctx.ContentCache;
         }
 
         public IQueryable<IListableContent> Query(PagingParameter pagingParameter)
@@ -36,7 +36,7 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
 
         private IEnumerable<IListableContent> Query()
         {
-            var contents = contentService.GetByXPath(parameters.CustomParameters["xpath"]);
+            var contents = contentCache.GetByXPath(parameters.CustomParameters["xpath"]);
             var listables = contents.OfType<IListableContent>().Where(c => c.IsVisible());
             return listables;
         }
