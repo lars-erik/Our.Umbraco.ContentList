@@ -1,7 +1,7 @@
-﻿/// <reference path="../../../../../Scripts/jquery-1.11.3.js" />
-/// <reference path="../../../../../Scripts/angular.js" />
-/// <reference path="../../../../../Scripts/angular-cookies.js" />
-/// <reference path="../../../../../Scripts/angular-mocks.js" />
+﻿/// <reference path="../../../../../umbraco/lib/jquery/jquery.min.js" />
+/// <reference path="../../../../../umbraco/lib/angular/1.1.5/angular.js" />
+/// <reference path="../../../../../umbraco/lib/angular/1.1.5/angular-cookies.js" />
+/// <reference path="../../../../../umbraco/lib/angular/1.1.5/angular-mocks.js" />
 /// <reference path="../contentlist.js" />
 
 (function() {
@@ -120,8 +120,9 @@
             expect(scope.parameters).toBe(datasources[0].parameters);
         });
 
-        it("starts with configure message in preview", function() {
-            expect(scope.preview).toBe("Select data source to enable preview");
+        it("starts with 'please select data source' as message", function () {
+            scope.$digest();
+            expect(scope.emptyMessage).toBe("Please select data source");
         });
 
         xit("calls the preview service with the given parameters", function () {

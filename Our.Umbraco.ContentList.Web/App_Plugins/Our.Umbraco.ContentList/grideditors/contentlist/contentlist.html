@@ -1,6 +1,10 @@
 ﻿<div class="our-content-list" ng-controller="our.umbraco.contentlist.editor.controller">
     <div class="container-fluid">
-        <div class="preview" ng-bind-html-unsafe="preview">
+        <div class="preview" ng-bind-html-unsafe="preview" ng-show="preview">
+        </div>
+    </div>
+    <div class="umb-cell-placeholder" ng-if="!preview" ng-click="editGridItemSettings(control, 'control')">
+        <div class="cell-tools-add -center" ng-bind="emptyMessage">
         </div>
     </div>
 </div>

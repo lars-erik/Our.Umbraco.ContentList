@@ -2,9 +2,9 @@
     "use strict";
 
     var parameterViews = {
-        "dropdownlist": "our.umbraco.contentlist.dropdownlist.html",
-        "textbox": "our.umbraco.contentlist.textbox.html"
-    }
+            "dropdownlist": "our.umbraco.contentlist.dropdownlist.html",
+            "textbox": "our.umbraco.contentlist.textbox.html"
+        };
 
     function findScopeValue(scope, key) {
         if (!scope) {
@@ -38,14 +38,14 @@
         return { id: obj.key, value: obj.name };
     }
 
-    function ContentListEditorController(scope, http, q, datasourceService, templatesService, requestHelper) {
+    function ContentListEditorController(scope, http, q, datasourceService, templatesService, defaultSettings, requestHelper) {
         var model,
             content,
             settings,
             parameterLoader = {};
 
         function initialize() {
-            scope.preview = "Select data source and parameters to enable preview";
+            scope.preview = null;
             scope.datasources = [];
             model = scope.model = scope.control;
             model.config = $.extend(createConfig(), model.value, model.config);
@@ -55,71 +55,13 @@
 
             content = findScopeValue(scope, "content");
 
-            // new shit
-
-            settings = {
-                datasource: {
-                    "label": "Data source",
-                    "key": "datasource",
-                    "description": "How to get the content. Remember to set query parameters below.",
-                    "view": "/umbraco/views/propertyeditors/dropdown/dropdown.html",
-                    "config": {
-                        "items": [
-                        ]
-                    }
-                },
-                view: {
-                    "label": "Theme",
-                    "key": "view",
-                    "description": "How the list should look",
-                    "view": "/umbraco/views/propertyeditors/dropdown/dropdown.html",
-                    "config": {
-                        "items": [
-                        ]
-                    }
-                },
-                pagesize: {
-                    "label": "Page Size",
-                    "key": "pagesize",
-                    "description": "Count of items per page",
-                    "view": "/umbraco/views/propertyeditors/integer/integer.html",
-                    "config": {
-                        "min": 1,
-                        "max": 100
-                    }
-                },
-                columns: {
-                    "label": "Columns",
-                    "key": "columns",
-                    "description": "Columns per screen size (advanced)",
-                    "view": "/app_plugins/our.umbraco.contentlist/propertyeditors/columns/columns.html",
-                    "config": {
-                        "min": 1,
-                        "max": 100
-                    }
-                },
-                showPaging: {
-                    "label": "Show paging",
-                    "key": "showPaging",
-                    "description": "",
-                    "view": "/app_plugins/our.umbraco.contentlist/propertyeditors/boolean/boolean.html"
-                },
-                skip: {
-                    "label": "Skip items",
-                    "key": "skip",
-                    "description": "Enter a number of items to skip.",
-                    "view": "/umbraco/views/propertyeditors/integer/integer.html",
-                },
-                parameters: {
-                    "label": "Parameters",
-                    "key": "parameters",
-                    "description": "Data source parameters",
-                    "view": "/app_plugins/our.umbraco.contentlist/propertyeditors/parameters/parameters.html",
-                    "config": {
-                        "parameterLoader": parameterLoader
-                    }
+            settings = $.extend({}, defaultSettings);
+            settings.parameters = $.extend(settings.parameters, {
+                "config": {
+                    "parameterLoader": parameterLoader
                 }
-            };
+            });
+
             scope.control.editor.config.settings = [
                 settings.datasource,
                 settings.view,
@@ -223,7 +165,7 @@
 
             q.all(p1, p2).then(function() {
                 if (!model.config.datasource) {
-                    scope.editGridItemSettings(scope.control, 'control');
+                    scope.emptyMessage = "Please select data source";
                 }
             });
         }
@@ -328,6 +270,7 @@
         "$q",
         "our.umbraco.contentlist.datasource.service",
         "our.umbraco.contentlist.templates.service",
+        "our.umbraco.contentlist.defaultSettings",
         "umbRequestHelper",
         ContentListEditorController
     ]);
@@ -365,5 +308,69 @@
     } catch (e) {
         // swallow no umbraco
     }
+
+    module.value("our.umbraco.contentlist.defaultSettings", {
+        datasource: {
+            "label": "Data source",
+            "key": "datasource",
+            "description": "How to get the content. Remember to set query parameters below.",
+            "view": "/umbraco/views/propertyeditors/dropdown/dropdown.html",
+            "config": {
+                "items": [
+                ]
+            }
+        },
+        view: {
+            "label": "Theme",
+            "key": "view",
+            "description": "How the list should look",
+            "view": "/umbraco/views/propertyeditors/dropdown/dropdown.html",
+            "config": {
+                "items": [
+                ]
+            }
+        },
+        pagesize: {
+            "label": "Page Size",
+            "key": "pagesize",
+            "description": "Count of items per page",
+            "view": "/umbraco/views/propertyeditors/integer/integer.html",
+            "config": {
+                "min": 1,
+                "max": 100
+            }
+        },
+        columns: {
+            "label": "Columns",
+            "key": "columns",
+            "description": "Columns per screen size (advanced)",
+            "view": "/app_plugins/our.umbraco.contentlist/propertyeditors/columns/columns.html",
+            "config": {
+                "min": 1,
+                "max": 100
+            }
+        },
+        showPaging: {
+            "label": "Show paging",
+            "key": "showPaging",
+            "description": "",
+            "view": "/app_plugins/our.umbraco.contentlist/propertyeditors/boolean/boolean.html"
+        },
+        skip: {
+            "label": "Skip items",
+            "key": "skip",
+            "description": "Enter a number of items to skip.",
+            "view": "/umbraco/views/propertyeditors/integer/integer.html",
+        },
+        parameters: {
+            "label": "Parameters",
+            "key": "parameters",
+            "description": "Data source parameters",
+            "view": "/app_plugins/our.umbraco.contentlist/propertyeditors/parameters/parameters.html",
+            "config": {
+                "parameterLoader": null // set in controller
+            }
+        }
+    });
 
 }());
