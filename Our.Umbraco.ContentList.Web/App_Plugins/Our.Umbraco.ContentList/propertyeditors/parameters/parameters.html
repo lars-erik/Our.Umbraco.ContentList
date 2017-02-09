@@ -4,6 +4,10 @@
                   ng-repeat="property in properties">
         <umb-editor model="property" is-pre-value="true"></umb-editor>
     </umb-property>
+    
+    <div ng-show="canQuery()">
+        Query returned {{queryCount}} items in {{queryTime}} ms.
+    </div>
 
 </div>
 

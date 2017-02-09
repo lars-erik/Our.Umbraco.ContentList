@@ -1,4 +1,4 @@
-﻿namespace Our.Umbraco.ContentList.DataSources.Listables
+﻿namespace Our.Umbraco.ContentList.DataSources
 {
     public class PagingParameter
     {

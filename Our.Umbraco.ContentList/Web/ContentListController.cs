@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.DataSources.Listables;
 using Umbraco.Core.Models;
 using Umbraco.Web;
@@ -61,6 +62,14 @@ namespace Our.Umbraco.ContentList.Web
         {
             var contextContent = Umbraco.TypedContent(query.ContentId);
             return List(query, contextContent);
+        }
+
+        public ActionResult Count(PreviewContentListParameters query)
+        {
+            var contextContent = Umbraco.TypedContent(query.ContentId);
+            var datasource = CreateDataSource(query, contextContent);
+            var total = datasource.Count(query.Skip);
+            return Json(total);
         }
 
         private ViewResult List(ContentListParameters query, IPublishedContent contextContent)

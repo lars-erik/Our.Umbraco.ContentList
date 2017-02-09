@@ -264,6 +264,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataSources\PublishedContent\PublishedContentDataSourceFactoryTests.cs" />
     <Compile Include="DataSources\PublishedContent\PublishedContentByXPathDataSourceTests.cs" />
     <Compile Include="DataSources\PublishedContent\PublishedContentChildrenDataSourceTests.cs" />
     <Compile Include="Web\BaseControllerTest.cs" />

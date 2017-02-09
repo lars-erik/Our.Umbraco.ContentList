@@ -90,5 +90,58 @@ namespace Our.Umbraco.ContentList.E2ETests
             editor.Click();
         }
 
+        [Then(@"the wizard prompts me to ""(.*)""")]
+        public void ThenTheWizardPromptsMeTo(string expectedText)
+        {
+            var editor = Driver.FindElement(By.ClassName("umb-control"));
+            Assert.That(editor.Text, Does.Contain(expectedText));
+        }
+
+        [When(@"I select the ""(.*)"" data source")]
+        public void WhenISelectTheDataSource(string datasourceName)
+        {
+            var option = Driver.FindElementByXPath("option[text()='" + datasourceName + "']");
+            var parent = option.FindElement(By.XPath("./.."));
+            var select = new SelectElement(parent);
+            select.SelectByText(datasourceName);
+        }
+
+        [When(@"I click ""(.*)""")]
+        public void WhenIClick(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"I enter ""(.*)""")]
+        public void WhenIEnter(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"I see the message ""(.*)""")]
+        public void ThenISeeTheMessage(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [When(@"I select the ""(.*)"" template")]
+        public void WhenISelectTheTemplate(string p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"a preview of (.*) items is displayed")]
+        public void ThenAPreviewOfItemsIsDisplayed(int p0)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"I have opened the settings")]
+        public void GivenIHaveOpenedTheSettings()
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+
     }
 }

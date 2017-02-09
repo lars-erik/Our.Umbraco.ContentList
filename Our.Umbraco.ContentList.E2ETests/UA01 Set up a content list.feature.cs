@@ -88,16 +88,16 @@ this.FeatureBackground();
 #line 12
     testRunner.Then("a content list editor is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 13
-    testRunner.And("the preview shows \"Please select data source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("the preview shows \"Please select a data source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("US01-02 Start configuring a content list")]
-        public virtual void US01_02StartConfiguringAContentList()
+        [NUnit.Framework.DescriptionAttribute("US01-02 Start configuring a content list through settings")]
+        public virtual void US01_02StartConfiguringAContentListThroughSettings()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("US01-02 Start configuring a content list", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("US01-02 Start configuring a content list through settings", ((string[])(null)));
 #line 15
 this.ScenarioSetup(scenarioInfo);
 #line 6
@@ -108,6 +108,66 @@ this.FeatureBackground();
     testRunner.When("I click the preview", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 18
     testRunner.Then("the settings dialog is shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("US01-03 Configuring a content list with the wizard")]
+        public virtual void US01_03ConfiguringAContentListWithTheWizard()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("US01-03 Configuring a content list with the wizard", ((string[])(null)));
+#line 20
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 21
+ testRunner.Given("I have added a content list to a new page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 22
+    testRunner.Then("the wizard prompts me to \"Select a data source\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 23
+    testRunner.When("I select the \"XPath Query\" data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 24
+    testRunner.And("I click \"Next\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 25
+    testRunner.Then("the wizard prompts me to \"Enter query parameters\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 26
+    testRunner.When("I enter \"//BlogPost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 27
+    testRunner.Then("I see the message \"3 items returned by this query\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 28
+    testRunner.When("I click \"Next\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 29
+    testRunner.Then("the wizard prompts me to \"Select a template\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 30
+    testRunner.When("I select the \"Default\" template", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 31
+    testRunner.And("I click \"Next\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 32
+    testRunner.Then("a preview of 3 items is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("US01-02-02 Being prompted for data source parameters")]
+        public virtual void US01_02_02BeingPromptedForDataSourceParameters()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("US01-02-02 Being prompted for data source parameters", ((string[])(null)));
+#line 34
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 35
+ testRunner.Given("I have added a content list to a new page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 36
+    testRunner.And("I have opened the settings", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 37
+    testRunner.When("I select the \"XPath Query\" data source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 38
+    testRunner.And("I click \"Submit\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 39
+    testRunner.Then("the preview shows \"Please set up the query parameters\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

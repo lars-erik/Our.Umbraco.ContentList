@@ -1,4 +1,5 @@
-﻿@model Our.Umbraco.ContentList.Web.ContentListModel
+﻿@using Our.Umbraco.ContentList.Web
+@model Our.Umbraco.ContentList.Web.ContentListModel
 
 @{
     var list = Model.Items.ToList();
@@ -44,4 +45,7 @@
 
         
     }
+    <div class="col-md-12">
+        @Html.ContentListPager()
+    </div>
 </div>

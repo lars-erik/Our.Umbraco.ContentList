@@ -2,9 +2,9 @@
     "use strict";
 
     var parameterViews = {
-            "dropdownlist": "our.umbraco.contentlist.dropdownlist.html",
-            "textbox": "our.umbraco.contentlist.textbox.html"
-        };
+        "dropdownlist": "our.umbraco.contentlist.dropdownlist.html",
+        "textbox": "our.umbraco.contentlist.textbox.html"
+    };
 
     function findScopeValue(scope, key) {
         if (!scope) {
@@ -58,8 +58,10 @@
             settings = $.extend({}, defaultSettings);
             settings.parameters = $.extend(settings.parameters, {
                 "config": {
-                    "parameterLoader": parameterLoader
-                }
+                    "parameterLoader": parameterLoader,
+                    "parentConfig": model.config
+                },
+                value: []
             });
 
             scope.control.editor.config.settings = [
@@ -92,6 +94,7 @@
                 scope.parameters = params;
                 scope.hasParams = scope.parameters.length;
                 settings.parameters.config.parameters = scope.parameters;
+                settings.parameters.value = [];
             }
             return scope.parameters;
         }
@@ -111,7 +114,7 @@
 
         function updateValueParameters(newParameters) {
             function createFilter(paramKey) {
-                return function(param) {
+                return function (param) {
                     return param.key === paramKey;
                 }
             }
@@ -141,10 +144,25 @@
             }
         }
 
+        function isValid() {
+            var i;
+            for (i = 0; i < model.config.parameters.length; i++) {
+                if (!model.config.parameters[i]) {
+                    return false;
+                }
+            }
+            if (!model.config.datasource) {
+                return false;
+            }
+            if (!model.config.view) {
+                return false;
+            }
+            return true;
+        }
+
         function loadPreviewIfValid() {
-            if (model.config.datasource) {
-                // TODO: Validate parameters
-                var params = angular.extend({}, model.config, { contentId: content.id });
+            if (isValid()) {
+                var params = $.extend({}, model.config, { contentId: content.id });
                 http.post("/umbraco/ourcontentlist/contentlist/preview", params).then(previewLoaded);
             }
         }
@@ -163,12 +181,58 @@
 
             parameterLoader.update = getParametersForDataSource;
 
-            q.all(p1, p2).then(function() {
+            q.all(p1, p2).then(function () {
                 if (!model.config.datasource) {
-                    scope.emptyMessage = "Please select data source";
+                    scope.nextSetting();
                 }
             });
         }
+
+        var wizardSettings = [
+            { message: "Select a data source", settingName: "datasource", predicate: function (val) { return val !== ""; } },
+            {
+                message: "Select parameters", settingName: "parameters", predicate: function(val) {
+                    for (var i = 0; i < val.length; i++) {
+                        if (!val[i].value) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                
+            },
+            { message: "Select theme", settingName: "view", predicate: function (val) { return val !== "" } }
+        ];
+        scope.wizardStep = -1;
+
+        function setSetting() {
+            var wizardStep = scope.wizardStep;
+            var stepSetting = wizardSettings[wizardStep];
+            scope.wizardMessage = stepSetting.message;
+            scope.wizardSettingName = stepSetting.settingName;
+            scope.wizardSetting = settings[scope.wizardSettingName];
+            scope.wizardPredicate = stepSetting.predicate;
+            scope.showPrevious = scope.wizardStep > 0;
+        }
+
+        scope.nextSetting = function () {
+            scope.wizardStep++;
+            setSetting();
+        }
+
+        scope.previousSetting = function () {
+            scope.wizardStep--;
+            setSetting();
+        }
+
+        scope.$on("contentlist.nextSetting", function (evt, evtArg) {
+            scope.control.config[scope.wizardSettingName] = evtArg.value;
+            scope.nextSetting();
+        });
+
+        scope.$on("contentlist.previousSetting", function (evt, evtArg) {
+            scope.previousSetting();
+        });
 
         initialize();
         main();
@@ -176,12 +240,12 @@
 
     function createDataSourceService(q, http, requestHelper) {
         return {
-            getDataSources: function() {
+            getDataSources: function () {
                 var url = requestHelper.getApiUrl("Our.Umbraco.ContentList.Web.DataSources.ListableDataSource", "GetDataSources"),
                     def = q.defer();
 
                 http.get(url)
-                    .then(function(response) {
+                    .then(function (response) {
                         def.resolve(response.data);
                     });
 
@@ -192,12 +256,12 @@
 
     function createTemplatesService(q, http, requestHelper) {
         return {
-            getTemplates: function() {
+            getTemplates: function () {
                 var url = requestHelper.getApiUrl("Our.Umbraco.ContentList.Web.ContentListApi", "ListTemplates"),
                     def = q.defer();
 
                 http.get(url)
-                    .then(function(response) {
+                    .then(function (response) {
                         def.resolve(response.data);
                     });
 
@@ -206,14 +270,10 @@
         };
     }
 
-    function ParametersController(scope) {
+    function ParametersController(scope, http) {
 
-        var unwatchers = []
-            , parentModel = scope.$parent.$parent.$parent.model
-            , datasourceModel = $.grep(parentModel.config, function(setting) {
-                  return setting.key === "datasource";
-              })[0]
-            ;
+        var unwatchers = [],
+            parentConfig = scope.model.config.parentConfig;
 
         function resetProperties() {
             var i;
@@ -224,10 +284,10 @@
             }
 
             scope.properties = $.map(scope.model.config.parameters,
-                function(param) {
+                function (param) {
                     return $.extend({},
                         param,
-                        $.grep(scope.model.value, function(val) { return val.key === param.key; })[0],
+                        $.grep(scope.model.value, function (val) { return val.key === param.key; })[0],
                         {
                             config: {
                                 items: param.options ? $.map(param.options, keyNameToIdValue) : null
@@ -237,10 +297,10 @@
                 });
 
             $.each(scope.properties,
-                function(i, p) {
-                    unwatchers.push(scope.$watch(function() { return p.value; },
-                        function() {
-                            var modelValue = $.grep(scope.model.value, function(v) { return v.key === p.key; })[0];
+                function (i, p) {
+                    unwatchers.push(scope.$watch(function () { return p.value; },
+                        function () {
+                            var modelValue = $.grep(scope.model.value, function (v) { return v.key === p.key; })[0];
                             if (!modelValue) {
                                 scope.model.value.push({
                                     key: p.key,
@@ -253,13 +313,92 @@
                 });
         }
 
-        scope.datasourceModel = datasourceModel;
+        scope.parentConfig = parentConfig;
 
-        scope.$watch("datasourceModel.value",
-            function(newValue, oldValue) {
+        scope.canQuery = function () {
+            for (var i = 0; i<scope.model.value.length; i++) {
+                if (!scope.model.value[i].value) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function count() {
+            if (scope.canQuery()) {
+                var params = $.extend({}, parentConfig, {parameters:scope.model.value});
+                return http.post("/umbraco/ourcontentlist/contentlist/count", params);
+            }
+            return null;
+        }
+
+        scope.$watch("model.value", function(newVal, oldVal) {
+            if (oldVal !== newVal) {
+                var promise = count(),
+                    start = new Date();
+                if (promise) {
+                    promise.then(function (response) {
+                        var end = new Date();
+                        scope.queryCount = response.data;
+                        scope.queryTime = end - start;
+                    });
+                }
+            }
+        }, true);
+
+        scope.$watch("parentConfig.datasource",
+            function (newValue, oldValue) {
                 scope.model.config.parameters = scope.model.config.parameterLoader.update(newValue, oldValue);
                 resetProperties();
             });
+    }
+
+    function createWizardDirective() {
+        return {
+            restrict: "E",
+            scope: {
+                message: "=",
+                model: "=",
+                showprev: "=",
+                predicate: "="
+            },
+            template: '<div class="umb-cell-placeholder" ng-if="!preview" style="text-align:center; cursor: default; position: relative;">' +
+                      '<div class="cell-tools-add -center" style="position:relative;top:0;left:0;width:50%;display:inline-block;margin:20px;transform:none;">' +
+                      '<div>{{message}}</div>' +
+                      '<div ng-include="model.view"></div>' +
+                      '<button type=button style="' +
+                      'border: 0px none; background-color: #2e8aea; color: white; border-radius:22px; ' +
+                      'width:82px; height:44px; padding: 7px 14px; margin-top:5px; white-space:nowrap;"' +
+                      ' ng-show="showprev" ng-click="back()">' +
+                      '<span class="icon icon-arrow-left" style="float:left; font-size: 20px; line-height: 30px;"></span>' +
+                      '<span style="float:left; line-height: 30px;">Back</span>' +
+                      '</button>' +
+                      '<button type=button style="' +
+                      'border: 0px none; background-color: #2e8aea; color: white; border-radius:22px; ' +
+                      'width:82px; height:44px; padding: 7px 14px; margin-top:5px; white-space:nowrap;"' +
+                      ' ng-show="predicate(model.value)" ng-click="nextSetting()">' +
+                      '<span class="icon icon-arrow-right" style="float:left; font-size: 20px; line-height: 30px;"></span>' +
+                      '<span style="float:left; line-height: 30px;">Next</span>' +
+                      '</button>' +
+                      '</div>' +
+                      '</div>',
+            link: function (scope, element, attrs) {
+                scope.$watch("model", function () {
+                    var mdl = scope.model;
+                });
+
+                scope.nextSetting = function () {
+                    scope.$emit("contentlist.nextSetting", { value: scope.model.value });
+                }
+
+                scope.back = function () {
+                    scope.$emit("contentlist.previousSetting", { value: scope.model.value });
+                }
+            },
+            controller: function($scope) {
+                
+            }
+        }
     }
 
     var module = angular.module("our.umbraco.contentlist", []);
@@ -277,6 +416,7 @@
 
     module.controller("our.umbraco.contentlist.parameters.controller", [
         "$scope",
+        "$http",
         ParametersController
     ]);
 
@@ -294,9 +434,11 @@
         createTemplatesService
     ]);
 
+    module.directive("contentListWizard", createWizardDirective);
+
     module.run([
         "$templateCache",
-        function(cache) {
+        function (cache) {
 
             cache.put("our.umbraco.contentlist.dropdownlist.html", "<select ng-model=\"parameter.value\" ng-options=\"opt.key as opt.name for opt in parameter.options\"></select>");
             cache.put("our.umbraco.contentlist.textbox.html", "<input type=\"text\" ng-model=\"parameter.value\" />");
@@ -368,7 +510,8 @@
             "description": "Data source parameters",
             "view": "/app_plugins/our.umbraco.contentlist/propertyeditors/parameters/parameters.html",
             "config": {
-                "parameterLoader": null // set in controller
+                "parameterLoader": null, // set in controller
+                "datasourceConfig": null // set in controller
             }
         }
     });

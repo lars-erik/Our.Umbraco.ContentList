@@ -255,8 +255,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataSources\Listables\ListablesByLuceneDataSource.cs" />
-    <Compile Include="DataSources\Listables\PagingParameter.cs" />
-    <Compile Include="DataSources\Listables\QueryParameters.cs" />
+    <Compile Include="DataSources\PagingParameter.cs" />
+    <Compile Include="DataSources\PublishedContent\PublishedContentDataSourceFactory.cs" />
+    <Compile Include="DataSources\PublishedContent\PublishedContentByLuceneDataSource.cs" />
+    <Compile Include="DataSources\QueryParameters.cs" />
     <Compile Include="DataSources\PublishedContent\IPublishedContentDataSource.cs" />
     <Compile Include="DataSources\PublishedContent\PublishedContentByXPathDataSource.cs" />
     <Compile Include="DataSources\PublishedContent\PublishedContentSorting.cs" />

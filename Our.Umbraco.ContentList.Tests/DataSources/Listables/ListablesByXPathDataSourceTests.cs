@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Web;
 using Moq;
 using NUnit.Framework;
+using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.DataSources.Listables;
 using Umbraco.Core.Models;
 using Umbraco.Core.Models.PublishedContent;

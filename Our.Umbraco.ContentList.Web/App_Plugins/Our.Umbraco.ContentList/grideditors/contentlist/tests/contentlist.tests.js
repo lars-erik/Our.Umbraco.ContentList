@@ -120,13 +120,13 @@
             expect(scope.parameters).toBe(datasources[0].parameters);
         });
 
-        it("starts with 'please select data source' as message", function () {
+        it("starts by prompting the user to enter a data source", function () {
             scope.$digest();
-            expect(scope.emptyMessage).toBe("Please select data source");
+            expect(scope.wizardMessage).toBe("Please select a data source");
+            expect(scope.wizardSettingName).toBe("datasource");
         });
 
         xit("calls the preview service with the given parameters", function () {
-            httpBackend.whenPOST(previewUrl, { "datasource": "a.datasource", "pagesize": 10, "showPaging": false, "parameters": [], "contentId": 1 }).respond("<div/>");
             httpBackend.whenPOST(previewUrl, { "datasource": "a.datasource", "pagesize": 10, "showPaging": false, "parameters": [{ "key": "a" }], "contentId": 1 }).respond("<h1>It's a win</h1>");
             scope.control.config.datasource = "a.datasource";
             scope.$digest();

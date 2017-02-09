@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Our.Umbraco.ContentList.Web;
 using Umbraco.Core.Models;
 
-namespace Our.Umbraco.ContentList.DataSources.Listables
+namespace Our.Umbraco.ContentList.DataSources
 {
     public class QueryParameters
     {

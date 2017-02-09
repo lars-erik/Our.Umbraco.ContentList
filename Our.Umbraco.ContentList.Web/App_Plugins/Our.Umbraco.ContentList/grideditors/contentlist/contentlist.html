@@ -3,8 +3,11 @@
         <div class="preview" ng-bind-html-unsafe="preview" ng-show="preview">
         </div>
     </div>
-    <div class="umb-cell-placeholder" ng-if="!preview" ng-click="editGridItemSettings(control, 'control')">
-        <div class="cell-tools-add -center" ng-bind="emptyMessage">
-        </div>
-    </div>
+    <content-list-wizard
+        message="wizardMessage"
+        model="wizardSetting"
+        showprev="showPrevious"
+        predicate="wizardPredicate"
+        ng-if="!preview">
+    </content-list-wizard>
 </div>
