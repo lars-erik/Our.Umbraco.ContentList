@@ -334,7 +334,7 @@
     <Content Include="App_Plugins\Our.Umbraco.ContentList\Views\web.config" />
     <Content Include="App_Plugins\Our.Umbraco.ContentList\css\contentlist.less" />
     <Content Include="App_Plugins\ModelsBuilder\package.manifest" />
-    <Content Include="App_Data\Models\ood.flag" />
+    <Content Include="Models\ood.flag" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
@@ -388,17 +388,17 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Data\Models\BlogPost.generated.cs" />
-    <Compile Include="App_Data\Models\BlogPostRepository.generated.cs" />
-    <Compile Include="App_Data\Models\File.generated.cs" />
-    <Compile Include="App_Data\Models\Folder.generated.cs" />
-    <Compile Include="App_Data\Models\Home.generated.cs" />
-    <Compile Include="App_Data\Models\Image.generated.cs" />
-    <Compile Include="App_Data\Models\LandingPage.cs" />
-    <Compile Include="App_Data\Models\LandingPage.generated.cs" />
-    <Compile Include="App_Data\Models\Member.generated.cs" />
-    <Compile Include="App_Data\Models\TextPage.cs" />
-    <Compile Include="App_Data\Models\TextPage.generated.cs" />
+    <Compile Include="Models\BlogPost.generated.cs" />
+    <Compile Include="Models\BlogPostRepository.generated.cs" />
+    <Compile Include="Models\File.generated.cs" />
+    <Compile Include="Models\Folder.generated.cs" />
+    <Compile Include="Models\Home.generated.cs" />
+    <Compile Include="Models\Image.generated.cs" />
+    <Compile Include="Models\LandingPage.cs" />
+    <Compile Include="Models\LandingPage.generated.cs" />
+    <Compile Include="Models\Member.generated.cs" />
+    <Compile Include="Models\TextPage.cs" />
+    <Compile Include="Models\TextPage.generated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -411,6 +411,7 @@
       <Name>Our.Umbraco.ContentList</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
