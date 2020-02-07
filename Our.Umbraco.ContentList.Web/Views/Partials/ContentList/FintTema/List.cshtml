@@ -1,0 +1,28 @@
+﻿@using Our.Umbraco.ContentList.Web
+@model Our.Umbraco.ContentList.Web.ContentListModel
+
+@{
+    var list = Model.Items.ToList();
+    var i = 0;
+}
+
+<div class="contentlist">
+    @if (list.Count == 0)
+    {
+        <p>No items found...</p>
+    }
+
+    @for (i = 0; i < list.Count; i++)
+    {
+        var listable = list[i];
+
+        <div class="@Model.ColumnStyling.ColumnClasses("col-sm-", "col-md-", "col-lg-") list-item @listable.DocumentTypeAlias ">
+
+            @Html.ContentListItem(listable)
+        </div>
+    }
+    <div class="col-md-12">
+        @Html.ContentListPager()
+    </div>
+</div>
+

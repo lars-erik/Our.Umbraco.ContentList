@@ -1,0 +1,15 @@
+﻿@model Our.Umbraco.ContentList.IListableContent
+@if (!Model.ListImageUrl.IsNullOrWhiteSpace())
+{
+    <a href="@Model.Url"><img class="list-image widescreen" src="@Model.ListImageUrl" /></a>
+}
+
+<h3>
+    <a href="@Model.Url">@Model.ListHeading</a>
+</h3>
+<div class="list-summary">
+    @Model.ListSummary
+</div>
+<div>
+    <a href="@Model.Url" class="readmore">@Model.ReadMoreText</a>
+</div>
