@@ -6,8 +6,6 @@ using Examine.LuceneEngine.Providers;
 using Our.Umbraco.ContentList.Web;
 using Umbraco.Core;
 using Umbraco.Core.Models;
-using Umbraco.Web;
-using Umbraco.Web.PublishedCache;
 
 namespace Our.Umbraco.ContentList.DataSources.Listables
 {

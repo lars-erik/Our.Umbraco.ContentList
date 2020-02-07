@@ -3,6 +3,7 @@ using System.Linq;
 using Our.Umbraco.ContentList.Web;
 using Umbraco.Core;
 using Umbraco.Core.Models;
+using Umbraco.Core.Models.PublishedContent;
 
 namespace Our.Umbraco.ContentList.DataSources.Listables
 {
