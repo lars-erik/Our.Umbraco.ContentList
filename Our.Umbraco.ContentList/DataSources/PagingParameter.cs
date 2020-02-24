@@ -7,28 +7,28 @@
         {
         }
 
-        public PagingParameter(int take)
+        public PagingParameter(long take)
         {
             Take = take;
         }
 
-        public PagingParameter(int skip, int take)
+        public PagingParameter(long skip, long take)
         {
             Skip = skip;
             Take = take;
         }
 
-        public PagingParameter(int skip, int take, int preSkip)
+        public PagingParameter(long skip, long take, long preSkip)
         {
             Skip = skip;
             Take = take;
             PreSkip = preSkip;
         }
 
-        public int Skip { get; set; }
+        public long Skip { get; set; }
 
-        public int Take { get; set; }
+        public long Take { get; set; }
 
-        public int PreSkip { get; set; }
+        public long PreSkip { get; set; }
     }
 }

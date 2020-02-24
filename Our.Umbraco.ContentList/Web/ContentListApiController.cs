@@ -19,13 +19,12 @@ namespace Our.Umbraco.ContentList.Web
         {
         }
 
-        public ContentListApiController(UmbracoContext umbracoContext)
-            : base(umbracoContext)
-        {
-        }
+        //public ContentListApiController(UmbracoContext umbracoContext)
+        //    : base(umbracoContext)
+        //{
+        //}
 
-        public ContentListApiController(UmbracoContext umbracoContext, string path, string samplePath)
-            : base(umbracoContext)
+        public ContentListApiController(string path, string samplePath)
         {
             this.path = path;
             this.samplePath = samplePath;

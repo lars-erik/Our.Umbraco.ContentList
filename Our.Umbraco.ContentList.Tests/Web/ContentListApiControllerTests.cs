@@ -28,7 +28,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
 
         private void AssertTemplates(string themePath, string[] expected)
         {
-            var controller = new ContentListApiController(GetUmbracoContext("/", -1), Path.GetFullPath(themePath), Path.GetFullPath(samplePath));
+            var controller = new ContentListApiController(Path.GetFullPath(themePath), Path.GetFullPath(samplePath));
             var templates = controller.ListTemplates();
             Assert.That(templates, Is.EquivalentTo(expected));
         }

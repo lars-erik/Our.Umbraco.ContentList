@@ -8,6 +8,7 @@ using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.DataSources.Listables;
 using Our.Umbraco.ContentList.Web;
 using Umbraco.Core.Models;
+using Umbraco.Core.Models.PublishedContent;
 
 namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
 {

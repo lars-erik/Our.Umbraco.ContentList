@@ -13,14 +13,14 @@ namespace Our.Umbraco.ContentList.Web
 
     public class ContentListPaging
     {
-        public int Page { get; set; }
-        public int PageSize { get; set; }
-        public int From { get; set; }
-        public int To { get; set; }
-        public int Total { get; set; }
+        public long Page { get; set; }
+        public long PageSize { get; set; }
+        public long From { get; set; }
+        public long To { get; set; }
+        public long Total { get; set; }
         public bool ShowPaging { get; set; }
 
-        public int Pages
+        public long Pages
         {
             get
             {

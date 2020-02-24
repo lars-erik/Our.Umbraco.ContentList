@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Our.Umbraco.ContentList.DataSources.Listables;
 using Umbraco.Core;
-using Umbraco.Core.Models;
-using Umbraco.Web;
+using Umbraco.Core.Models.PublishedContent;
+//using Umbraco.Web;
 
 namespace Our.Umbraco.ContentList.DataSources.PublishedContent
 {
@@ -21,19 +20,21 @@ namespace Our.Umbraco.ContentList.DataSources.PublishedContent
 
         public IQueryable<IPublishedContent> Query(PagingParameter pagingParameter)
         {
+            // TODO: ints?
             if (contentContext == null)
                 return new List<IPublishedContent>().AsQueryable();
-            var listables = contentContext.Children.Where(c => c.IsVisible());
+            var listables = contentContext.Children.Where(c => true); // TODO: Where did .IsVisible() go?
             listables = PublishedContentSorting.Apply(listables, queryParameters.CustomParameters);
-            listables = listables.Skip(pagingParameter.PreSkip).Skip(pagingParameter.Skip).Take(pagingParameter.Take);
+            listables = listables.Skip((int)pagingParameter.PreSkip).Skip((int)pagingParameter.Skip).Take((int)pagingParameter.Take);
             return listables.AsQueryable();
         }
 
-        public int Count(int preSkip)
+        public long Count(long preSkip)
         {
+            // TODO: Validate int
             return contentContext == null
                 ? 0
-                : contentContext.Children.Skip(preSkip).Count();
+                : contentContext.Children.Skip((int)preSkip).Count();
         }
     }
 

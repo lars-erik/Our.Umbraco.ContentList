@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using NUnit.Framework;
@@ -6,6 +7,7 @@ using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.DataSources.Listables;
 using Our.Umbraco.ContentList.DataSources.PublishedContent;
 using Umbraco.Core.Models;
+using Umbraco.Core.Models.PublishedContent;
 using Umbraco.Tests.TestHelpers;
 
 namespace Our.Umbraco.ContentList.Tests.DataSources.PublishedContent
@@ -16,8 +18,9 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.PublishedContent
         [Test]
         public void Returns_All_Of_A_Doctype_Under_Root()
         {
+            throw new NotImplementedException("Obsolete stuff");
             SettingsForTests.ConfigureSettings(SettingsForTests.GenerateMockSettings());
-            GetUmbracoContext("/", -1, null, true);
+            //GetUmbracoContext("/", -1, null, true);
             var content = Mock.Of<IPublishedContent>();
             var datasource = new PublishedContentByXPathDataSource(
                 new QueryParameters(

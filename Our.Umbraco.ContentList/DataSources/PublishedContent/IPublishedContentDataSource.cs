@@ -1,12 +1,11 @@
 ﻿using System.Linq;
-using Our.Umbraco.ContentList.DataSources.Listables;
-using Umbraco.Core.Models;
+using Umbraco.Core.Models.PublishedContent;
 
 namespace Our.Umbraco.ContentList.DataSources.PublishedContent
 {
     public interface IPublishedContentDataSource
     {
         IQueryable<IPublishedContent> Query(PagingParameter pagingParameter);
-        int Count(int preSkip);
+        long Count(long preSkip);
     }
 }

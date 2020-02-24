@@ -9,7 +9,7 @@ using NUnit.Framework;
 using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.DataSources.Listables;
 using Our.Umbraco.ContentList.Web;
-using Umbraco.Core.Models;
+using Umbraco.Core.Models.PublishedContent;
 
 namespace Our.Umbraco.ContentList.Tests.Web
 {
@@ -265,11 +265,13 @@ namespace Our.Umbraco.ContentList.Tests.Web
 
         private ContentListController CreateController(List<IPublishedContent> children, string page = "2", ListableDataSourceFactory factory = null)
         {
-            var publishedContentMock = CreateContent(children);
-            var umbracoContext = SetupPublishedRequest(publishedContentMock, "/?p=" + page);
-            var controller = new ContentListController(umbracoContext, factory ?? new ListableDataSourceFactory());
-            controller.ControllerContext = new ControllerContext(umbracoContext.HttpContext, new RouteData(), controller);
-            return controller;
+            throw new NotImplementedException("Obsolete methods");
+
+            //var publishedContentMock = CreateContent(children);
+            //var umbracoContext = SetupPublishedRequest(publishedContentMock, "/?p=" + page);
+            //var controller = new ContentListController(factory ?? new ListableDataSourceFactory());
+            //controller.ControllerContext = new ControllerContext(umbracoContext.HttpContext, new RouteData(), controller);
+            //return controller;
         }
 
         private static Mock<IPublishedContent> CreateContent(List<IPublishedContent> children)

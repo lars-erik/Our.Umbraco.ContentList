@@ -7,7 +7,6 @@ using NUnit.Framework;
 using Our.Umbraco.ContentList.Web;
 using Umbraco.Core;
 using Umbraco.Tests.TestHelpers;
-using Umbraco.Web.Routing;
 
 namespace Our.Umbraco.ContentList.Tests.Web
 {
@@ -25,11 +24,13 @@ namespace Our.Umbraco.ContentList.Tests.Web
         {
             base.Initialize();
 
-            var settings = SettingsForTests.GenerateMockSettings();
-            var routingContext = GetRoutingContext("http://localhost", -1, new RouteData(), true, settings);
-            var ctx = routingContext.UmbracoContext;
+            throw new NotImplementedException("Obsolete stuff");
+
+            //var settings = SettingsForTests.GenerateMockSettings();
+            //var routingContext = GetRoutingContext("http://localhost", -1, new RouteData(), true, settings);
+            //var ctx = routingContext.UmbracoContext;
             
-            ctx.PublishedContentRequest = new PublishedContentRequest(new Uri("http://localhost"), routingContext, settings.WebRouting, s => new string[0]);
+            //ctx.PublishedContentRequest = new PublishedContentRequest(new Uri("http://localhost"), routingContext, settings.WebRouting, s => new string[0]);
 
             paging = new ContentListPaging
             {

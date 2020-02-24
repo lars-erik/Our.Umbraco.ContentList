@@ -19,8 +19,10 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
         [Test]
         public void Returns_All_Of_A_Doctype_Under_Root()
         {
+            throw new NotImplementedException("Totally obsolete stuff");
+
             SettingsForTests.ConfigureSettings(SettingsForTests.GenerateMockSettings());
-            GetUmbracoContext("/", -1, null, true);
+            //GetUmbracoContext("/", -1, null, true);
             var content = Mock.Of<IPublishedContent>();
             var datasource = new ListablesByXPathDataSource(
                 new QueryParameters(
@@ -40,12 +42,13 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
 
         protected override void FreezeResolution()
         {
-            var factoryResolver = (PublishedContentModelFactoryResolver)
-                typeof(PublishedContentModelFactoryResolver)
-                    .GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[0], null)
-                    .Invoke(new object[0]);
-            PublishedContentModelFactoryResolver.Current = factoryResolver;
-            PublishedContentModelFactoryResolver.Current.SetFactory(new PublishedContentModelFactory(new []{typeof(FakeListable)}));
+            throw new NotImplementedException("Totally obsolete stuff");
+            //var factoryResolver = (PublishedContentModelFactoryResolver)
+            //    typeof(PublishedContentModelFactoryResolver)
+            //        .GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[0], null)
+            //        .Invoke(new object[0]);
+            //PublishedContentModelFactoryResolver.Current = factoryResolver;
+            //PublishedContentModelFactoryResolver.Current.SetFactory(new PublishedContentModelFactory(new []{typeof(FakeListable)}));
 
             base.FreezeResolution();
         }
@@ -93,5 +96,6 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
         public string ListImageUrl { get; set; }
         public IHtmlString ListSummary { get; set; }
         public IHtmlString ReadMoreText { get; set; }
+        public string DocumentTypeAlias { get; }
     }
 }

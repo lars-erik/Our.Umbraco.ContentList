@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Our.Umbraco.ContentList.Web;
 using Umbraco.Core;
-using Umbraco.Web;
-using Umbraco.Web.PublishedCache;
+//using Umbraco.Web;
+//using Umbraco.Web.PublishedCache;
 
 namespace Our.Umbraco.ContentList.DataSources.Listables
 {
@@ -11,34 +12,40 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
     public class ListablesByXPathDataSource : IListableDataSource
     {
         private readonly QueryParameters parameters;
-        private readonly UmbracoContext ctx;
-        private readonly ContextualPublishedCache<IPublishedContentCache> contentCache;
+        //private readonly UmbracoContext ctx;
+        //private readonly ContextualPublishedCache<IPublishedContentCache> contentCache;
 
         public ListablesByXPathDataSource(QueryParameters parameters)
         {
             this.parameters = parameters;
-            ctx = UmbracoContext.Current;
-            contentCache = ctx.ContentCache;
+
+            throw new NotImplementedException("Uses obsolete methods");
+            //ctx = UmbracoContext.Current;
+            //contentCache = ctx.ContentCache;
         }
 
         public IQueryable<IListableContent> Query(PagingParameter pagingParameter)
         {
+            // TODO: ints?
+
             var listables = Query();
             listables = ListableSorting.Apply(listables, parameters.CustomParameters);
-            listables = listables.Skip(pagingParameter.PreSkip).Skip(pagingParameter.Skip).Take(pagingParameter.Take);
+            listables = listables.Skip((int)pagingParameter.PreSkip).Skip((int)pagingParameter.Skip).Take((int)pagingParameter.Take);
             return listables.AsQueryable();
         }
 
-        public int Count(int preSkip)
+        public long Count(long preSkip)
         {
             return Query().Count() - preSkip;
         }
 
         private IEnumerable<IListableContent> Query()
         {
-            var contents = contentCache.GetByXPath(parameters.CustomParameters["xpath"]);
-            var listables = contents.OfType<IListableContent>().Where(c => c.IsVisible());
-            return listables;
+            throw new NotImplementedException("Uses obsolete methods");
+
+            //var contents = contentCache.GetByXPath(parameters.CustomParameters["xpath"]);
+            //var listables = contents.OfType<IListableContent>().Where(c => c.IsVisible());
+            //return listables;
         }
     }
 
