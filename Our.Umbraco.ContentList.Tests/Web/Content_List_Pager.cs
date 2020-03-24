@@ -6,12 +6,19 @@ using Moq;
 using NUnit.Framework;
 using Our.Umbraco.ContentList.Web;
 using Umbraco.Core;
+using Umbraco.Core.Configuration;
+using Umbraco.Core.Configuration.UmbracoSettings;
 using Umbraco.Tests.TestHelpers;
+using Umbraco.Tests.Testing;
+using Umbraco.UnitTesting.Adapter;
+using Umbraco.Web.Composing;
+using Umbraco.Web.Routing;
 
 namespace Our.Umbraco.ContentList.Tests.Web
 {
     [TestFixture]
-    public class Content_List_Pager : BaseRoutingTest
+    [UmbracoTest(WithApplication = true)]
+    public class Content_List_Pager // : BaseWebTest
     {
         private ContentListModel model;
         private ContentListPaging paging;
@@ -19,19 +26,16 @@ namespace Our.Umbraco.ContentList.Tests.Web
         private static ViewContext viewContext;
         private HttpContextBase httpContext;
 
+        private UmbracoSupport umbracoSupport;
+        
         [SetUp]
-        public override void Initialize()
+        public void SetUp()
         {
-            base.Initialize();
+            umbracoSupport = new UmbracoSupport();
+            umbracoSupport.SetupUmbraco();
 
-            throw new NotImplementedException("Obsolete stuff");
-
-            //var settings = SettingsForTests.GenerateMockSettings();
-            //var routingContext = GetRoutingContext("http://localhost", -1, new RouteData(), true, settings);
-            //var ctx = routingContext.UmbracoContext;
+            Current.UmbracoContext.PublishedRequest = new FakePublishedRequest(Mock.Of<IPublishedRouter>(), Current.UmbracoContext, new Uri("http://localhost"));
             
-            //ctx.PublishedContentRequest = new PublishedContentRequest(new Uri("http://localhost"), routingContext, settings.WebRouting, s => new string[0]);
-
             paging = new ContentListPaging
             {
                 From = 1,
@@ -46,6 +50,12 @@ namespace Our.Umbraco.ContentList.Tests.Web
                 Paging = paging
             };
             helper = CreateHelper(model);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            umbracoSupport.DisposeUmbraco();
         }
 
         [Test]
@@ -112,7 +122,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
 
             var html = helper.ContentListPager();
 
-            var match = Is.StringContaining(expectedUrl);
+            var match = Contains.Substring(expectedUrl);
             if (!queryString.IsNullOrWhiteSpace())
                 match = match.And.Not.StringContaining(url.ToString());
             Assert.That(html.ToString(), match);

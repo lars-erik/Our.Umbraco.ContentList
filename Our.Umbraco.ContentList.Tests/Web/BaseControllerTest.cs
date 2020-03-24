@@ -9,7 +9,7 @@ using Umbraco.Tests.TestHelpers;
 
 namespace Our.Umbraco.ContentList.Tests.Web
 {
-    public abstract class BaseControllerTest : BaseRoutingTest
+    public abstract class BaseControllerTest : BaseWebTest
     {
         public object SetupPublishedRequest<T>(Mock<T> publishedContentMock, string url = "/") // UmbracoContext
             where T : class, IPublishedContent

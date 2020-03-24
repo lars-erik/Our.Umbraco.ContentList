@@ -13,26 +13,26 @@ using Umbraco.Tests.TestHelpers;
 namespace Our.Umbraco.ContentList.Tests.DataSources.PublishedContent
 {
     [TestFixture]
-    public class PublishedContentByXPathDataSourceTests : BaseRoutingTest
+    public class PublishedContentByXPathDataSourceTests : BaseWebTest
     {
         [Test]
         public void Returns_All_Of_A_Doctype_Under_Root()
         {
             throw new NotImplementedException("Obsolete stuff");
-            SettingsForTests.ConfigureSettings(SettingsForTests.GenerateMockSettings());
-            //GetUmbracoContext("/", -1, null, true);
-            var content = Mock.Of<IPublishedContent>();
-            var datasource = new PublishedContentByXPathDataSource(
-                new QueryParameters(
-                    content,
-                    new Dictionary<string, string>
-                    {
-                        {"xpath", "//fakeListable"}
-                    }
-                )
-            );
-            var result = datasource.Query(new PagingParameter());
-            Assert.AreEqual(3, result.Count());
+            //SettingsForTests.ConfigureSettings(SettingsForTests.GenerateMockSettings());
+            ////GetUmbracoContext("/", -1, null, true);
+            //var content = Mock.Of<IPublishedContent>();
+            //var datasource = new PublishedContentByXPathDataSource(
+            //    new QueryParameters(
+            //        content,
+            //        new Dictionary<string, string>
+            //        {
+            //            {"xpath", "//fakeListable"}
+            //        }
+            //    )
+            //);
+            //var result = datasource.Query(new PagingParameter());
+            //Assert.AreEqual(3, result.Count());
         }
 
         protected override string GetXmlContent(int templateId)

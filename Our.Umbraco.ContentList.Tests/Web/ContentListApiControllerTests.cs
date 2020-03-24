@@ -6,7 +6,7 @@ using Umbraco.Tests.TestHelpers;
 namespace Our.Umbraco.ContentList.Tests.Web
 {
     [TestFixture]
-    public class ContentListApiControllerTests : BaseRoutingTest
+    public class ContentListApiControllerTests : BaseWebTest
     {
         private string samplePath = @"..\..\..\Our.Umbraco.ContentList.Web\App_Plugins\Our.Umbraco.ContentList\Views\ContentList\ListViews";
 

@@ -5,15 +5,13 @@ using Moq;
 using NUnit.Framework;
 using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.DataSources.Listables;
-using Our.Umbraco.ContentList.Web;
-using Umbraco.Core.Models;
 using Umbraco.Core.Models.PublishedContent;
 using Umbraco.Tests.TestHelpers;
 
 namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
 {
     [TestFixture]
-    public class ListableChildrenDataSourceTests : BaseRoutingTest
+    public class ListableChildrenDataSourceTests // : BaseRoutingTest
     {
         [Test]
         public void Returns_Children_Of_Current_Content_Implementing_IListableContent()

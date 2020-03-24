@@ -3,6 +3,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Umbraco.Core;
+using Umbraco.Web.Composing;
 using Umbraco.Web;
 
 namespace Our.Umbraco.ContentList.Web
@@ -50,48 +51,41 @@ namespace Our.Umbraco.ContentList.Web
 
         private static string GetUrl(HtmlHelper helper)
         {
-            if (helper.ViewContext == null || 
-                helper.ViewContext.RequestContext == null ||
-                helper.ViewContext.RequestContext.HttpContext == null ||
-                helper.ViewContext.RequestContext.HttpContext.Request == null ||
-                helper.ViewContext.RequestContext.HttpContext.Request.Url == null
-                )
+            if (helper.ViewContext?.RequestContext?.HttpContext?.Request?.Url == null)
                 return "";
             return helper.ViewContext.RequestContext.HttpContext.Request.Url.GetComponents(UriComponents.AbsoluteUri ^ UriComponents.Query, UriFormat.UriEscaped);
         }
 
         private static StringBuilder CreateOutput(long currentPage, long pages, string url, string pagerClasses = "", string itemClasses = "", string anchorClasses = "", string pagerElement = "div", string itemElement = "")
         {
-            throw new NotImplementedException("Obsolete methods");
+            var builder = new StringBuilder(8192);
+            var anchorClassAttribute = anchorClasses.IsNullOrWhiteSpace() ? "" : " class=\"" + anchorClasses + "\"";
 
-            //var builder = new StringBuilder(8192);
-            //var anchorClassAttribute = anchorClasses.IsNullOrWhiteSpace() ? "" : " class=\"" + anchorClasses + "\"";
+            builder.AppendFormat("<{0} class=\"pagination {1}\">", pagerElement, pagerClasses);
 
-            //builder.AppendFormat("<{0} class=\"pagination {1}\">", pagerElement, pagerClasses);
+            for (var i = 0; i < pages; i++)
+            {
+                var isCurrent = i + 1 == currentPage;
 
-            //for (var i = 0; i < pages; i++)
-            //{
-            //    var isCurrent = i + 1 == currentPage;
+                if (!itemElement.IsNullOrWhiteSpace())
+                    builder.AppendFormat("<{0} class=\"{1}\">", itemElement, itemClasses + (isCurrent ? " active" : ""));
 
-            //    if (!itemElement.IsNullOrWhiteSpace())
-            //        builder.AppendFormat("<{0} class=\"{1}\">", itemElement, itemClasses + (isCurrent ? " active" : ""));
+                if (!isCurrent && Current.UmbracoContext.IsFrontEndUmbracoRequest)
+                    builder.AppendFormat(
+                        "<a{2} href=\"{0}?p={1}\">{1}</a>",
+                        url,
+                        i + 1,
+                        anchorClassAttribute
+                        );
+                else
+                    builder.AppendFormat("<span>{0}</span>", i + 1);
 
-            //    if (!isCurrent && UmbracoContext.Current.IsFrontEndUmbracoRequest)
-            //        builder.AppendFormat(
-            //            "<a{2} href=\"{0}?p={1}\">{1}</a>",
-            //            url,
-            //            i + 1,
-            //            anchorClassAttribute
-            //            );
-            //    else
-            //        builder.AppendFormat("<span>{0}</span>", i + 1);
+                if (!itemElement.IsNullOrWhiteSpace())
+                    builder.AppendFormat("</{0}>", itemElement);
+            }
 
-            //    if (!itemElement.IsNullOrWhiteSpace())
-            //        builder.AppendFormat("</{0}>", itemElement);
-            //}
-
-            //builder.AppendFormat("</{0}>", pagerElement);
-            //return builder;
+            builder.AppendFormat("</{0}>", pagerElement);
+            return builder;
         }
     }
 }

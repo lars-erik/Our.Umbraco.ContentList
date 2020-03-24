@@ -14,44 +14,44 @@ using Umbraco.Tests.TestHelpers;
 namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
 {
     [TestFixture]
-    public class ListablesByXPathDataSourceTests : BaseRoutingTest
+    public class ListablesByXPathDataSourceTests : BaseWebTest
     {
         [Test]
         public void Returns_All_Of_A_Doctype_Under_Root()
         {
             throw new NotImplementedException("Totally obsolete stuff");
 
-            SettingsForTests.ConfigureSettings(SettingsForTests.GenerateMockSettings());
-            //GetUmbracoContext("/", -1, null, true);
-            var content = Mock.Of<IPublishedContent>();
-            var datasource = new ListablesByXPathDataSource(
-                new QueryParameters(
-                    content, 
-                    new Dictionary<string, string>
-                    {
-                        {"xpath", "//fakeListable"}
-                    }
-                )
-            );
-            var result = datasource.Query(new PagingParameter());
-            Assert.AreEqual(3, result.Count());
+            //SettingsForTests.ConfigureSettings(SettingsForTests.GenerateMockSettings());
+            ////GetUmbracoContext("/", -1, null, true);
+            //var content = Mock.Of<IPublishedContent>();
+            //var datasource = new ListablesByXPathDataSource(
+            //    new QueryParameters(
+            //        content, 
+            //        new Dictionary<string, string>
+            //        {
+            //            {"xpath", "//fakeListable"}
+            //        }
+            //    )
+            //);
+            //var result = datasource.Query(new PagingParameter());
+            //Assert.AreEqual(3, result.Count());
         }
 
         // TODO: Orders
         // TODO: Counts
 
-        protected override void FreezeResolution()
-        {
-            throw new NotImplementedException("Totally obsolete stuff");
-            //var factoryResolver = (PublishedContentModelFactoryResolver)
-            //    typeof(PublishedContentModelFactoryResolver)
-            //        .GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[0], null)
-            //        .Invoke(new object[0]);
-            //PublishedContentModelFactoryResolver.Current = factoryResolver;
-            //PublishedContentModelFactoryResolver.Current.SetFactory(new PublishedContentModelFactory(new []{typeof(FakeListable)}));
+        //protected override void FreezeResolution()
+        //{
+        //    throw new NotImplementedException("Totally obsolete stuff");
+        //    //var factoryResolver = (PublishedContentModelFactoryResolver)
+        //    //    typeof(PublishedContentModelFactoryResolver)
+        //    //        .GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[0], null)
+        //    //        .Invoke(new object[0]);
+        //    //PublishedContentModelFactoryResolver.Current = factoryResolver;
+        //    //PublishedContentModelFactoryResolver.Current.SetFactory(new PublishedContentModelFactory(new []{typeof(FakeListable)}));
 
-            base.FreezeResolution();
-        }
+        //    base.FreezeResolution();
+        //}
 
         protected override string GetXmlContent(int templateId)
         {
