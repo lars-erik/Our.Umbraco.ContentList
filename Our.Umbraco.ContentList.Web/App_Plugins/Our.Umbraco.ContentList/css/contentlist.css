@@ -1,4 +1,15 @@
-﻿.umb-editors .contentlist-parameter-list .umb-editor {
+﻿.umb-editors .contentlist-datasource-property .parameters-property {
+  position: relative !important;
+}
+.umb-editors .contentlist-datasource-property .parameters-property .umb-editor {
+  position: relative !important;
+  box-shadow: 0 0 0 0 !important;
+}
+.umb-editors .contentlist-datasource-property .inner-property {
+  position: relative !important;
+  padding-bottom: 20px;
+}
+.umb-editors .contentlist-datasource-property .inner-property .umb-editor {
   position: relative !important;
   box-shadow: 0 0 0 0 !important;
 }

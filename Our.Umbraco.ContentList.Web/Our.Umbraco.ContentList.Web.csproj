@@ -433,6 +433,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Plugins\Our.Umbraco.ContentList\propertyeditors\datasource\datasource.html" />
     <Content Include="App_Plugins\Our.Umbraco.ContentList\propertyeditors\dropdown\dropdown.html" />
     <Content Include="App_Plugins\uSync8\backoffice\uSync8\dashboard.html" />
     <Content Include="App_Plugins\uSync8\backoffice\uSync8\uSyncDashboardController.js" />

@@ -10,7 +10,7 @@ namespace Our.Umbraco.ContentList.Web
     public class ContentListParameters
     {
         [JsonProperty("datasource")]
-        public string DataSource { get; set; }
+        public ContentListDataSource DataSource { get; set; }
         [JsonProperty("view")]
         public string View { get; set; }
         [JsonProperty("pagesize")]
@@ -19,12 +19,19 @@ namespace Our.Umbraco.ContentList.Web
         public bool ShowPaging { get; set; }
         [JsonProperty("columns")]
         public ContentListColumns Columns { get; set; }
-        [JsonProperty("parameters")]
-        public List<DataSourceParameterValue> DataSourceParameters { get; set; }
         [JsonProperty("page")]
         public int Page { get; set; }
         [JsonProperty("skip")]
         public int Skip { get; set; }
+    }
+
+    public class ContentListDataSource
+    {
+        [JsonProperty("type")]
+        public string Type { get; set; }
+        [JsonProperty("parameters")]
+        public List<DataSourceParameterValue> Parameters { get; set; }
+
     }
 
     public class ContentListColumns

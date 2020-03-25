@@ -11,11 +11,14 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
             Key = "sort",
             Label = "Sort by",
             View = "/App_Plugins/Our.Umbraco.ContentList/propertyeditors/dropdown/dropdown.html",
-            Options = new[]
+            Config = new DataSourceConfig
             {
-                new DataSourceParameterOption {Key = "sortorder", Name = "Sort order"},
-                new DataSourceParameterOption {Key = "dateasc", Name = "Date"},
-                new DataSourceParameterOption {Key = "datedesc", Name = "Date descending"},
+                Items = new[]
+                {
+                    new DataSourceParameterOption {Id = "sortorder", Value = "Sort order"},
+                    new DataSourceParameterOption {Id = "dateasc", Value = "Date"},
+                    new DataSourceParameterOption {Id = "datedesc", Value = "Date descending"},
+                }
             }
         };
 

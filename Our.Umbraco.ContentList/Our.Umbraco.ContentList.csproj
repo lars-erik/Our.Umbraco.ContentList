@@ -268,6 +268,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataSources\Listables\ListableByNodeDataSource.cs" />
     <Compile Include="DataSources\Listables\ListablesByLuceneDataSource.cs" />
     <Compile Include="DataSources\PagingParameter.cs" />
     <Compile Include="DataSources\PublishedContent\PublishedContentDataSourceFactory.cs" />

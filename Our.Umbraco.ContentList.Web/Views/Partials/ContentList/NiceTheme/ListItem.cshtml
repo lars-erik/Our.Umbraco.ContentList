@@ -1,7 +1,16 @@
-﻿@model Our.Umbraco.ContentList.IListableContent
+﻿@using Umbraco.Web.Models
+@model Our.Umbraco.ContentList.IListableContent
+@{
+    var readMore = Model.ReadMoreText;
+    if (Model.ReadMoreText.ToHtmlString().IsNullOrWhiteSpace())
+    {
+        readMore = new HtmlString("Read more &rsaquo;");
+    }
+}
+
 @if (!Model.ListImageUrl.IsNullOrWhiteSpace())
 {
-    <a href="@Model.Url"><img class="list-image widescreen" src="@Model.ListImageUrl" /></a>
+    <a href="@Model.Url"><img class="list-image widescreen" src="@Model.ListImageUrl.GetCropUrl(800, 500, imageCropMode:ImageCropMode.Crop)" style="width: 100%;" /></a>
 }
 
 <h3>
@@ -11,5 +20,5 @@
     @Model.ListSummary
 </div>
 <div>
-    <a href="@Model.Url" class="readmore">@Model.ReadMoreText</a>
+    <a href="@Model.Url" class="readmore">@readMore</a>
 </div>

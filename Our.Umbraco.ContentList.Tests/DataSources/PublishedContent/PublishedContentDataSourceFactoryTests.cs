@@ -23,7 +23,7 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.PublishedContent
                 PublishedContentSorting.Parameter
             };
 
-            var parameters = PublishedContentDataSourceFactory.CreateParameters(typeof (PublishedContentChildrenDataSource));
+            var parameters = PublishedContentDataSourceFactory.CreateParameters(typeof(PublishedContentChildrenDataSource));
 
             Assert.AreEqual(JsonConvert.SerializeObject(expectedParams), JsonConvert.SerializeObject(parameters));
         }
@@ -41,19 +41,22 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.PublishedContent
         {
             var contentListParams = new ContentListParameters
             {
-                DataSource = typeof (PublishedContentChildrenDataSource).FullName,
-                DataSourceParameters = new List<DataSourceParameterValue>
+                DataSource = new ContentListDataSource
                 {
-                    new DataSourceParameterValue
+                    Type = typeof(PublishedContentChildrenDataSource).FullName,
+                    Parameters = new List<DataSourceParameterValue>
                     {
-                        Key = "sort",
-                        Value = "dateasc"
+                        new DataSourceParameterValue
+                        {
+                            Key = "sort",
+                            Value = "dateasc"
+                        }
                     }
                 }
             };
             var content = Mock.Of<IPublishedContent>();
 
-            var datasource = new PublishedContentDataSourceFactory().Create(contentListParams.DataSource, new QueryParameters(content, contentListParams.DataSourceParameters));
+            var datasource = new PublishedContentDataSourceFactory().Create(contentListParams.DataSource.Type, new QueryParameters(content, contentListParams.DataSource.Parameters));
 
             Assert.IsInstanceOf<PublishedContentChildrenDataSource>(datasource);
         }

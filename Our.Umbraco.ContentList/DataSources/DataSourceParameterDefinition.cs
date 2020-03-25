@@ -14,16 +14,24 @@ namespace Our.Umbraco.ContentList.DataSources
         [JsonProperty("view")]
         public string View { get; set; }
 
-        [JsonProperty("options")]
-        public IList<DataSourceParameterOption> Options { get; set; }
+        [JsonProperty("config")]
+        public DataSourceConfig Config { get; set; }
+    }
+
+    public class DataSourceConfig
+    {
+
+        [JsonProperty("items")]
+        public IList<DataSourceParameterOption> Items { get; set; }
+
     }
 
     public class DataSourceParameterOption
     {
-        [JsonProperty("key")]
-        public string Key { get; set; }
+        [JsonProperty("id")]
+        public string Id { get; set; }
         
-        [JsonProperty("name")]
-        public string Name { get; set; }
+        [JsonProperty("value")]
+        public string Value { get; set; }
     }
 }

@@ -5,5 +5,4 @@
     var query = JsonConvert.DeserializeObject<ContentListParameters>(Model["config"].ToString());
 }
 
-
 @Html.Action("List", "ContentList", new {query, area="OurContentList"})

@@ -26,7 +26,6 @@
         var listable = list[i];
 
         <div class="@Model.ColumnStyling.ColumnClasses(" col-sm-", "col-md-" , "col-lg-" ) list-item @listable.DocumentTypeAlias ">
-
             @Html.ContentListItem(listable)
         </div>
     }

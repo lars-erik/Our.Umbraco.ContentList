@@ -8,16 +8,18 @@
 
     function createConfig() {
         return {
-            datasource: "",
-            view: "default",
+            datasource: {
+                type: "",
+                parameters: []
+            },
+            view: "",
             pagesize: 10,
             showPaging: false,
             columns: {
                 small: 1,
                 medium: 2,
                 large: 2
-            },
-            parameters: []
+            }
         };
     }
 
@@ -26,52 +28,34 @@
     }
 
     function ContentListEditorController(scope, http, q, datasourceService, templatesService, defaultSettings, editorState) {
-        var model,
-            content,
-            settings,
-            parameterLoader = {},
-            tempConfig;
-
+        
         function initialize() {
+            if (!scope.control.editor.config.settings.datasource) {
+                scope.control.editor.config.settings = defaultSettings;
+            }
+
             scope.preview = null;
             scope.error = false;
             scope.datasources = [];
-            model = scope.model = scope.control;
-            model.config = $.extend(createConfig(), model.value, model.config);
+            scope.model = scope.control;
+            scope.model.config = $.extend(
+                createConfig(),
+                scope.model.config,
+                { scopeId: scope.$id }
+            );
+            
+            scope.content = editorState.getCurrent();
+        }
 
-            if (typeof (model.config.columns) !== "object") {
-                model.config.columns = {};
-            }
+        function datasourcesLoaded(sources) {
+            scope.datasources = sources;
+            scope.control.editor.config.settings.datasource.config.items = $.map(scope.datasources, keyNameToIdValue);
+            scope.control.editor.config.settings.datasource.config.datasources = scope.datasources;
+        }
 
-            content = editorState.getCurrent();
-
-            settings = $.extend({}, defaultSettings);
-            settings.parameters = $.extend(settings.parameters, {
-                "config": {
-                    "parameterLoader": parameterLoader,
-                    "parentConfig": model.config
-                },
-                value: []
-            });
-
-            settings.parameters.getTempConfig = function () {
-                tempConfig = $.extend({}, model.config);
-                return tempConfig;
-            };
-
-            settings.datasource.update = function(x) {
-                initializeParametersWhenDataSourceChange(x.value, scope.model.config.datasource);
-            };
-
-            scope.control.editor.config.settings = [
-                settings.datasource,
-                settings.parameters,
-                settings.view,
-                settings.pagesize,
-                settings.columns,
-                settings.showPaging,
-                settings.skip
-            ];
+        function templatesLoaded(templates) {
+            scope.templates = templates;
+            scope.control.editor.config.settings.view.config.items = $.map(scope.templates, function (t) { return { id:t, value:t }; });
         }
 
         function previewLoaded(response) {
@@ -84,108 +68,41 @@
             scope.error = response.data;
         }
 
-        function getParametersForDataSource(newSourceKey) {
-            var newSource = $.grep(scope.datasources, function (ds) { return ds.key === newSourceKey; })[0];
-            if (newSource) {
-                return newSource.parameters || [];
-            }
-            return [];
-        }
-
-        function initializeParametersWhenDataSourceChange(newSourceKey, oldSourceKey) {
-            var params = getParametersForDataSource(newSourceKey);
-            if (tempConfig) {
-                tempConfig.datasource = newSourceKey;
-            }
-            return params;
-        }
-
-        function datasourcesLoaded(sources) {
-            scope.datasources = sources;
-            settings.datasource.config.items = $.map(scope.datasources, keyNameToIdValue);
-            if (model.config.datasource) {
-                initializeParametersWhenDataSourceChange(model.config.datasource, "");
-            }
-        }
-
-        function templatesLoaded(templates) {
-            scope.templates = templates;
-            settings.view.config.items = $.map(scope.templates, function (t) { return { id:t, value:t }; });
-        }
-
-        function updateValueParameters(newParameters) {
-            function createFilter(paramKey) {
-                return function(param) {
-                    return param.key === paramKey;
-                };
-            }
-
-            var i, extParam;
-
-            if (!newParameters) {
-                return;
-            }
-
-            for (i = 0; i < newParameters.length; i++) {
-                extParam = $.grep(model.config.parameters, createFilter(newParameters[i].key))[0];
-                if (extParam) {
-                    if (newParameters[i].value) {
-                        extParam.value = newParameters[i].value;
-                    } else {
-                        newParameters[i].value = extParam.value;
-                    }
-                } else {
-                    model.config.parameters.push({ key: newParameters[i].key, value: newParameters[i].value });
-                }
-            }
-            for (i = model.config.parameters.length - 1; i >= 0; i--) {
-                if ($.grep(newParameters, createFilter(model.config.parameters[i].key)).length === 0) {
-                    model.config.parameters.splice(i, 1);
-                }
-            }
-        }
-
         function isValid() {
             var i;
-            for (i = 0; i < model.config.parameters.length; i++) {
-                if (!model.config.parameters[i]) {
+            for (i = 0; i < scope.model.config.datasource.parameters.length; i++) {
+                if (!scope.model.config.datasource.parameters[i].value) {
                     return false;
                 }
             }
-            if (!model.config.datasource) {
+            if (!scope.model.config.datasource.type) {
                 return false;
             }
-            if (!model.config.view) {
+            if (!scope.model.config.view) {
                 return false;
             }
-
-            console.log("seems valid, gonna preview", model.config);
 
             return true;
         }
 
         function loadPreviewIfValid() {
             if (isValid()) {
-                var params = $.extend({}, model.config, { contentId: content.id });
+                var params = $.extend({}, scope.model.config, { contentId: scope.content.id });
                 http.post("/umbraco/ourcontentlist/contentlist/preview", params).then(previewLoaded, previewFailed);
             }
         }
 
-        function parameterView(parameter) {
-            return parameterViews[parameter.type];
-        }
-
         function main() {
-            var p1 = datasourceService.getDataSources().then(datasourcesLoaded),
-                p2 = templatesService.getTemplates().then(templatesLoaded);
-            if (model.config.datasource) {
-                initializeParametersWhenDataSourceChange(model.config.datasource, null);
+            if (!scope.control.editor.config.loadStarted) {
+                scope.control.editor.config.loadStarted = true;
+                var p1 = datasourceService.getDataSources().then(datasourcesLoaded),
+                    p2 = templatesService.getTemplates().then(templatesLoaded);
+                q.when(p1, p2).then(function() {
+                    scope.$watch("model.config", loadPreviewIfValid, true);
+                });
+            } else {
+                scope.$watch("model.config", loadPreviewIfValid, true);
             }
-            scope.$watch("model.config", loadPreviewIfValid, true);
-            scope.$watch("parameters", updateValueParameters, true);
-            scope.parameterView = parameterView;
-
-            parameterLoader.update = getParametersForDataSource;
         }
 
         initialize();
@@ -225,77 +142,78 @@
     }
 
     function ParametersController(scope, http) {
+    }
 
-        var unwatchers = [];
+    function DataSourceController(scope) {
+        var first = true;
 
-        scope.tempConfig = scope.model.getTempConfig();
-
-        function resetProperties() {
-            var i;
-
-            for (i = unwatchers.length - 1; i >= 0; i--) {
-                unwatchers[i]();
-                unwatchers.splice(i, 1);
-            }
-
-            scope.properties = $.map(scope.model.config.parameters,
-                function (param) {
-                    return $.extend({},
-                        param,
-                        $.grep(scope.model.value, function (val) { return val.key === param.key; })[0],
-                        {
-                            config: {
-                                items: param.options ? $.map(param.options, keyNameToIdValue) : null
-                            }
-                        }
-                    );
-                });
-
-            $.each(scope.properties,
-                function (i, p) {
-                    unwatchers.push(scope.$watch(function () { return p.value; },
-                        function () {
-                            var modelValue = $.grep(scope.model.value, function (v) { return v.key === p.key; })[0];
-                            if (!modelValue) {
-                                scope.model.value.push({
-                                    key: p.key,
-                                    value: p.value
-                                });
-                            } else {
-                                modelValue.value = p.value;
-                            }
-                        }));
-                });
-        }
-
-        function dataSourceUpdated(newValue, oldValue) {
-            if (newValue !== oldValue) {
-                scope.model.config.parameters = scope.model.config.parameterLoader.update(newValue, oldValue);
-                resetProperties();
-            }
-        }
-
-        // Copy all values to avoid updating while editing
         scope.model.value = JSON.parse(JSON.stringify(scope.model.value));
 
-        scope.$watch("tempConfig.datasource", dataSourceUpdated);
-        if (scope.tempConfig.datasource) {
-            dataSourceUpdated(scope.tempConfig.datasource, null);
-        }
+        function getParameters(sourceKey) {
+            var source = $.grep(scope.model.config.datasources, function (ds) { return ds.key === sourceKey; })[0];
+            if (source) {
+                return JSON.parse(JSON.stringify(source.parameters || []));
+            }
+            return [];
+        };
+
+        scope.datasourceProperty = {
+            "label": "Source Type",
+            "hideLabel": true,
+            "alias": "datasourceType",
+            "key": "datasourceType",
+            "description": "Type of source.",
+            "view": "/app_plugins/our.umbraco.contentlist/propertyeditors/dropdown/dropdown.html",
+            "config": {
+                "items": scope.model.config.items
+            },
+            "value": scope.model.value.type
+        };
+
+        scope.parametersProperty = {
+            "label": "Parameters",
+            "alias": "parameters",
+            "key": "parameters",
+            "description": "Parameters for the data source.",
+            "view": "/app_plugins/our.umbraco.contentlist/propertyeditors/parameters/parameters.html",
+            "config": {
+                "items": []
+            }
+        };
+
+        scope.$watch("datasourceProperty.value", function (newVal, oldVal) {
+            if (newVal !== oldVal && scope.datasourceProperty.value) {
+                scope.model.value.type = scope.datasourceProperty.value;
+            }
+            if (newVal !== oldVal || first) {
+                first = false;
+                var parameters = getParameters(scope.model.value.type);
+
+                for (var i = 0; i < scope.model.value.parameters.length; i++) {
+                    var prm = $.grep(parameters, function (x) { return x.key === scope.model.value.parameters[i].key; })[0];
+                    if (prm) {
+                        prm.value = scope.model.value.parameters[i].value;
+                    }
+                }
+
+                scope.parametersProperty.config.items = parameters;
+            }
+        });
+
+        scope.$watch("parametersProperty.config.items",
+            function () {
+                scope.model.value.parameters = $.map(scope.parametersProperty.config.items, function(x) {
+                    return { key: x.key, value: x.value };
+                });
+            },
+            true);
     }
 
     var module = angular.module("our.umbraco.contentlist", []);
 
-    module.controller("ContentListSettingController", [
+    module.controller("our.umbraco.contentlist.datasource.controller", [
         "$scope",
-        function (scope) {
-            scope.$watch("model.value",
-                function(newVal, old) {
-                    if (newVal !== old) {
-                        scope.model.update(scope.model);
-                    }
-                });
-        }
+        DataSourceController
     ]);
 
     module.controller("our.umbraco.contentlist.editor.controller", [
@@ -350,22 +268,11 @@
         datasource: {
             "label": "Data source",
             "key": "datasource",
-            "description": "How to get the content. Remember to set query parameters below.",
-            "view": "/app_plugins/our.umbraco.contentlist/propertyeditors/dropdown/dropdown.html",
-            "mandatory": true,
+            "description": "How to get the content.",
+            "view": "/app_plugins/our.umbraco.contentlist/propertyeditors/datasource/datasource.html",
             "config": {
                 "items": [
                 ]
-            }
-        },
-        parameters: {
-            "label": "Parameters",
-            "key": "parameters",
-            "description": "Data source parameters",
-            "view": "/app_plugins/our.umbraco.contentlist/propertyeditors/parameters/parameters.html",
-            "config": {
-                "parameterLoader": null, // set in controller
-                "datasourceConfig": null // set in controller
             }
         },
         view: {

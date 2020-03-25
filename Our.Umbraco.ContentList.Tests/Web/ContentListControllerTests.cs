@@ -274,10 +274,12 @@ namespace Our.Umbraco.ContentList.Tests.Web
         {
             var parameters = new ContentListParameters
             {
-                DataSource = typeof(ListableChildrenDataSource).FullName,
+                DataSource = new ContentListDataSource { 
+                    Type = typeof(ListableChildrenDataSource).FullName,
+                    Parameters = new List<DataSourceParameterValue>()
+                },
                 PageSize = 10,
                 ShowPaging = showPaging,
-                DataSourceParameters = new List<DataSourceParameterValue>()
             };
             return parameters;
         }

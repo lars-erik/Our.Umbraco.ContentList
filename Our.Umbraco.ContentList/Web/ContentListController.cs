@@ -169,12 +169,12 @@ namespace Our.Umbraco.ContentList.Web
         private IListableDataSource CreateDataSource(ContentListParameters query, IPublishedContent contextContent)
         {
             var queryParameters = ContentListToQueryParameters(query, contextContent);
-            return datasourceFactory.Create(query.DataSource, queryParameters);
+            return datasourceFactory.Create(query.DataSource.Type, queryParameters);
         }
 
         private static QueryParameters ContentListToQueryParameters(ContentListParameters query, IPublishedContent contextContent)
         {
-            return new QueryParameters(contextContent, query.DataSourceParameters);
+            return new QueryParameters(contextContent, query.DataSource.Parameters);
         }
 
         private int FindPageParameter()
