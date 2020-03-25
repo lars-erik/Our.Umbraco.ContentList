@@ -26,11 +26,6 @@ namespace Our.Umbraco.ContentList.Web
         {
         }
 
-        //public ContentListApiController(UmbracoContext umbracoContext)
-        //    : base(umbracoContext)
-        //{
-        //}
-
         public ContentListApiController(string path, string samplePath, IGlobalSettings globalSettings, IUmbracoContextAccessor umbracoContextAccessor, ISqlContext sqlContext, ServiceContext services, AppCaches appCaches, IProfilingLogger logger, IRuntimeState runtimeState, UmbracoHelper umbracoHelper)
             : base(globalSettings, umbracoContextAccessor, sqlContext, services, appCaches, logger, runtimeState, umbracoHelper)
         {

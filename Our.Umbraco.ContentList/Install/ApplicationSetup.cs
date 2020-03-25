@@ -1,44 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
 using Our.Umbraco.ContentList.Web;
 using Our.Umbraco.ContentList.Web.DataSources;
-using Umbraco.Core;
-//using Umbraco.Web;
-//using Umbraco.Web.UI.JavaScript;
+using Umbraco.Core.Composing;
+using Umbraco.Web;
+using Umbraco.Web.JavaScript;
 
 namespace Our.Umbraco.ContentList.Install
 {
-    // TODO: Fix application startup - how do we do backoffice URLs now?
+    public class ContentListComposition : IUserComposer
+    {
+        public void Compose(Composition composition)
+        {
+            ServerVariablesParser.Parsing += AddApiPaths;
+        }
 
-    //public class ApplicationSetup : ApplicationEventHandler
-    //{
-    //    protected override void ApplicationInitialized(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
-    //    {
-    //        base.ApplicationInitialized(umbracoApplication, applicationContext);
+        private void AddApiPaths(object sender, Dictionary<string, object> e)
+        {
+            var umbracoUrls = ((Dictionary<string, object>)e["umbracoUrls"]);
 
-    //        ServerVariablesParser.Parsing += AddApiPaths;
-    //    }
+            umbracoUrls.Add(
+                "Our.Umbraco.ContentList.Web.DataSources.ListableDataSource",
+                new UrlHelper(HttpContext.Current.Request.RequestContext).GetUmbracoApiServiceBaseUrl<ListableDataSourceController>(c => c.GetDataSources())
+                );
 
-    //    private void AddApiPaths(object sender, Dictionary<string, object> e)
-    //    {
-    //        var umbracoUrls = ((Dictionary<string, object>)e["umbracoUrls"]);
-
-    //        umbracoUrls.Add(
-    //            "Our.Umbraco.ContentList.Web.DataSources.ListableDataSource",
-    //            new UrlHelper(HttpContext.Current.Request.RequestContext).GetUmbracoApiServiceBaseUrl<ListableDataSourceController>(c => c.GetDataSources())
-    //            );
-
-    //        umbracoUrls.Add(
-    //            "Our.Umbraco.ContentList.Web.ContentListApi",
-    //            new UrlHelper(HttpContext.Current.Request.RequestContext).GetUmbracoApiServiceBaseUrl<ContentListApiController>(c => c.ListTemplates())
-    //        );
+            umbracoUrls.Add(
+                "Our.Umbraco.ContentList.Web.ContentListApi",
+                new UrlHelper(HttpContext.Current.Request.RequestContext).GetUmbracoApiServiceBaseUrl<ContentListApiController>(c => c.ListTemplates())
+            );
 
 
-    //    }
-    //}
+        }
+    }
 }

@@ -22,10 +22,17 @@ namespace Our.Umbraco.ContentList.Web
 
         #region constructors
 
-        //public ContentListController()
-        //    : this(new ListableDataSourceFactory())
-        //{
-        //}
+        public ContentListController(
+            IUmbracoContextAccessor umbracoContextAccessor,
+            IUmbracoDatabaseFactory databaseFactory,
+            ServiceContext services,
+            AppCaches appCaches,
+            ILogger logger,
+            IProfilingLogger profilingLogger,
+            UmbracoHelper umbracoHelper
+        ) : this(new ListableDataSourceFactory(), umbracoContextAccessor, databaseFactory, services, appCaches, logger, profilingLogger, umbracoHelper)
+        {
+        }
 
         public ContentListController(
             ListableDataSourceFactory datasourceFactory,
