@@ -19,7 +19,7 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.PublishedContent
         {
             var contextContentMock = new Mock<IPublishedContent>();
             var children = new[] {
-                Mock.Of<IPublishedContent>(),
+                StubPublishedContent(),
                 Mock.Of<IPublishedContent>()
             };
             contextContentMock.Setup(c => c.Children).Returns(children);
@@ -75,6 +75,13 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.PublishedContent
             var dataSource = new PublishedContentChildrenDataSource(new QueryParameters(contextContent));
 
             Assert.AreEqual(2, dataSource.Count(0));
+        }
+
+        private static IPublishedContent StubPublishedContent()
+        {
+            var content = Mock.Of<IPublishedContent>();
+            Mock.Get(content).Setup(x => x.ContentType).Returns(Mock.Of<IPublishedContentType>());
+            return content;
         }
     }
 }

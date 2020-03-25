@@ -1,20 +1,48 @@
 ﻿using System;
+using System.Collections.Specialized;
 using Moq;
+using NUnit.Framework;
 using Umbraco.Core.Configuration.UmbracoSettings;
 using Umbraco.Core.Models;
 using Umbraco.Core.Models.PublishedContent;
 using Umbraco.Tests.TestHelpers;
+using Umbraco.UnitTesting.Adapter;
+using Umbraco.Web;
+using Umbraco.Web.Composing;
+using Umbraco.Web.Routing;
+
 //using Umbraco.Web;
 //using Umbraco.Web.Routing;
 
 namespace Our.Umbraco.ContentList.Tests.Web
 {
-    public abstract class BaseControllerTest : BaseWebTest
+    public abstract class BaseControllerTest //: BaseWebTest
     {
-        public object SetupPublishedRequest<T>(Mock<T> publishedContentMock, string url = "/") // UmbracoContext
+        protected UmbracoSupport UmbracoSupport;
+
+        [SetUp]
+        public void SetUp()
+        {
+            UmbracoSupport = new UmbracoSupport();
+            UmbracoSupport.SetupUmbraco();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            UmbracoSupport.DisposeUmbraco();
+        }
+
+        public UmbracoContext SetupPublishedRequest<T>(Mock<T> publishedContentMock, string url = "/") // UmbracoContext
             where T : class, IPublishedContent
         {
-            throw new NotImplementedException("Obsolete altogether");
+            UmbracoSupport.GetUmbracoContext(url);
+            var request = new FakePublishedRequest(Mock.Of<IPublishedRouter>(), Current.UmbracoContext, new Uri("http://localhost" + url))
+            {
+                PublishedContent = publishedContentMock.Object
+            };
+            Current.UmbracoContext.PublishedRequest = request;
+            return Current.UmbracoContext;
             //var umbracoSettingsMock = new Mock<IUmbracoSettingsSection>();
             //var routingSectionMock = new Mock<IWebRoutingSection>();
             //routingSectionMock.Setup(s => s.UrlProviderMode).Returns(UrlProviderMode.Auto.ToString());
@@ -25,8 +53,10 @@ namespace Our.Umbraco.ContentList.Tests.Web
             //GetRoutingContext(url, -1, null, true, umbracoSettingsMock.Object);
             //UmbracoContext.Current.PublishedContentRequest = publishedContentRequest;
             //publishedContentRequest.PublishedContent = publishedContentMock.Object;
-            
+
             //return UmbracoContext.Current;
+
+            //throw new NotImplementedException("Obsolete altogether");
         }
 
         protected static Mock<IPublishedContent> MockContent(int id)

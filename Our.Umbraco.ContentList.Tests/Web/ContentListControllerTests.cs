@@ -3,17 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web.Security;
 using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.DataSources.Listables;
 using Our.Umbraco.ContentList.Web;
+using Umbraco.Web.Composing;
+using Umbraco.Core;
+using Umbraco.Core.Dictionary;
+using Umbraco.Core.Models;
 using Umbraco.Core.Models.PublishedContent;
+using Umbraco.Core.Persistence;
+using Umbraco.Core.Services;
+using Umbraco.Tests.Testing;
+using Umbraco.Web;
+using Umbraco.Web.PublishedCache;
+using Umbraco.Web.Security;
 
 namespace Our.Umbraco.ContentList.Tests.Web
 {
     [TestFixture]
+    [UmbracoTest(WithApplication = true)]
     public class ContentListControllerTests : BaseControllerTest
     {
         private readonly List<IPublishedContent> emptyResults = new List<IPublishedContent>();
@@ -102,7 +114,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
         {
             var expectedData = new List<IPublishedContent>();
             for(var i = 0; i<20; i++)
-                expectedData.Add(new Mock<IListableContent>().As<IPublishedContent>().Object);
+                expectedData.Add(StubListableContent().Object);
 
             var controller = CreateController(expectedData);
             var parameters = CreateParameters(true);
@@ -111,6 +123,13 @@ namespace Our.Umbraco.ContentList.Tests.Web
             var result = controller.List(parameters);
             var model = (ContentListModel)result.Model;
             Assert.That(model.Items, Is.EquivalentTo(expectedData.Skip(3).Take(3)));
+        }
+
+        private static Mock<IPublishedContent> StubListableContent()
+        {
+            var listableContentStub = new Mock<IListableContent>().As<IPublishedContent>();
+            listableContentStub.Setup(x => x.ContentType).Returns(Mock.Of<IPublishedContentType>());
+            return listableContentStub;
         }
 
         [Test]
@@ -263,15 +282,40 @@ namespace Our.Umbraco.ContentList.Tests.Web
             return parameters;
         }
 
-        private ContentListController CreateController(List<IPublishedContent> children, string page = "2", ListableDataSourceFactory factory = null)
+        private ContentListController CreateController(List<IPublishedContent> children, string page = "2", ListableDataSourceFactory dataSourceFactory = null)
         {
-            throw new NotImplementedException("Obsolete methods");
-
-            //var publishedContentMock = CreateContent(children);
-            //var umbracoContext = SetupPublishedRequest(publishedContentMock, "/?p=" + page);
-            //var controller = new ContentListController(factory ?? new ListableDataSourceFactory());
-            //controller.ControllerContext = new ControllerContext(umbracoContext.HttpContext, new RouteData(), controller);
-            //return controller;
+            var publishedContentMock = CreateContent(children);
+            var umbracoContext = SetupPublishedRequest(publishedContentMock, "/?p=" + page);
+            var controller = new ContentListController(
+                dataSourceFactory ?? new ListableDataSourceFactory(),
+                Current.UmbracoContextAccessor,
+                Current.Factory.GetInstance<IUmbracoDatabaseFactory>(),
+                Current.Services,
+                Current.AppCaches,
+                Current.Logger,
+                Current.ProfilingLogger,
+                new UmbracoHelper(
+                    publishedContentMock.Object, 
+                    Mock.Of<ITagQuery>(), 
+                    Mock.Of<ICultureDictionaryFactory>(),
+                    Mock.Of<IUmbracoComponentRenderer>(), 
+                    Mock.Of<IPublishedContentQuery>(), 
+                    new MembershipHelper(
+                        umbracoContext.HttpContext,
+                        Mock.Of<IPublishedMemberCache>(),
+                        Mock.Of<MembershipProvider>(),
+                        Mock.Of<RoleProvider>(),
+                        Mock.Of<IMemberService>(),
+                        Mock.Of<IMemberTypeService>(),
+                        Mock.Of<IUserService>(),
+                        Mock.Of<IPublicAccessService>(),
+                        Current.AppCaches,
+                        Current.Logger
+                    )
+                )
+            );
+            controller.ControllerContext = new ControllerContext(umbracoContext.HttpContext, new RouteData(), controller);
+            return controller;
         }
 
         private static Mock<IPublishedContent> CreateContent(List<IPublishedContent> children)

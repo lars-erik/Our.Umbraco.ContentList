@@ -7,12 +7,30 @@ using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.DataSources.Listables;
 using Umbraco.Core.Models.PublishedContent;
 using Umbraco.Tests.TestHelpers;
+using Umbraco.Tests.Testing;
+using Umbraco.UnitTesting.Adapter;
 
 namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
 {
     [TestFixture]
-    public class ListableChildrenDataSourceTests // : BaseRoutingTest
+    [UmbracoTest(WithApplication=true)]
+    public class ListableChildrenDataSourceTests
     {
+        private UmbracoSupport umbracoSupport;
+
+        [SetUp]
+        public void Setup()
+        {
+            umbracoSupport = new UmbracoSupport();
+            umbracoSupport.SetupUmbraco();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            umbracoSupport.DisposeUmbraco();
+        }
+
         [Test]
         public void Returns_Children_Of_Current_Content_Implementing_IListableContent()
         {
@@ -20,7 +38,7 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
             var listableChildMock = new Mock<IListableContent>();
             var children = new List<IPublishedContent>
             {
-                listableChildMock.As<IPublishedContent>().Object,
+                StubPublishedContent(listableChildMock).Object,
                 Mock.Of<IPublishedContent>()
             };
             contextContentMock.Setup(c => c.Children).Returns(children);
@@ -43,8 +61,8 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
             var listableChild2Mock = new Mock<IListableContent>();
             var children = new List<IPublishedContent>
             {
-                listableChildMock.As<IPublishedContent>().Object,
-                listableChild2Mock.As<IPublishedContent>().Object
+                StubPublishedContent(listableChildMock).Object,
+                StubPublishedContent(listableChild2Mock).Object
             };
 
             contextContentMock.Setup(c => c.Children).Returns(children);
@@ -76,6 +94,13 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
             var dataSource = new ListableChildrenDataSource(new QueryParameters(contextContent));
             
             Assert.AreEqual(2, dataSource.Count(0));
+        }
+
+        private static Mock<IPublishedContent> StubPublishedContent(Mock<IListableContent> listableChildMock)
+        {
+            var mock = listableChildMock.As<IPublishedContent>();
+            mock.Setup(x => x.ContentType).Returns(Mock.Of<IPublishedContentType>());
+            return mock;
         }
     }
 }

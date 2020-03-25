@@ -4,8 +4,12 @@ using System.Linq;
 using System.Web.Mvc;
 using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.DataSources.Listables;
+using Umbraco.Core.Cache;
+using Umbraco.Core.Logging;
 using Umbraco.Core.Models;
 using Umbraco.Core.Models.PublishedContent;
+using Umbraco.Core.Persistence;
+using Umbraco.Core.Services;
 using Umbraco.Web;
 using Umbraco.Web.Mvc;
 
@@ -18,12 +22,21 @@ namespace Our.Umbraco.ContentList.Web
 
         #region constructors
 
-        public ContentListController()
-            : this(new ListableDataSourceFactory())
-        {
-        }
+        //public ContentListController()
+        //    : this(new ListableDataSourceFactory())
+        //{
+        //}
 
-        public ContentListController(ListableDataSourceFactory datasourceFactory)
+        public ContentListController(
+            ListableDataSourceFactory datasourceFactory,
+            IUmbracoContextAccessor umbracoContextAccessor, 
+            IUmbracoDatabaseFactory databaseFactory, 
+            ServiceContext services, 
+            AppCaches appCaches, 
+            ILogger logger, 
+            IProfilingLogger profilingLogger, 
+            UmbracoHelper umbracoHelper
+        ) : base(umbracoContextAccessor, databaseFactory, services, appCaches, logger, profilingLogger, umbracoHelper)
         { 
             this.datasourceFactory = datasourceFactory;
         }
@@ -32,30 +45,24 @@ namespace Our.Umbraco.ContentList.Web
 
         public ViewResult List(ContentListParameters query)
         {
-            throw new NotImplementedException("Obsolete methods");
-
             // TODO: Individuell identifisering vha. string hashcode av query
-            //var contextContent = UmbracoContext.PublishedContentRequest.PublishedContent;
-            //query.Page = FindPageParameter();
-            //return List(query, contextContent);
+            var contextContent = UmbracoContext.PublishedRequest.PublishedContent;
+            query.Page = FindPageParameter();
+            return List(query, contextContent);
         }
 
         public ViewResult Preview(PreviewContentListParameters query)
         {
-            throw new NotImplementedException("Obsolete methods");
-
-            //var contextContent = Umbraco.TypedContent(query.ContentId);
-            //return List(query, contextContent);
+            var contextContent = Umbraco.Content(query.ContentId);
+            return List(query, contextContent);
         }
 
         public ActionResult Count(PreviewContentListParameters query)
         {
-            throw new NotImplementedException("Obsolete methods");
-
-            //var contextContent = Umbraco.TypedContent(query.ContentId);
-            //var datasource = CreateDataSource(query, contextContent);
-            //var total = datasource.Count(query.Skip);
-            //return Json(total);
+            var contextContent = Umbraco.Content(query.ContentId);
+            var datasource = CreateDataSource(query, contextContent);
+            var total = datasource.Count(query.Skip);
+            return Json(total);
         }
 
         private ViewResult List(ContentListParameters query, IPublishedContent contextContent)
@@ -100,7 +107,6 @@ namespace Our.Umbraco.ContentList.Web
                 throw new Exception("No content list view called " + query.View + " found");
             }
 
-            //return "ListViews/" + query.View;
             return foundView.View;
         }
 
