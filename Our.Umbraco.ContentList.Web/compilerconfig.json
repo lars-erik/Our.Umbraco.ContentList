@@ -2,5 +2,9 @@
   {
     "outputFile": "App_Plugins/Our.Umbraco.ContentList/css/contentlist.css",
     "inputFile": "App_Plugins/Our.Umbraco.ContentList/css/contentlist.less"
+  },
+  {
+    "outputFile": "Content/bootstrap/bootstrap.css",
+    "inputFile": "Content/bootstrap/bootstrap.less"
   }
 ]

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.DataSources.Listables;
 using Umbraco.Core.Cache;
@@ -58,10 +59,29 @@ namespace Our.Umbraco.ContentList.Web
             return List(query, contextContent);
         }
 
-        public ViewResult Preview(PreviewContentListParameters query)
+        public ActionResult Preview(PreviewContentListParameters query)
         {
-            var contextContent = Umbraco.Content(query.ContentId);
-            return List(query, contextContent);
+            try
+            {
+                var contextContent = Umbraco.Content(query.ContentId);
+                return List(query, contextContent);
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    Response.StatusCode = 500;
+                    var result = Content(JsonConvert.SerializeObject(ex, new JsonSerializerSettings{ReferenceLoopHandling = ReferenceLoopHandling.Ignore}), "application/json");
+                    return result;
+                }
+                catch (Exception innerEx)
+                {
+                    throw new AggregateException(
+                        innerEx,
+                        ex
+                    );
+                }
+            }
         }
 
         public ActionResult Count(PreviewContentListParameters query)

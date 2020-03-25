@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Our.Umbraco.ContentList.Web;
 using Umbraco.Core;
+using Umbraco.Web;
+using Umbraco.Web.Composing;
+using Umbraco.Web.PublishedCache;
+
 //using Umbraco.Web;
 //using Umbraco.Web.PublishedCache;
 
@@ -12,22 +16,19 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
     public class ListablesByXPathDataSource : IListableDataSource
     {
         private readonly QueryParameters parameters;
-        //private readonly UmbracoContext ctx;
-        //private readonly ContextualPublishedCache<IPublishedContentCache> contentCache;
+        private readonly UmbracoContext ctx;
+        private readonly IPublishedContentCache contentCache;
 
         public ListablesByXPathDataSource(QueryParameters parameters)
         {
             this.parameters = parameters;
 
-            throw new NotImplementedException("Uses obsolete methods");
-            //ctx = UmbracoContext.Current;
-            //contentCache = ctx.ContentCache;
+            ctx = Current.UmbracoContext;
+            contentCache = ctx.Content;
         }
 
         public IQueryable<IListableContent> Query(PagingParameter pagingParameter)
         {
-            // TODO: ints?
-
             var listables = Query();
             listables = ListableSorting.Apply(listables, parameters.CustomParameters);
             listables = listables.Skip((int)pagingParameter.PreSkip).Skip((int)pagingParameter.Skip).Take((int)pagingParameter.Take);
@@ -41,11 +42,9 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
 
         private IEnumerable<IListableContent> Query()
         {
-            throw new NotImplementedException("Uses obsolete methods");
-
-            //var contents = contentCache.GetByXPath(parameters.CustomParameters["xpath"]);
-            //var listables = contents.OfType<IListableContent>().Where(c => c.IsVisible());
-            //return listables;
+            var contents = contentCache.GetByXPath(parameters.CustomParameters["xpath"]);
+            var listables = contents.OfType<IListableContent>().Where(c => c.IsVisible());
+            return listables;
         }
     }
 
@@ -61,7 +60,7 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
                 {
                     Key = "xpath",
                     Label = "Query",
-                    View = "textstring"
+                    View = "/Umbraco/views/propertyeditors/textbox/textbox.html"
                 },
                 ListableSorting.Parameter
             };

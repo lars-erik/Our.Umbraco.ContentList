@@ -1,11 +1,12 @@
-﻿<div ng-controller="our.umbraco.contentlist.parameters.controller">
-
-    <umb-property property="property"
-                  ng-repeat="property in properties">
-        <umb-editor model="property" is-pre-value="true"></umb-editor>
-    </umb-property>
-    
-    <div ng-show="canQuery()">
+﻿<div ng-controller="our.umbraco.contentlist.parameters.controller" class="contentlist-parameter-list">
+    <div style="position: relative;" class="umb-property" ng-repeat="property in properties">
+        <umb-property property="property">
+            <div style="position: relative;">
+                <umb-editor model="property" is-pre-value="true"></umb-editor>
+            </div>
+        </umb-property>
+    </div>
+    <div ng-if="false && canQuery()">
         Query returned {{queryCount}} items in {{queryTime}} ms.
     </div>
 

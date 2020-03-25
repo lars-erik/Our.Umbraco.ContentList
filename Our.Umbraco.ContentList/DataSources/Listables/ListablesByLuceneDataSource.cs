@@ -76,7 +76,7 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
                 {
                     Key = "query",
                     Label = "Query",
-                    View = "textstring"
+                    View = "/Umbraco/views/propertyeditors/textbox/textbox.html"
                 }
             };
         }

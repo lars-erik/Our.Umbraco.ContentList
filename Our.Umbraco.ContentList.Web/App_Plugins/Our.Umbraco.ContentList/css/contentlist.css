@@ -1,4 +1,18 @@
-﻿.our-content-list .preview .row {
+﻿.umb-editors .contentlist-parameter-list .umb-editor {
+  position: relative !important;
+  box-shadow: 0 0 0 0 !important;
+}
+.our-content-list .new-contentlist {
+  min-height: 100px;
+  text-align: center;
+  padding-top: 30px;
+  cursor: pointer;
+}
+.our-content-list .new-contentlist a:focus,
+.our-content-list .new-contentlist a:hover {
+  text-decoration: none;
+}
+.our-content-list .preview .row {
   display: block;
   overflow: hidden;
 }

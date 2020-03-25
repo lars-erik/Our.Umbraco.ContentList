@@ -1,13 +1,19 @@
 ﻿<div class="our-content-list" ng-controller="our.umbraco.contentlist.editor.controller">
-    <div class="container-fluid">
-        <div class="preview" ng-bind-html-unsafe="preview" ng-show="preview">
+    <div class="container-fluid" ng-if="preview">
+        <div class="preview" ng-bind-html="preview">
         </div>
     </div>
-    <content-list-wizard
-        message="wizardMessage"
-        model="wizardSetting"
-        showprev="showPrevious"
-        predicate="wizardPredicate"
-        ng-if="!preview">
-    </content-list-wizard>
+    <div class="container-fluid new-contentlist" ng-if="!preview && !error" ng-click="editGridItemSettings(control, 'control')">
+        <a class="color-grey">
+            <i class="icon icon-settings large"></i><br/>
+            Configure the list
+        </a>
+    </div>
+    <div class="container-fluid new-contentlist" ng-if="error" ng-click="editGridItemSettings(control, 'control')">
+        <a class="color-red">
+            <i class="icon icon-alert large"></i><br/>
+            <div>Ah, snap! Something went wrong. Try configuring me again.</div>
+            <div ng-if="typeof(error) === Object && error.Message">The error was: {{error.Message}}</div>
+        </a>
+    </div>
 </div>

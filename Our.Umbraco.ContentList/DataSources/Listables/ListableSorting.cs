@@ -10,7 +10,7 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
         {
             Key = "sort",
             Label = "Sort by",
-            View = "/umbraco/views/propertyeditors/dropdown/dropdown.html",
+            View = "/App_Plugins/Our.Umbraco.ContentList/propertyeditors/dropdown/dropdown.html",
             Options = new[]
             {
                 new DataSourceParameterOption {Key = "sortorder", Name = "Sort order"},

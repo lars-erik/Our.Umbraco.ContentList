@@ -1,5 +1,5 @@
-﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<ContentModels.Page>
-@using ContentModels = Our.Umbraco.ContentList.Web.Models.ContentModels;
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<Our.Umbraco.ContentList.Web.Models.ContentModels.Page>
 @{
-	Layout = null;
+	Layout = "layout.cshtml";
 }
+@Html.GetGridHtml(Model, "layout")
