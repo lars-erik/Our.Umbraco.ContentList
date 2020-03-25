@@ -20,6 +20,9 @@ namespace Our.Umbraco.ContentList.Tests.Web
     [UmbracoTest(WithApplication = true)]
     public class Content_List_Pager // : BaseWebTest
     {
+        // TODO: Hash query to be able to identify list that pages
+
+
         private ContentListModel model;
         private ContentListPaging paging;
         private HtmlHelper<ContentListModel> helper;

@@ -31,7 +31,9 @@
         </div>
     }
     <div class="col-md-12">
-        @Html.ContentListPager()
+        <nav>
+            @Html.ContentListPager(Model, "pagination", "", "", "ul", "li")
+        </nav>
     </div>
 </div>
 
