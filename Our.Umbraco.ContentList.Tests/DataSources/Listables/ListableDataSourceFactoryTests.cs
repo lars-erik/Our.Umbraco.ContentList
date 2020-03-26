@@ -39,7 +39,7 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
         [Test]
         public void Creates_Datasource()
         {
-            var contentListParams = new ContentListParameters
+            var contentListParams = new ContentListQuery
             {
                 DataSource = new ContentListDataSource
                 {

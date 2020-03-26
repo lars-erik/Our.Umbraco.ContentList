@@ -58,8 +58,15 @@ namespace Our.Umbraco.ContentList.Tests.Web
 
         private void AssertTemplates(string themePath, string[] expected)
         {
+            var controller = CreateController(themePath);
+            var templates = controller.ListTemplates();
+            Assert.That(templates, Is.EquivalentTo(expected));
+        }
+
+        private ContentListApiController CreateController(string themePath)
+        {
             var controller = new ContentListApiController(
-                Path.GetFullPath(themePath), 
+                Path.GetFullPath(themePath),
                 Path.GetFullPath(samplePath),
                 Current.Configs.Global(),
                 Current.UmbracoContextAccessor,
@@ -87,10 +94,8 @@ namespace Our.Umbraco.ContentList.Tests.Web
                         Current.Logger
                     )
                 )
-
-                );
-            var templates = controller.ListTemplates();
-            Assert.That(templates, Is.EquivalentTo(expected));
+            );
+            return controller;
         }
     }
 }

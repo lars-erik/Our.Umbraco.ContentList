@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Moq;
 using NUnit.Framework;
+using Our.Umbraco.ContentList.DataSources.Listables;
 using Our.Umbraco.ContentList.Web;
 using Umbraco.Core;
 using Umbraco.Core.Configuration;
@@ -20,9 +24,6 @@ namespace Our.Umbraco.ContentList.Tests.Web
     [UmbracoTest(WithApplication = true)]
     public class Content_List_Pager // : BaseWebTest
     {
-        // TODO: Hash query to be able to identify list that pages
-
-
         private ContentListModel model;
         private ContentListPaging paging;
         private HtmlHelper<ContentListModel> helper;
@@ -38,7 +39,32 @@ namespace Our.Umbraco.ContentList.Tests.Web
             umbracoSupport.SetupUmbraco();
 
             Current.UmbracoContext.PublishedRequest = new FakePublishedRequest(Mock.Of<IPublishedRouter>(), Current.UmbracoContext, new Uri("http://localhost"));
-            
+
+            var queryA = new ContentListQuery
+            {
+                DataSource = new ContentListDataSource
+                {
+                    Type = typeof(ListableByNodeDataSource).GetFullNameWithAssembly()
+                },
+                PageSize = 5,
+                Skip = 2
+            };
+
+            var queryB = new ContentListQuery
+            {
+                DataSource = new ContentListDataSource
+                {
+                    Type = typeof(ListableChildrenDataSource).GetFullNameWithAssembly(),
+                    Parameters = new List<DataSourceParameterValue>
+                    {
+                        new DataSourceParameterValue { Key = "sort", Value = "sortorder" }
+                    }
+                },
+                PageSize = 10
+            };
+
+            Console.WriteLine(queryB.CreateHash());
+
             paging = new ContentListPaging
             {
                 From = 1,
@@ -48,11 +74,14 @@ namespace Our.Umbraco.ContentList.Tests.Web
                 Total = 5,
                 ShowPaging = true
             };
+
             model = new ContentListModel
             {
-                Paging = paging
+                Paging = paging,
+                Hash = queryA.CreateHash()
             };
-            helper = CreateHelper(model);
+
+            helper = CreateHelper(model, queryB.CreateHash() + "=3");
         }
 
         [TearDown]
@@ -97,7 +126,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
                 if (i == 1)
                     expectedOutput += String.Format("<span>{0}</span>", i + 1);
                 else
-                    expectedOutput += String.Format("<a href=\"?p={0}\">{0}</a>", i + 1);
+                    expectedOutput += String.Format("<a href=\"?DG6yG3TgWzjdrXXPtmly9Q=3&KRSBHTlka609c5qhzeZzgQ={0}\">{0}</a>", i + 1);
             expectedOutput += "</div>";
 
             Assert.AreEqual(expectedOutput, html.ToString());
@@ -107,27 +136,21 @@ namespace Our.Umbraco.ContentList.Tests.Web
         }
 
         [Test]
-        [TestCase("http://some.page.com/some/url/", "")]
-        [TestCase("http://localhost/list/", "")]
-        [TestCase("http://localhost/list/", "p=10")]
-        [TestCase("http://localhost/list", "")]
-        public void Adds_Current_Url_As_Link(string expectedUrl, string queryString)
+        [TestCase("http://some.page.com/some/url/")]
+        [TestCase("http://localhost/list/")]
+        [TestCase("http://localhost/list/?DG6yG3TgWzjdrXXPtmly9Q=3")]
+        [TestCase("http://localhost/list")]
+        public void Adds_Current_Url_As_Link(string expectedUrl)
         {
-            var url = new Uri(expectedUrl + "?" + queryString);
+            var url = new Uri(expectedUrl);
 
-            var httpRequest = Mock.Of<HttpRequestBase>();
-            Mock.Get(viewContext.HttpContext).Setup(c => c.Request)
-                .Returns(httpRequest);
-            Mock.Get(httpRequest).Setup(r => r.Url)
-                .Returns(url);
+            Mock.Get(helper.ViewContext.HttpContext.Request).Setup(r => r.Url).Returns(url);
 
             paging.Total = 10;
 
             var html = helper.ContentListPager();
 
             var match = Contains.Substring(expectedUrl);
-            if (!queryString.IsNullOrWhiteSpace())
-                match = match.And.Not.StringContaining(url.ToString());
             Assert.That(html.ToString(), match);
         }
 
@@ -139,7 +162,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
             Assert.AreEqual(
                 "<ul class=\"pagination fancy-pager\">" +
                 "<li class=\"item active\"><span>1</span></li>" +
-                "<li class=\"item\"><a class=\"anchor\" href=\"?p=2\">2</a></li>" +
+                "<li class=\"item\"><a class=\"anchor\" href=\"?DG6yG3TgWzjdrXXPtmly9Q=3&KRSBHTlka609c5qhzeZzgQ=2\">2</a></li>" +
                 "</ul>",
                 html.ToString()
                 );
@@ -148,12 +171,17 @@ namespace Our.Umbraco.ContentList.Tests.Web
             Console.WriteLine(html.ToString());
         }
 
-        private HtmlHelper<ContentListModel> CreateHelper(ContentListModel model)
+        private HtmlHelper<ContentListModel> CreateHelper(ContentListModel model, string otherParams)
         {
             httpContext = Mock.Of<HttpContextBase>();
+            var request = Mock.Of<HttpRequestBase>();
+            var qs = new NameValueCollection();
+            otherParams.Split('&').Select(x => x.Split('=')).ToList().ForEach(x => qs.Add(x[0], x[1]));
+            Mock.Get(request).Setup(x => x.QueryString).Returns(qs);
+            Mock.Get(httpContext).Setup(x => x.Request).Returns(request);
             var viewData = new ViewDataDictionary<ContentListModel>(model);
             var viewPage = new ViewPage {ViewData = viewData};
-            viewContext = new ViewContext {HttpContext = httpContext};
+            viewContext = new ViewContext {HttpContext = httpContext, RequestContext = new RequestContext(httpContext, new RouteData())};
             var helper = new HtmlHelper<ContentListModel>(viewContext, viewPage);
             return helper;
         }

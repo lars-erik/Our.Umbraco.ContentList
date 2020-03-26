@@ -5,10 +5,11 @@ namespace Our.Umbraco.ContentList.Web
 {
     public class ContentListModel
     {
-        public ContentListParameters Parameters { get; set; }
+        public ContentListQuery Query { get; set; }
         public IEnumerable<IListableContent> Items { get; set; }
         public ContentListColumnStyling ColumnStyling { get; set; }
         public ContentListPaging Paging { get; set; }
+        public string Hash { get; set; }
     }
 
     public class ContentListPaging

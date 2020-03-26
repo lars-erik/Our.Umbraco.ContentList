@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Our.Umbraco.ContentList.Web
 {
     [ModelBinder(typeof(JsonBinder))]
-    public class ContentListParameters
+    public class ContentListQuery
     {
         [JsonProperty("datasource")]
         public ContentListDataSource DataSource { get; set; }
@@ -23,6 +26,15 @@ namespace Our.Umbraco.ContentList.Web
         public int Page { get; set; }
         [JsonProperty("skip")]
         public int Skip { get; set; }
+
+        public string CreateHash()
+        {
+            var jobj = JObject.FromObject(this);
+            jobj.Remove("page");
+            var json = jobj.ToString();
+            var hash = Convert.ToBase64String(MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(json))).Replace("=", "").Replace("+", "-");
+            return hash;
+        }
     }
 
     public class ContentListDataSource
@@ -53,7 +65,7 @@ namespace Our.Umbraco.ContentList.Web
     }
 
     [ModelBinder(typeof(JsonBinder))]
-    public class PreviewContentListParameters : ContentListParameters
+    public class PreviewContentListQuery : ContentListQuery
     {
         [JsonProperty("contentId")]
         public int ContentId { get; set; }

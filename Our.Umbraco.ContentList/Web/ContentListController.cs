@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.DataSources.Listables;
 using Umbraco.Core.Cache;
@@ -51,15 +54,14 @@ namespace Our.Umbraco.ContentList.Web
 
         #endregion
 
-        public ViewResult List(ContentListParameters query)
+        public ViewResult List(ContentListQuery query)
         {
-            // TODO: Individuell identifisering vha. string hashcode av query
             var contextContent = UmbracoContext.PublishedRequest.PublishedContent;
-            query.Page = FindPageParameter();
+            query.Page = FindPageParameter(query);
             return List(query, contextContent);
         }
 
-        public ActionResult Preview(PreviewContentListParameters query)
+        public ActionResult Preview(PreviewContentListQuery query)
         {
             try
             {
@@ -84,7 +86,7 @@ namespace Our.Umbraco.ContentList.Web
             }
         }
 
-        public ActionResult Count(PreviewContentListParameters query)
+        public ActionResult Count(PreviewContentListQuery query)
         {
             var contextContent = Umbraco.Content(query.ContentId);
             var datasource = CreateDataSource(query, contextContent);
@@ -92,7 +94,7 @@ namespace Our.Umbraco.ContentList.Web
             return Json(total);
         }
 
-        private ViewResult List(ContentListParameters query, IPublishedContent contextContent)
+        private ViewResult List(ContentListQuery query, IPublishedContent contextContent)
         {
             var datasource = CreateDataSource(query, contextContent);
             var total = datasource.Count(query.Skip);
@@ -102,16 +104,17 @@ namespace Our.Umbraco.ContentList.Web
             var model = new ContentListModel
             {
                 Items = data,
-                Parameters = query,
+                Query = query,
                 ColumnStyling = new ContentListColumnStyling(query.Columns),
-                Paging = paging
+                Paging = paging,
+                Hash = query.CreateHash()
             };
 
             var viewName = FindView(query);
             return View(viewName, model);
         }
 
-        private IView FindView(ContentListParameters query)
+        private IView FindView(ContentListQuery query)
         {
             var name = query.View;
             ViewEngineResult foundView = new ViewEngineResult(new string[0]);
@@ -137,7 +140,7 @@ namespace Our.Umbraco.ContentList.Web
             return foundView.View;
         }
 
-        private ContentListPaging CreatePagingModel(ContentListParameters query, long total)
+        private ContentListPaging CreatePagingModel(ContentListQuery query, long total)
         {
             if (!query.ShowPaging) { 
                 return new ContentListPaging
@@ -166,21 +169,22 @@ namespace Our.Umbraco.ContentList.Web
             };
         }
 
-        private IListableDataSource CreateDataSource(ContentListParameters query, IPublishedContent contextContent)
+        private IListableDataSource CreateDataSource(ContentListQuery query, IPublishedContent contextContent)
         {
             var queryParameters = ContentListToQueryParameters(query, contextContent);
             return datasourceFactory.Create(query.DataSource.Type, queryParameters);
         }
 
-        private static QueryParameters ContentListToQueryParameters(ContentListParameters query, IPublishedContent contextContent)
+        private static QueryParameters ContentListToQueryParameters(ContentListQuery query, IPublishedContent contextContent)
         {
             return new QueryParameters(contextContent, query.DataSource.Parameters);
         }
 
-        private int FindPageParameter()
+        private int FindPageParameter(ContentListQuery query)
         {
             int page;
-            if (!Int32.TryParse(Request.QueryString["p"], out page))
+            var hash = query.CreateHash();
+            if (!Int32.TryParse(Request.QueryString[hash], out page))
                 page = 1;
             return page;
         }
