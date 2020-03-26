@@ -473,13 +473,21 @@
     <Content Include="Config\Lang\sv-SE.user.xml" />
     <Content Include="Config\Lang\zh-CN.user.xml" />
     <Content Include="Config\logviewer.searches.config.js" />
-    <Content Include="Content\bootstrap\bootstrap.css">
-      <DependentUpon>bootstrap.less</DependentUpon>
+    <Content Include="App_Plugins\My.Custom.ContentList\package.manifest" />
+    <None Include="Content\flexlist.less" />
+    <Content Include="Content\flexlist.css">
+      <DependentUpon>flexlist.less</DependentUpon>
     </Content>
-    <Content Include="Content\bootstrap\bootstrap.min.css">
-      <DependentUpon>bootstrap.css</DependentUpon>
+    <Content Include="Content\flexlist.min.css">
+      <DependentUpon>flexlist.css</DependentUpon>
     </Content>
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\site.css">
+      <DependentUpon>site.less</DependentUpon>
+    </Content>
+    <Content Include="Content\site.min.css">
+      <DependentUpon>site.css</DependentUpon>
+    </Content>
     <Content Include="css\bootstrap.min.css" />
     <Content Include="css\rte.css" />
     <Content Include="css\style.css" />
@@ -587,6 +595,7 @@
     <Content Include="Content\bootstrap\bootstrap.less" />
     <Content Include="Content\bootstrap\badges.less" />
     <Content Include="Content\bootstrap\alerts.less" />
+    <Content Include="Content\site.less" />
     <None Include="scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="scripts\jquery-1.9.1.js" />
     <Content Include="scripts\jquery-1.9.1.min.js" />
@@ -627,6 +636,8 @@
     <Content Include="Views\Layout.cshtml" />
     <Content Include="Views\Partials\ContentList\NiceTheme\ListItem.cshtml" />
     <Content Include="scripts\jquery-1.9.1.min.map" />
+    <Content Include="Views\Partials\ContentList\FlexTheme\List.cshtml" />
+    <Content Include="Views\Partials\ContentList\FlexTheme\ListItem.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

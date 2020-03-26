@@ -27,7 +27,7 @@
         return { id: obj.key, value: obj.name };
     }
 
-    function ContentListEditorController(scope, http, q, datasourceService, templatesService, defaultSettings, editorState) {
+    function ContentListEditorController(scope, http, q, datasourceService, templatesService, defaultSettings, editorState, sce) {
         
         function initialize() {
             if (!scope.control.editor.config.settings.datasource) {
@@ -91,6 +91,10 @@
                 http.post("/umbraco/ourcontentlist/contentlist/preview", params).then(previewLoaded, previewFailed);
             }
         }
+
+        scope.trustedHtml = function(plainText) {
+            return sce.trustAsHtml(plainText);
+        };
 
         function main() {
             if (!scope.control.editor.config.loadStarted) {
@@ -209,7 +213,7 @@
             true);
     }
 
-    var module = angular.module("our.umbraco.contentlist", []);
+    var module = angular.module("our.umbraco.contentlist", ["ngSanitize"]);
 
     module.controller("our.umbraco.contentlist.datasource.controller", [
         "$scope",
@@ -224,6 +228,7 @@
         "our.umbraco.contentlist.templates.service",
         "our.umbraco.contentlist.defaultSettings",
         "editorState",
+        "$sce",
         ContentListEditorController
     ]);
 

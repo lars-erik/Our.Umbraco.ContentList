@@ -4,7 +4,11 @@
     "inputFile": "App_Plugins/Our.Umbraco.ContentList/css/contentlist.less"
   },
   {
-    "outputFile": "Content/bootstrap/bootstrap.css",
-    "inputFile": "Content/bootstrap/bootstrap.less"
+    "outputFile": "Content/flexlist.css",
+    "inputFile": "Content/flexlist.less"
+  },
+  {
+    "outputFile": "Content/site.css",
+    "inputFile": "Content/site.less"
   }
 ]

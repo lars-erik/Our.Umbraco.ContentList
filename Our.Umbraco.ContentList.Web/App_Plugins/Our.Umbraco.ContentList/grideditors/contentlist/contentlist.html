@@ -1,6 +1,6 @@
 ﻿<div class="our-content-list" ng-controller="our.umbraco.contentlist.editor.controller">
     <div class="container-fluid" ng-if="preview">
-        <div class="preview" ng-bind-html="preview">
+        <div class="preview" ng-bind-html="trustedHtml(preview)">
         </div>
     </div>
     <div class="container-fluid new-contentlist" ng-if="!preview && !error" ng-click="editGridItemSettings(control, 'control')">

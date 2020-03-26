@@ -1,0 +1,50 @@
+﻿.contentlist {
+    .flex {
+        display: flex;
+        flex-wrap: wrap;
+
+        .list-item {
+            flex-grow: 1;
+            min-width: 280px;
+            position: relative;
+
+            .background {
+                width: 100%;
+            }
+
+            a {
+                color: #e0e0e0;
+            }
+
+            a:hover, a:focus {
+                color: white;
+                text-decoration: none;
+            }
+
+            .drama-content {
+                position: absolute;
+                top: 40%;
+                left: 10%;
+                transform: translateY(-50%);
+                text-shadow: 3px 3px 3px #101010;
+                background-color: rgba(0, 0, 0, 0.2);
+                padding-left: 5%;
+                padding-bottom: 5%;
+                width: 80%;
+            }
+
+            .drama-content:hover {
+                transition: all .2s ease-in-out;
+                transform: scale(1.1) translatey(-50%);
+            }
+        }
+
+        .list-item:nth-child(-n+2) {
+            width: 50%;
+        }
+
+        .list-item:nth-child(n+3) {
+            width: 33%;
+        }
+    }
+}
