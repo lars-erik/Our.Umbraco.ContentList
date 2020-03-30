@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Umbraco.Core;
-using Umbraco.Core.Models.PublishedContent;
 using Umbraco.Web.Composing;
 
 namespace Our.Umbraco.ContentList.DataSources.Listables
@@ -13,33 +12,29 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
     public class ListableByNodeDataSource : IListableDataSource
 
     {
-        private readonly IPublishedContent contentContext;
-        private readonly QueryParameters queryParameters;
-
-        public ListableByNodeDataSource(QueryParameters queryParameters)
+        public ListableByNodeDataSource()
         {
-            this.contentContext = queryParameters.ContextContent;
-            this.queryParameters = queryParameters;
         }
 
-        public IQueryable<IListableContent> Query(PagingParameter pagingParameter)
+        public IQueryable<IListableContent> Query(ContentListQuery query, QueryPaging queryPaging)
         {
-            return BaseQuery((int)pagingParameter.PreSkip)
-                .Skip((int)pagingParameter.Skip)
-                .Take((int)pagingParameter.Take)
+            return BaseQuery(query, (int)queryPaging.PreSkip)
+                .Skip((int)queryPaging.Skip)
+                .Take((int)queryPaging.Take)
                 .AsQueryable();
 
         }
 
-        public long Count(long preSkip)
+        public long Count(ContentListQuery query, long preSkip)
         {
-            return BaseQuery((int) preSkip).Count();
+            return BaseQuery(query, (int) preSkip).Count();
         }
 
-        private IEnumerable<IListableContent> BaseQuery(int preSkip)
+        private IEnumerable<IListableContent> BaseQuery(ContentListQuery query, int preSkip)
         {
-            if (Udi.TryParse(queryParameters.CustomParameters["parentNode"], out var contentId))
+            if (Udi.TryParse(query.CustomParameters["parentNode"], out var contentId))
             {
+                // TODO: Inject
                 var content = Current.PublishedSnapshot.Content.GetById(contentId);
                 return content
                     .Children

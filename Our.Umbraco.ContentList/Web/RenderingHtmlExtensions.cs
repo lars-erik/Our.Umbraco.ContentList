@@ -18,7 +18,7 @@ namespace Our.Umbraco.ContentList.Web
             if (result.View != null)
                 return RenderView(helper, result, contentListItem);
 
-            throw new Exception("Couldn't find list item view for " + contentListItem.Name + " in template " + contentListModel.Query.View);
+            throw new Exception("Couldn't find list item view for " + contentListItem.Name + " in template " + contentListModel.Configuration.View);
         }
 
         private static ViewEngineResult FindItemView(HtmlHelper helper, ContentListModel contentListModel, IListableContent contentListItem)
@@ -29,7 +29,7 @@ namespace Our.Umbraco.ContentList.Web
                 (t, a) => "~/Views/Partials/ContentList/" + t + "/ListItem.cshtml"
             };
 
-            var templateName = contentListModel.Query.View;
+            var templateName = contentListModel.Configuration.View;
             var docTypeAlias = contentListItem.DocumentTypeAlias;
             ViewEngineResult result = new ViewEngineResult(new string[0]);
 

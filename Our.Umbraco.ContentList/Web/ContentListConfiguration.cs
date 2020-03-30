@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -10,7 +9,7 @@ using Newtonsoft.Json.Linq;
 namespace Our.Umbraco.ContentList.Web
 {
     [ModelBinder(typeof(JsonBinder))]
-    public class ContentListQuery
+    public class ContentListConfiguration
     {
         [JsonProperty("datasource")]
         public ContentListDataSource DataSource { get; set; }
@@ -22,8 +21,7 @@ namespace Our.Umbraco.ContentList.Web
         public bool ShowPaging { get; set; }
         [JsonProperty("columns")]
         public ContentListColumns Columns { get; set; }
-        [JsonProperty("page")]
-        public int Page { get; set; }
+
         [JsonProperty("skip")]
         public int Skip { get; set; }
 
@@ -37,25 +35,6 @@ namespace Our.Umbraco.ContentList.Web
         }
     }
 
-    public class ContentListDataSource
-    {
-        [JsonProperty("type")]
-        public string Type { get; set; }
-        [JsonProperty("parameters")]
-        public List<DataSourceParameterValue> Parameters { get; set; }
-
-    }
-
-    public class ContentListColumns
-    {
-        [JsonProperty("small")]
-        public int Small { get; set; }
-        [JsonProperty("medium")]
-        public int Medium { get; set; }
-        [JsonProperty("large")]
-        public int Large { get; set; }
-    }
-
     public class DataSourceParameterValue : IParameterValue
     {
         [JsonProperty("key")]
@@ -65,7 +44,7 @@ namespace Our.Umbraco.ContentList.Web
     }
 
     [ModelBinder(typeof(JsonBinder))]
-    public class PreviewContentListQuery : ContentListQuery
+    public class PreviewContentListConfiguration : ContentListConfiguration
     {
         [JsonProperty("contentId")]
         public int ContentId { get; set; }

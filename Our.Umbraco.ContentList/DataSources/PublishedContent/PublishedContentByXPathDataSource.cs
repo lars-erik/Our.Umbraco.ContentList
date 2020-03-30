@@ -11,11 +11,11 @@ namespace Our.Umbraco.ContentList.DataSources.PublishedContent
     [DataSourceMetadata(typeof(PublishedContentByXPathDataSourceMetadata))]
     public class PublishedContentByXPathDataSource : IPublishedContentDataSource
     {
-        private readonly QueryParameters parameters;
+        private readonly ContentListQuery parameters;
         //private readonly UmbracoContext ctx;
         //private readonly ContextualPublishedCache<IPublishedContentCache> contentService;
 
-        public PublishedContentByXPathDataSource(QueryParameters parameters)
+        public PublishedContentByXPathDataSource(ContentListQuery parameters)
         {
             this.parameters = parameters;
             throw new NotImplementedException("Uses obsolete methods");
@@ -23,12 +23,12 @@ namespace Our.Umbraco.ContentList.DataSources.PublishedContent
             //contentService = ctx.ContentCache;
         }
 
-        public IQueryable<IPublishedContent> Query(PagingParameter pagingParameter)
+        public IQueryable<IPublishedContent> Query(QueryPaging queryPaging)
         {
             // TODO: Ints?
             var listables = Query();
             listables = PublishedContentSorting.Apply(listables, parameters.CustomParameters);
-            listables = listables.Skip((int)pagingParameter.PreSkip).Skip((int)pagingParameter.Skip).Take((int)pagingParameter.Take);
+            listables = listables.Skip((int)queryPaging.PreSkip).Skip((int)queryPaging.Skip).Take((int)queryPaging.Take);
             return listables.AsQueryable();
         }
 

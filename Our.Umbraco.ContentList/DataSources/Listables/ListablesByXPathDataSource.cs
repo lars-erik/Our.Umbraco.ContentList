@@ -15,34 +15,32 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
     [DataSourceMetadata(typeof(ListablesByXPathDataSourceMetadata))]
     public class ListablesByXPathDataSource : IListableDataSource
     {
-        private readonly QueryParameters parameters;
         private readonly UmbracoContext ctx;
         private readonly IPublishedContentCache contentCache;
 
-        public ListablesByXPathDataSource(QueryParameters parameters)
+        public ListablesByXPathDataSource(IUmbracoContextAccessor umbracoContextAccessor)
         {
-            this.parameters = parameters;
-
-            ctx = Current.UmbracoContext;
-            contentCache = ctx.Content;
+            // TODO: Inject
+            ctx = umbracoContextAccessor.UmbracoContext;
+            contentCache = ctx?.Content;
         }
 
-        public IQueryable<IListableContent> Query(PagingParameter pagingParameter)
+        public IQueryable<IListableContent> Query(ContentListQuery query, QueryPaging queryPaging)
         {
-            var listables = Query();
-            listables = ListableSorting.Apply(listables, parameters.CustomParameters);
-            listables = listables.Skip((int)pagingParameter.PreSkip).Skip((int)pagingParameter.Skip).Take((int)pagingParameter.Take);
+            var listables = Query(query);
+            listables = ListableSorting.Apply(listables, query.CustomParameters);
+            listables = listables.Skip((int)queryPaging.PreSkip).Skip((int)queryPaging.Skip).Take((int)queryPaging.Take);
             return listables.AsQueryable();
         }
 
-        public long Count(long preSkip)
+        public long Count(ContentListQuery query, long preSkip)
         {
-            return Query().Count() - preSkip;
+            return Query(query).Count() - preSkip;
         }
 
-        private IEnumerable<IListableContent> Query()
+        private IEnumerable<IListableContent> Query(ContentListQuery query)
         {
-            var contents = contentCache.GetByXPath(parameters.CustomParameters["xpath"]);
+            var contents = contentCache.GetByXPath(query.CustomParameters["xpath"]);
             var listables = contents.OfType<IListableContent>().Where(c => c.IsVisible());
             return listables;
         }

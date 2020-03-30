@@ -15,11 +15,11 @@ namespace Our.Umbraco.ContentList.DataSources.PublishedContent
     [DataSourceMetadata(typeof(PublishedContentByLuceneDataSourceMetadata))]
     public class PublishedContentByLuceneDataSource : IPublishedContentDataSource
     {
-        private readonly QueryParameters parameters;
+        private readonly ContentListQuery parameters;
         //private readonly UmbracoContext ctx;
         private readonly LuceneSearcher searcher;
 
-        public PublishedContentByLuceneDataSource(QueryParameters parameters)
+        public PublishedContentByLuceneDataSource(ContentListQuery parameters)
         {
             this.parameters = parameters;
 
@@ -28,15 +28,15 @@ namespace Our.Umbraco.ContentList.DataSources.PublishedContent
             //searcher = (LuceneSearcher)ExamineManager.Instance.SearchProviderCollection["ExternalSearcher"];
         }
 
-        public IQueryable<IPublishedContent> Query(PagingParameter pagingParameter)
+        public IQueryable<IPublishedContent> Query(QueryPaging queryPaging)
         {
             // TODO: Ints?
 
             var searchResults = Search();
             var result = searchResults
-                .Skip((int)pagingParameter.PreSkip)
-                .Skip((int)pagingParameter.Skip)
-                .Take((int)pagingParameter.Take)
+                .Skip((int)queryPaging.PreSkip)
+                .Skip((int)queryPaging.Skip)
+                .Take((int)queryPaging.Take)
                 .Select(GetContent)
                 .AsQueryable()
                 ;

@@ -1,24 +1,24 @@
 ﻿namespace Our.Umbraco.ContentList.DataSources
 {
-    public class PagingParameter
+    public class QueryPaging
     {
-        public PagingParameter()
+        public QueryPaging()
             : this(1000)
         {
         }
 
-        public PagingParameter(long take)
+        public QueryPaging(long take)
         {
             Take = take;
         }
 
-        public PagingParameter(long skip, long take)
+        public QueryPaging(long skip, long take)
         {
             Skip = skip;
             Take = take;
         }
 
-        public PagingParameter(long skip, long take, long preSkip)
+        public QueryPaging(long skip, long take, long preSkip)
         {
             Skip = skip;
             Take = take;

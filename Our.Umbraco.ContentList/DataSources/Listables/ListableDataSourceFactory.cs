@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Umbraco.Core.Composing;
 
 namespace Our.Umbraco.ContentList.DataSources.Listables
 {
@@ -10,11 +11,10 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
         static readonly object LockObj = new object();
         private static List<DataSourceMetadata> datasources;
 
-        public virtual IListableDataSource Create(string key, QueryParameters queryParameters)
+        public virtual IListableDataSource Create(string key)
         {
             var type = FindDataSourceType(key);
-
-            return (IListableDataSource) Activator.CreateInstance(type, (object) queryParameters);
+            return (IListableDataSource) Current.Factory.GetInstance(type);
         }
 
         public static IList<DataSourceParameterDefinition> CreateParameters(string typeName)
@@ -38,42 +38,25 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
                 if (datasources != null)
                     return datasources;
 
-                var listableDataSourceType = typeof (IListableDataSource);
-                var allTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(TryGetTypes);
-                var listableDataSourceTypes = allTypes
-                    .Where(listableDataSourceType.IsAssignableFrom)
-                    .Where(t => !t.IsAbstract && !t.IsInterface);
+                // TODO: Should we be able to access IRegister?
+                var listableDataSourceTypes = Current.Factory
+                    .GetAllInstances<IListableDataSource>()
+                    .Select(x => x.GetType());
                 datasources = listableDataSourceTypes.Select(FindMetadata).ToList();
                 return datasources;
-            }
-        }
-
-        private static IEnumerable<Type> TryGetTypes(Assembly assembly)
-        {
-            try
-            {
-                return assembly.GetExportedTypes();
-            }
-            catch
-            {
-                return new Type[0];
             }
         }
 
         private static DataSourceMetadata FindMetadata(Type type)
         {
             var metadataTypes = type.GetCustomAttributes<DataSourceMetadataAttribute>().ToList();
-            DataSourceMetadata metadata = null;
             if (metadataTypes.Any())
             {
                 var metadataType = metadataTypes[0].MetadataType;
-                metadata = (DataSourceMetadata) Activator.CreateInstance(metadataType);
+                return (DataSourceMetadata) Activator.CreateInstance(metadataType);
             }
-            else
-            {
-                metadata = new SimpleDataSourceMetadata(type);
-            }
-            return metadata;
+
+            return new SimpleDataSourceMetadata(type);
         }
 
         private static Type FindDataSourceType(string key)

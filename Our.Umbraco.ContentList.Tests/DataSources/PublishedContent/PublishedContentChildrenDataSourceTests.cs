@@ -24,9 +24,9 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.PublishedContent
             };
             contextContentMock.Setup(c => c.Children).Returns(children);
 
-            var dataSource = new PublishedContentChildrenDataSource(new QueryParameters(contextContentMock.Object));
+            var dataSource = new PublishedContentChildrenDataSource(new ContentListQuery(contextContentMock.Object));
 
-            Assert.That(dataSource.Query(new PagingParameter()), Is.EquivalentTo(children));
+            Assert.That(dataSource.Query(new QueryPaging()), Is.EquivalentTo(children));
         }
 
         [Test]
@@ -56,8 +56,8 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.PublishedContent
 
             #endregion
 
-            var dataSource = new PublishedContentChildrenDataSource(new QueryParameters(contextContentMock.Object, new Dictionary<string, string> { { "sort", parameter } }));
-            var result = dataSource.Query(new PagingParameter());
+            var dataSource = new PublishedContentChildrenDataSource(new ContentListQuery(contextContentMock.Object, new Dictionary<string, string> { { "sort", parameter } }));
+            var result = dataSource.Query(new QueryPaging());
 
             Assert.That(result.First().Name, Is.EqualTo(expectedFirstTitle));
         }
@@ -72,7 +72,7 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.PublishedContent
                 Mock.Of<IPublishedContent>()
             });
 
-            var dataSource = new PublishedContentChildrenDataSource(new QueryParameters(contextContent));
+            var dataSource = new PublishedContentChildrenDataSource(new ContentListQuery(contextContent));
 
             Assert.AreEqual(2, dataSource.Count(0));
         }

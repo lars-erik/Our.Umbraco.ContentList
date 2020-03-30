@@ -54,19 +54,18 @@ namespace Our.Umbraco.ContentList.Web
 
         #endregion
 
-        public ViewResult List(ContentListQuery query)
+        public ViewResult List(ContentListConfiguration configuration)
         {
             var contextContent = UmbracoContext.PublishedRequest.PublishedContent;
-            query.Page = FindPageParameter(query);
-            return List(query, contextContent);
+            return List(configuration, contextContent);
         }
 
-        public ActionResult Preview(PreviewContentListQuery query)
+        public ActionResult Preview(PreviewContentListConfiguration configuration)
         {
             try
             {
-                var contextContent = Umbraco.Content(query.ContentId);
-                return List(query, contextContent);
+                var contextContent = Umbraco.Content(configuration.ContentId);
+                return List(configuration, contextContent);
             }
             catch (Exception ex)
             {
@@ -86,37 +85,51 @@ namespace Our.Umbraco.ContentList.Web
             }
         }
 
-        public ActionResult Count(PreviewContentListQuery query)
+        public ActionResult Count(PreviewContentListConfiguration configuration)
         {
-            var contextContent = Umbraco.Content(query.ContentId);
-            var datasource = CreateDataSource(query, contextContent);
-            var total = datasource.Count(query.Skip);
+            var contextContent = Umbraco.Content(configuration.ContentId);
+            var query = CreateQuery(configuration, contextContent);
+            var datasource = CreateDataSource(configuration);
+            var total = datasource.Count(query, configuration.Skip);
             return Json(total);
         }
 
-        private ViewResult List(ContentListQuery query, IPublishedContent contextContent)
+        private ViewResult List(ContentListConfiguration configuration, IPublishedContent contextContent)
         {
-            var datasource = CreateDataSource(query, contextContent);
-            var total = datasource.Count(query.Skip);
-            var paging = CreatePagingModel(query, total);
-            var data = datasource.Query(new PagingParameter(paging.From-1, paging.PageSize, query.Skip));
+            var datasource = CreateDataSource(configuration);
+
+            var query = CreateQuery(configuration, contextContent);
+            var total = datasource.Count(query, configuration.Skip);
+            var queryPaging = CreateQueryPaging(configuration, total);
+
+            var data = datasource.Query(query, queryPaging);
 
             var model = new ContentListModel
             {
                 Items = data,
-                Query = query,
-                ColumnStyling = new ContentListColumnStyling(query.Columns),
-                Paging = paging,
-                Hash = query.CreateHash()
+                Configuration = configuration,
+                ColumnStyling = new ContentListColumnStyling(configuration.Columns),
+                Paging = CreatePagingModel(queryPaging, configuration, total),
+                Hash = configuration.CreateHash()
             };
 
-            var viewName = FindView(query);
+            var viewName = FindView(configuration);
             return View(viewName, model);
         }
 
-        private IView FindView(ContentListQuery query)
+        private QueryPaging CreateQueryPaging(ContentListConfiguration configuration, long total)
         {
-            var name = query.View;
+            var currentPage = FindPageParameter(configuration);
+            var maxPage = total / configuration.PageSize;
+            var zerobasePage = Math.Min(Math.Max(currentPage - 1, 0), maxPage);
+            var querySkip = zerobasePage * configuration.PageSize;
+            var pagingParameter = new QueryPaging(querySkip, configuration.PageSize, configuration.Skip);
+            return pagingParameter;
+        }
+
+        private IView FindView(ContentListConfiguration configuration)
+        {
+            var name = configuration.View;
             ViewEngineResult foundView = new ViewEngineResult(new string[0]);
 
             if (foundView.View == null)
@@ -134,56 +147,53 @@ namespace Our.Umbraco.ContentList.Web
 
             if (foundView.View == null)
             {
-                throw new Exception("No content list view called " + query.View + " found");
+                throw new Exception("No content list view called " + configuration.View + " found");
             }
 
             return foundView.View;
         }
 
-        private ContentListPaging CreatePagingModel(ContentListQuery query, long total)
+        private ContentListPaging CreatePagingModel(
+            QueryPaging queryPaging,
+            ContentListConfiguration configuration, 
+            long total)
         {
-            if (!query.ShowPaging) { 
+            if (!configuration.ShowPaging) { 
                 return new ContentListPaging
                 {
                     From = 1,
                     Page = 1,
-                    PageSize = query.PageSize,
-                    To = query.PageSize,
+                    PageSize = configuration.PageSize,
+                    To = configuration.PageSize,
                     Total = total
                 };
             }
 
-            var maxPage = total/query.PageSize;
-            var zerobasePage = Math.Min(Math.Max(query.Page - 1, 0), maxPage);
-            
-            var pagingSkip = zerobasePage*query.PageSize;
-
             return new ContentListPaging
             {
-                From = pagingSkip + 1,
-                To = Math.Min(pagingSkip + query.PageSize, total),
-                Page = zerobasePage + 1,
-                PageSize = query.PageSize,
+                From = queryPaging.Skip + 1,
+                To = Math.Min(queryPaging.Skip + configuration.PageSize, total),
+                Page = (queryPaging.Skip / configuration.PageSize) + 1,
+                PageSize = configuration.PageSize,
                 Total = total,
-                ShowPaging = query.ShowPaging
+                ShowPaging = configuration.ShowPaging
             };
         }
 
-        private IListableDataSource CreateDataSource(ContentListQuery query, IPublishedContent contextContent)
+        private IListableDataSource CreateDataSource(ContentListConfiguration configuration)
         {
-            var queryParameters = ContentListToQueryParameters(query, contextContent);
-            return datasourceFactory.Create(query.DataSource.Type, queryParameters);
+            return datasourceFactory.Create(configuration.DataSource.Type);
         }
 
-        private static QueryParameters ContentListToQueryParameters(ContentListQuery query, IPublishedContent contextContent)
+        private static ContentListQuery CreateQuery(ContentListConfiguration configuration, IPublishedContent contextContent)
         {
-            return new QueryParameters(contextContent, query.DataSource.Parameters);
+            return new ContentListQuery(contextContent, configuration.DataSource.Parameters);
         }
 
-        private int FindPageParameter(ContentListQuery query)
+        private int FindPageParameter(ContentListConfiguration configuration)
         {
             int page;
-            var hash = query.CreateHash();
+            var hash = configuration.CreateHash();
             if (!Int32.TryParse(Request.QueryString[hash], out page))
                 page = 1;
             return page;

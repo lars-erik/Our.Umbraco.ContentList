@@ -50,7 +50,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
         public void Returns_View_With_Result_From_DataSource()
         {
             var controller = CreateController(emptyResults);
-            var parameters = CreateQuery();
+            var parameters = CreateConfiguration();
 
             var result = controller.List(parameters);
             Assert.That(((ContentListModel)result.Model).Items, Is.EquivalentTo(emptyResults));
@@ -74,7 +74,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
                 .Returns(new ViewEngineResult(view, viewEngineMock.Object));
 
             var controller = CreateController(emptyResults);
-            var args = CreateQuery();
+            var args = CreateConfiguration();
             args.View = expectedViewName;
 
             var result = controller.List(args);
@@ -102,7 +102,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
                 .Returns(new ViewEngineResult(view, viewEngineMock.Object));
 
             var controller = CreateController(emptyResults);
-            var args = CreateQuery();
+            var args = CreateConfiguration();
             args.View = expectedViewName;
 
             var result = controller.List(args);
@@ -113,7 +113,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
         public void Hashes_Query_For_Paging_Identification()
         {
             var controller = CreateController(emptyResults);
-            var parameters = CreateQuery(true);
+            var parameters = CreateConfiguration(true);
             parameters.PageSize = 3;
 
             var result = controller.List(parameters);
@@ -129,7 +129,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
                 expectedData.Add(StubListableContent().Object);
 
             var controller = CreateController(expectedData, "6oa2bs/RmP5oMC06vaLh8A=2");
-            var parameters = CreateQuery(true);
+            var parameters = CreateConfiguration(true);
             parameters.PageSize = 3;
 
             var result = controller.List(parameters);
@@ -200,16 +200,16 @@ namespace Our.Umbraco.ContentList.Tests.Web
             var children = CreateChildren();
             var factory = Mock.Of<ListableDataSourceFactory>();
             var dataSource = Mock.Of<IListableDataSource>();
-            Mock.Get(factory).Setup(f => f.Create(It.IsAny<string>(), It.IsAny<QueryParameters>())).Returns(dataSource);
-            Mock.Get(dataSource).Setup(s => s.Count(0)).Returns(children.Count);
+            Mock.Get(factory).Setup(f => f.Create(It.IsAny<string>())).Returns(dataSource);
+            Mock.Get(dataSource).Setup(s => s.Count(It.IsAny<ContentListQuery>(), 0)).Returns(children.Count);
 
-            var query = CreateQuery(true);
-            query.PageSize = 5;
-            var controller = CreateController(children, query.CreateHash() + "=2", factory);
+            var configuration = CreateConfiguration(true);
+            configuration.PageSize = 5;
+            var controller = CreateController(children, configuration.CreateHash() + "=2", factory);
 
-            controller.List(query);
+            controller.List(configuration);
             
-            Mock.Get(dataSource).Verify(s => s.Query(Match.Create<PagingParameter>(p => ValidatePagingParameter(p, expectedSkip, expectedPageSize))));
+            Mock.Get(dataSource).Verify(s => s.Query(It.IsAny<ContentListQuery>(), Match.Create<QueryPaging>(p => ValidatePagingParameter(p, expectedSkip, expectedPageSize))));
         }
 
         [Test]
@@ -219,15 +219,15 @@ namespace Our.Umbraco.ContentList.Tests.Web
 
             var factory = Mock.Of<ListableDataSourceFactory>();
             var dataSource = Mock.Of<IListableDataSource>();
-            Mock.Get(factory).Setup(f => f.Create(It.IsAny<string>(), It.IsAny<QueryParameters>())).Returns(dataSource);
+            Mock.Get(factory).Setup(f => f.Create(It.IsAny<string>())).Returns(dataSource);
 
             var controller = CreateController(new List<IPublishedContent>(), "1", factory);
-            var parameters = CreateQuery(true);
+            var parameters = CreateConfiguration(true);
             parameters.Skip = expectedPreSkip;
 
             controller.List(parameters);
 
-            Mock.Get(dataSource).Verify(s => s.Count(expectedPreSkip));
+            Mock.Get(dataSource).Verify(s => s.Count(It.IsAny<ContentListQuery>(), expectedPreSkip));
         }
 
         [Test]
@@ -237,15 +237,15 @@ namespace Our.Umbraco.ContentList.Tests.Web
 
             var factory = Mock.Of<ListableDataSourceFactory>();
             var dataSource = Mock.Of<IListableDataSource>();
-            Mock.Get(factory).Setup(f => f.Create(It.IsAny<string>(), It.IsAny<QueryParameters>())).Returns(dataSource);
+            Mock.Get(factory).Setup(f => f.Create(It.IsAny<string>())).Returns(dataSource);
 
             var controller = CreateController(new List<IPublishedContent>(), "1", factory);
-            var parameters = CreateQuery(true);
+            var parameters = CreateConfiguration(true);
             parameters.Skip = expectedPreSkip;
 
             controller.List(parameters);
 
-            Mock.Get(dataSource).Verify(s => s.Query(Match.Create<PagingParameter>(p => p.PreSkip == 5)));
+            Mock.Get(dataSource).Verify(s => s.Query(It.IsAny<ContentListQuery>(), Match.Create<QueryPaging>(p => p.PreSkip == 5)));
         }
 
         private static Mock<IPublishedContent> StubListableContent()
@@ -255,7 +255,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
             return listableContentStub;
         }
 
-        private static bool ValidatePagingParameter(PagingParameter p, int expectedSkip, int expectedTake)
+        private static bool ValidatePagingParameter(QueryPaging p, int expectedSkip, int expectedTake)
         {
             Console.WriteLine(JsonConvert.SerializeObject(p));
             return p.Skip == expectedSkip && p.Take == expectedTake;
@@ -265,7 +265,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
         {
             var children = CreateChildren();
 
-            var query = CreateQuery(true);
+            var query = CreateConfiguration(true);
             query.PageSize = 3;
             var controller = CreateController(children, query.CreateHash() + "=" + page);
 
@@ -282,9 +282,9 @@ namespace Our.Umbraco.ContentList.Tests.Web
             return expectedData;
         }
 
-        private static ContentListQuery CreateQuery(bool showPaging = false)
+        private static ContentListConfiguration CreateConfiguration(bool showPaging = false)
         {
-            var parameters = new ContentListQuery
+            var parameters = new ContentListConfiguration
             {
                 DataSource = new ContentListDataSource { 
                     Type = typeof(ListableChildrenDataSource).FullName,

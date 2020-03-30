@@ -27,7 +27,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
         {
             StubViewResult("~/Views/Partials/ContentList/" + expectedTemplateName + "/ListItem.cshtml", view);
 
-            var model = new ContentListModel { Query = new ContentListQuery {View = expectedTemplateName} };
+            var model = new ContentListModel { Configuration = new ContentListConfiguration {View = expectedTemplateName} };
             var helper = CreateHtmlHelper(model);
 
             var listItem = Mock.Of<IListableContent>();
@@ -48,7 +48,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
         {
             StubViewResult("~/Views/Partials/ContentList/" + expectedTemplateName + "/" + documentType + ".cshtml", view);
 
-            var model = new ContentListModel { Query = new ContentListQuery {View = expectedTemplateName} };
+            var model = new ContentListModel { Configuration = new ContentListConfiguration {View = expectedTemplateName} };
             var helper = CreateHtmlHelper(model);
 
             var listItem = Mock.Of<IListableContent>();

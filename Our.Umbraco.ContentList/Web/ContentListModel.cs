@@ -5,7 +5,7 @@ namespace Our.Umbraco.ContentList.Web
 {
     public class ContentListModel
     {
-        public ContentListQuery Query { get; set; }
+        public ContentListConfiguration Configuration { get; set; }
         public IEnumerable<IListableContent> Items { get; set; }
         public ContentListColumnStyling ColumnStyling { get; set; }
         public ContentListPaging Paging { get; set; }

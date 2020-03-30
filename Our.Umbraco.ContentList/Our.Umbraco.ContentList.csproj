@@ -270,19 +270,22 @@
   <ItemGroup>
     <Compile Include="DataSources\Listables\ListableByNodeDataSource.cs" />
     <Compile Include="DataSources\Listables\ListablesByLuceneDataSource.cs" />
-    <Compile Include="DataSources\PagingParameter.cs" />
+    <Compile Include="DataSources\QueryPaging.cs" />
     <Compile Include="DataSources\PublishedContent\PublishedContentDataSourceFactory.cs" />
     <Compile Include="DataSources\PublishedContent\PublishedContentByLuceneDataSource.cs" />
-    <Compile Include="DataSources\QueryParameters.cs" />
+    <Compile Include="DataSources\ContentListQuery.cs" />
     <Compile Include="DataSources\PublishedContent\IPublishedContentDataSource.cs" />
     <Compile Include="DataSources\PublishedContent\PublishedContentByXPathDataSource.cs" />
     <Compile Include="DataSources\PublishedContent\PublishedContentSorting.cs" />
     <Compile Include="DataSources\PublishedContent\PublishedContentChildrenDataSource.cs" />
-    <Compile Include="Install\ApplicationSetup.cs" />
+    <Compile Include="Install\ListableDataSourcesComposer.cs" />
+    <Compile Include="Install\ServerVariablesComposer.cs" />
     <Compile Include="Web\ContentListApiController.cs" />
+    <Compile Include="Web\ContentListColumns.cs" />
     <Compile Include="Web\ContentListController.cs" />
+    <Compile Include="Web\ContentListDataSource.cs" />
     <Compile Include="Web\ContentListModel.cs" />
-    <Compile Include="Web\ContentListQuery.cs" />
+    <Compile Include="Web\ContentListConfiguration.cs" />
     <Compile Include="Web\DataSources\ListableDataSourceController.cs" />
     <Compile Include="Web\IParameterValue.cs" />
     <Compile Include="Web\ListableContentExtensions.cs" />

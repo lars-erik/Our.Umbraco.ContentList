@@ -40,7 +40,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
 
             Current.UmbracoContext.PublishedRequest = new FakePublishedRequest(Mock.Of<IPublishedRouter>(), Current.UmbracoContext, new Uri("http://localhost"));
 
-            var queryA = new ContentListQuery
+            var queryA = new ContentListConfiguration
             {
                 DataSource = new ContentListDataSource
                 {
@@ -50,7 +50,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
                 Skip = 2
             };
 
-            var queryB = new ContentListQuery
+            var queryB = new ContentListConfiguration
             {
                 DataSource = new ContentListDataSource
                 {

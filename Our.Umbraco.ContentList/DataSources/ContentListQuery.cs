@@ -5,29 +5,29 @@ using Umbraco.Core.Models.PublishedContent;
 
 namespace Our.Umbraco.ContentList.DataSources
 {
-    public class QueryParameters
+    public class ContentListQuery
     {
-        public QueryParameters()
+        public ContentListQuery()
             : this(null, new IParameterValue[0])
         {
         }
 
-        public QueryParameters(IPublishedContent contextContent, IEnumerable<IParameterValue> customParameters)
+        public ContentListQuery(IPublishedContent contextContent, IEnumerable<IParameterValue> customParameters)
             : this(contextContent, customParameters.ToDictionary(x => x.Key, x => x.Value))
         {
         }
 
-        public QueryParameters(IPublishedContent contextContent)
+        public ContentListQuery(IPublishedContent contextContent)
             : this(contextContent, new IParameterValue[0])
         {
         }
 
-        public QueryParameters(IDictionary<string, string> customParameters)
+        public ContentListQuery(IDictionary<string, string> customParameters)
             : this(null, customParameters)
         {
         }
 
-        public QueryParameters(IPublishedContent contextContent, IDictionary<string, string> customParameters)
+        public ContentListQuery(IPublishedContent contextContent, IDictionary<string, string> customParameters)
         {
             ContextContent = contextContent;
             CustomParameters = customParameters;

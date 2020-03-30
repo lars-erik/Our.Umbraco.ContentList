@@ -43,9 +43,9 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
             };
             contextContentMock.Setup(c => c.Children).Returns(children);
 
-            var dataSource = new ListableChildrenDataSource(new QueryParameters(contextContentMock.Object));
+            var dataSource = new ListableChildrenDataSource();
 
-            Assert.That(dataSource.Query(new PagingParameter()), Is.EquivalentTo(new[] { listableChildMock.Object }));
+            Assert.That(dataSource.Query(new ContentListQuery(contextContentMock.Object), new QueryPaging()), Is.EquivalentTo(new[] { listableChildMock.Object }));
         }
 
         [Test]
@@ -75,8 +75,8 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
 
             #endregion
 
-            var dataSource = new ListableChildrenDataSource(new QueryParameters(contextContentMock.Object, new Dictionary<string, string> { { "sort", parameter } }));
-            var result = dataSource.Query(new PagingParameter());
+            var dataSource = new ListableChildrenDataSource();
+            var result = dataSource.Query(new ContentListQuery(contextContentMock.Object, new Dictionary<string, string> { { "sort", parameter } }), new QueryPaging());
 
             Assert.That(result.First().Name, Is.EqualTo(expectedFirstTitle));
         }
@@ -91,9 +91,9 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
                 new Mock<IListableContent>().As<IPublishedContent>().Object
             });
 
-            var dataSource = new ListableChildrenDataSource(new QueryParameters(contextContent));
+            var dataSource = new ListableChildrenDataSource();
             
-            Assert.AreEqual(2, dataSource.Count(0));
+            Assert.AreEqual(2, dataSource.Count(new ContentListQuery(contextContent), 0));
         }
 
         private static Mock<IPublishedContent> StubPublishedContent(Mock<IListableContent> listableChildMock)

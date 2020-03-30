@@ -11,11 +11,11 @@ namespace Our.Umbraco.ContentList.DataSources.PublishedContent
         static readonly object LockObj = new object();
         private static List<DataSourceMetadata> datasources;
 
-        public virtual IPublishedContentDataSource Create(string key, QueryParameters queryParameters)
+        public virtual IPublishedContentDataSource Create(string key, ContentListQuery query)
         {
             var type = FindDataSourceType(key);
 
-            return (IPublishedContentDataSource) Activator.CreateInstance(type, (object) queryParameters);
+            return (IPublishedContentDataSource) Activator.CreateInstance(type, (object) query);
         }
 
         public static IList<DataSourceParameterDefinition> CreateParameters(string typeName)

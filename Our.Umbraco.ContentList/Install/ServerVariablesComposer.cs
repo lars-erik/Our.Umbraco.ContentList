@@ -9,7 +9,7 @@ using Umbraco.Web.JavaScript;
 
 namespace Our.Umbraco.ContentList.Install
 {
-    public class ContentListComposition : IUserComposer
+    public class ServerVariablesComposer : IUserComposer
     {
         public void Compose(Composition composition)
         {

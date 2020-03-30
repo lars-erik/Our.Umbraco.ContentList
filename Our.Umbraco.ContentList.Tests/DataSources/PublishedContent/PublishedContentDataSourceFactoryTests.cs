@@ -39,7 +39,7 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.PublishedContent
         [Test]
         public void Creates_Datasource()
         {
-            var contentListParams = new ContentListQuery
+            var contentListParams = new ContentListConfiguration
             {
                 DataSource = new ContentListDataSource
                 {
@@ -56,7 +56,7 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.PublishedContent
             };
             var content = Mock.Of<IPublishedContent>();
 
-            var datasource = new PublishedContentDataSourceFactory().Create(contentListParams.DataSource.Type, new QueryParameters(content, contentListParams.DataSource.Parameters));
+            var datasource = new PublishedContentDataSourceFactory().Create(contentListParams.DataSource.Type, new ContentListQuery(content, contentListParams.DataSource.Parameters));
 
             Assert.IsInstanceOf<PublishedContentChildrenDataSource>(datasource);
         }

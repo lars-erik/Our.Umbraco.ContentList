@@ -10,22 +10,22 @@ namespace Our.Umbraco.ContentList.DataSources.PublishedContent
     public class PublishedContentChildrenDataSource : IPublishedContentDataSource
     {
         private readonly IPublishedContent contentContext;
-        private readonly QueryParameters queryParameters;
+        private readonly ContentListQuery query;
 
-        public PublishedContentChildrenDataSource(QueryParameters queryParameters)
+        public PublishedContentChildrenDataSource(ContentListQuery query)
         {
-            this.contentContext = queryParameters.ContextContent;
-            this.queryParameters = queryParameters;
+            this.contentContext = query.ContextContent;
+            this.query = query;
         }
 
-        public IQueryable<IPublishedContent> Query(PagingParameter pagingParameter)
+        public IQueryable<IPublishedContent> Query(QueryPaging queryPaging)
         {
             // TODO: ints?
             if (contentContext == null)
                 return new List<IPublishedContent>().AsQueryable();
             var listables = contentContext.Children.Where(c => true); // TODO: Where did .IsVisible() go?
-            listables = PublishedContentSorting.Apply(listables, queryParameters.CustomParameters);
-            listables = listables.Skip((int)pagingParameter.PreSkip).Skip((int)pagingParameter.Skip).Take((int)pagingParameter.Take);
+            listables = PublishedContentSorting.Apply(listables, query.CustomParameters);
+            listables = listables.Skip((int)queryPaging.PreSkip).Skip((int)queryPaging.Skip).Take((int)queryPaging.Take);
             return listables.AsQueryable();
         }
 

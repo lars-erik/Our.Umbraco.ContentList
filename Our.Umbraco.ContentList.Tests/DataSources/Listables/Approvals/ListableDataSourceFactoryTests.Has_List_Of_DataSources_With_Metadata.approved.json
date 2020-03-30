@@ -1,0 +1,107 @@
+﻿[
+    {
+        "key": "Our.Umbraco.ContentList.DataSources.Listables.ListablesByXPathDataSource, Our.Umbraco.ContentList",
+        "name": "XPath Query",
+        "parameters": [
+            {
+                "label": "Query",
+                "key": "xpath",
+                "view": "/Umbraco/views/propertyeditors/textbox/textbox.html",
+                "config": null
+            },
+            {
+                "label": "Sort by",
+                "key": "sort",
+                "view": "/App_Plugins/Our.Umbraco.ContentList/propertyeditors/dropdown/dropdown.html",
+                "config": {
+                    "items": [
+                        {
+                            "id": "sortorder",
+                            "value": "Sort order"
+                        },
+                        {
+                            "id": "dateasc",
+                            "value": "Date"
+                        },
+                        {
+                            "id": "datedesc",
+                            "value": "Date descending"
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "key": "Our.Umbraco.ContentList.DataSources.Listables.ListablesByLuceneDataSource, Our.Umbraco.ContentList",
+        "name": "Lucene Query",
+        "parameters": [
+            {
+                "label": "Query",
+                "key": "query",
+                "view": "/Umbraco/views/propertyeditors/textbox/textbox.html",
+                "config": null
+            }
+        ]
+    },
+    {
+        "key": "Our.Umbraco.ContentList.DataSources.Listables.ListableChildrenDataSource, Our.Umbraco.ContentList",
+        "name": "List of children",
+        "parameters": [
+            {
+                "label": "Sort by",
+                "key": "sort",
+                "view": "/App_Plugins/Our.Umbraco.ContentList/propertyeditors/dropdown/dropdown.html",
+                "config": {
+                    "items": [
+                        {
+                            "id": "sortorder",
+                            "value": "Sort order"
+                        },
+                        {
+                            "id": "dateasc",
+                            "value": "Date"
+                        },
+                        {
+                            "id": "datedesc",
+                            "value": "Date descending"
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        "key": "Our.Umbraco.ContentList.DataSources.Listables.ListableByNodeDataSource, Our.Umbraco.ContentList",
+        "name": "List of items from tree",
+        "parameters": [
+            {
+                "label": "From node",
+                "key": "parentNode",
+                "view": "/Umbraco/Views/prevalueeditors/treepicker.html",
+                "config": null
+            },
+            {
+                "label": "Sort by",
+                "key": "sort",
+                "view": "/App_Plugins/Our.Umbraco.ContentList/propertyeditors/dropdown/dropdown.html",
+                "config": {
+                    "items": [
+                        {
+                            "id": "sortorder",
+                            "value": "Sort order"
+                        },
+                        {
+                            "id": "dateasc",
+                            "value": "Date"
+                        },
+                        {
+                            "id": "datedesc",
+                            "value": "Date descending"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+]
