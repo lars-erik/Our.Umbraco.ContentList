@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Umbraco.Core;
 using Umbraco.Web.Composing;
+using Umbraco.Web.PublishedCache;
 
 namespace Our.Umbraco.ContentList.DataSources.Listables
 {
@@ -12,8 +13,11 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
     public class ListableByNodeDataSource : IListableDataSource
 
     {
-        public ListableByNodeDataSource()
+        private IPublishedContentCache contentCache;
+
+        public ListableByNodeDataSource(IPublishedSnapshotAccessor snapshotAccessor)
         {
+            this.contentCache = snapshotAccessor.PublishedSnapshot.Content;
         }
 
         public IQueryable<IListableContent> Query(ContentListQuery query, QueryPaging queryPaging)
@@ -35,7 +39,7 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
             if (Udi.TryParse(query.CustomParameters["parentNode"], out var contentId))
             {
                 // TODO: Inject
-                var content = Current.PublishedSnapshot.Content.GetById(contentId);
+                var content = contentCache.GetById(contentId);
                 return content
                     .Children
                     .OfType<IListableContent>()

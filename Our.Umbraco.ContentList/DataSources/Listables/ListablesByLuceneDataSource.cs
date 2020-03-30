@@ -8,30 +8,26 @@ using Our.Umbraco.ContentList.Web;
 using Umbraco.Core;
 using Umbraco.Core.Models;
 using Umbraco.Core.Models.PublishedContent;
+using Umbraco.Web.PublishedCache;
 
 namespace Our.Umbraco.ContentList.DataSources.Listables
 {
     [DataSourceMetadata(typeof(ListablesByLuceneDataSourceMetadata))]
     public class ListablesByLuceneDataSource : IListableDataSource
     {
-        private readonly ContentListQuery parameters;
-        //private readonly UmbracoContext ctx;
         private readonly LuceneSearcher searcher;
+        private IPublishedContentCache contentCache;
 
-        public ListablesByLuceneDataSource()
+        public ListablesByLuceneDataSource(IExamineManager examineManager, IPublishedSnapshotAccessor snapshotAccessor)
         {
-            // TODO: Figure new examine stuff and inject
-            //throw new NotImplementedException("Uses obsolete methods");
-            //this.parameters = parameters;
-            //ctx = UmbracoContext.Current;
-            //searcher = (LuceneSearcher)ExamineManager.Instance.SearchProviderCollection["ExternalSearcher"];
+            examineManager.TryGetIndex("ExternalIndex", out var index);
+            searcher = (LuceneSearcher)index.GetSearcher();
+            contentCache = snapshotAccessor.PublishedSnapshot.Content;
         }
 
         public IQueryable<IListableContent> Query(ContentListQuery query, QueryPaging queryPaging)
         {
-            // TODO: Validate ints?
-
-            var searchResults = Search();
+            var searchResults = Search(query);
             var result = searchResults
                 .Skip((int)queryPaging.PreSkip)
                 .Skip((int)queryPaging.Skip)
@@ -45,23 +41,19 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
 
         public long Count(ContentListQuery query, long preSkip)
         {
-            return Search().TotalItemCount - preSkip;
+            return Search(query).TotalItemCount - preSkip;
         }
 
         private IPublishedContent GetContent(ISearchResult r)
         {
-            throw new NotImplementedException("Uses obsolete methods");
-
-            //Debug.WriteLine("Fetched document id {0}", r.Id);
-            //return ctx.ContentCache.GetById(r.Id);
+            return contentCache.GetById(Convert.ToInt32(r.Id));
         }
 
-        private ISearchResults Search()
+        private ISearchResults Search(ContentListQuery query)
         {
-            throw new NotImplementedException("Uses obsolete methods");
-            //var query = searcher.CreateSearchCriteria().RawQuery(parameters.CustomParameters["query"]);
-            //var searchResults = searcher.Search(query);
-            //return searchResults;
+            var luceneQuery = searcher.CreateQuery().NativeQuery(query.CustomParameters["query"]);
+            var searchResults = luceneQuery.Execute();
+            return searchResults;
         }
     }
 

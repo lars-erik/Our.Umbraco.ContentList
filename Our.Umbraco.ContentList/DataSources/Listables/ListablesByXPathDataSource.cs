@@ -15,14 +15,11 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
     [DataSourceMetadata(typeof(ListablesByXPathDataSourceMetadata))]
     public class ListablesByXPathDataSource : IListableDataSource
     {
-        private readonly UmbracoContext ctx;
         private readonly IPublishedContentCache contentCache;
 
-        public ListablesByXPathDataSource(IUmbracoContextAccessor umbracoContextAccessor)
+        public ListablesByXPathDataSource(IPublishedSnapshotAccessor snapshotAccessor)
         {
-            // TODO: Inject
-            ctx = umbracoContextAccessor.UmbracoContext;
-            contentCache = ctx?.Content;
+            contentCache = snapshotAccessor.PublishedSnapshot.Content;
         }
 
         public IQueryable<IListableContent> Query(ContentListQuery query, QueryPaging queryPaging)
