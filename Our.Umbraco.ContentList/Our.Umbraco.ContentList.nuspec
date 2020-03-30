@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>Our.Umbraco.Community.ContentList.Core</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Lars-Erik Aabech</authors>
+    <owners>Lars-Erik Aabech</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/lars-erik/Our.Umbraco.ContentList</projectUrl>
+    <description>Provides an easy means for editors and designers to add lists of content in Umbraco pages</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2020 Lars-Erik Aabech</copyright>
+    <tags>Umbraco ContentList Productivity</tags>
+  </metadata>
+</package>

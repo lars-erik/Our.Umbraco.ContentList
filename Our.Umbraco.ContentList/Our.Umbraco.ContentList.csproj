@@ -306,6 +306,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Our.Umbraco.ContentList.nuspec" />
     <None Include="Web\ContentList Classes.cd" />
     <None Include="packages.config" />
   </ItemGroup>
