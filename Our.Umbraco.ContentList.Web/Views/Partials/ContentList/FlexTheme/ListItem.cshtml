@@ -19,7 +19,7 @@
                 @Model.ListSummary
             </div>
             <div class="read-more">
-                <a href="@Model.Url" class="readmore">@Model.ReadMoreText.IfNullOrWhiteSpace("Read more &rsaquo;")</a>
+                <a href="@Model.Url" class="readmore">@Html.Raw(Model.ReadMoreText.IfNullOrWhiteSpace("Read more &rsaquo;"))</a>
             </div>
         </div>
     </a>
