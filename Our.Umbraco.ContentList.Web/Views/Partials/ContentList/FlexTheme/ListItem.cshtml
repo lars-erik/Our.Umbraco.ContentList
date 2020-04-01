@@ -1,11 +1,6 @@
 ﻿@using Umbraco.Web.Models
 @model Our.Umbraco.ContentList.IListableContent
 @{
-    var readMore = Model.ReadMoreText;
-    if (Model.ReadMoreText.ToHtmlString().IsNullOrWhiteSpace())
-    {
-        readMore = new HtmlString("Read more &rsaquo;");
-    }
     var imageUrl = "";
     if (!Model.ListImageUrl.IsNullOrWhiteSpace())
     {
@@ -24,7 +19,7 @@
                 @Model.ListSummary
             </div>
             <div class="read-more">
-                <a href="@Model.Url" class="readmore">@readMore</a>
+                <a href="@Model.Url" class="readmore">@Model.ReadMoreText.IfNullOrWhiteSpace("Read more &rsaquo;")</a>
             </div>
         </div>
     </a>
