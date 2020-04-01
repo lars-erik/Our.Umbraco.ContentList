@@ -13,7 +13,7 @@ Features themable views and extensible data sources.
 
 ## Demo
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/7O6Es1SNf9s" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+There's a [half an hour demo and tutorial over on youtube](https://youtu.be/7O6Es1SNf9s) for the more visually inclined learners.
 
 ## Requirements
 
