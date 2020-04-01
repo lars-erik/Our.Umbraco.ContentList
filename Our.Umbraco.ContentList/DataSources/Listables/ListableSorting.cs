@@ -43,9 +43,9 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
             var publicationMeta = c as IPublicationMetadata;
             if (publicationMeta != null)
             {
-                return publicationMeta.Date > DateTime.MinValue ? publicationMeta.Date : c.CreateDate;
+                return publicationMeta.Date > DateTime.MinValue ? publicationMeta.Date : c.SortDate;
             }
-            return c.CreateDate;
+            return c.SortDate;
         }
     }
 }

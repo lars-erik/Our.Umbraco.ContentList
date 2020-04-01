@@ -5,7 +5,7 @@ namespace Our.Umbraco.ContentList
 {
     public interface IListableContent
     {
-        IHtmlString ListHeading
+        string ListHeading
         {
             get;
         }
@@ -18,21 +18,17 @@ namespace Our.Umbraco.ContentList
             get;
         }
 
-        IHtmlString ReadMoreText { get; }
+        string ReadMoreText { get; }
 
         // ....
 
-        string DocumentTypeAlias { get; }
+        string ContentTypeName { get; }
 
         string Url { get; }
 
-        string Name { get; }
-
         int SortOrder { get; }
 
-        DateTime CreateDate { get; }
-
-        string CreatorName { get; }
+        DateTime SortDate { get; }
     }
 
     public interface IListableContentVisibility

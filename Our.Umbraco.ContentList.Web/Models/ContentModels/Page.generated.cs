@@ -77,8 +77,8 @@ namespace Our.Umbraco.ContentList.Web.Models.ContentModels
 		/// Read more link text
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder", "8.1.0")]
-		[ImplementPropertyType("readMoreLinkText")]
-		public string ReadMoreLinkText => ListableContent.GetReadMoreLinkText(this);
+		[ImplementPropertyType("readMoreText")]
+		public string ReadMoreText => ListableContent.GetReadMoreText(this);
 
 		///<summary>
 		/// Hide in navigation

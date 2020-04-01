@@ -86,10 +86,11 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
         {
         }
 
-        public IHtmlString ListHeading { get; set; }
+        public string ListHeading { get; set; }
         public string ListImageUrl { get; set; }
         public IHtmlString ListSummary { get; set; }
-        public IHtmlString ReadMoreText { get; set; }
-        public string DocumentTypeAlias { get; }
+        public string ReadMoreText { get; set; }
+        public string ContentTypeName { get; set; }
+        public DateTime SortDate { get; set; }
     }
 }

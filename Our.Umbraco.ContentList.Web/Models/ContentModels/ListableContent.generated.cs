@@ -38,7 +38,7 @@ namespace Our.Umbraco.ContentList.Web.Models.ContentModels
 
 		/// <summary>Read more link text</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder", "8.1.0")]
-		string ReadMoreLinkText { get; }
+		string ReadMoreText { get; }
 	}
 
 	/// <summary>Listable Content</summary>
@@ -103,11 +103,11 @@ namespace Our.Umbraco.ContentList.Web.Models.ContentModels
 		/// Read more link text
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder", "8.1.0")]
-		[ImplementPropertyType("readMoreLinkText")]
-		public string ReadMoreLinkText => GetReadMoreLinkText(this);
+		[ImplementPropertyType("readMoreText")]
+		public string ReadMoreText => GetReadMoreText(this);
 
 		/// <summary>Static getter for Read more link text</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder", "8.1.0")]
-		public static string GetReadMoreLinkText(IListableContent that) => that.Value<string>("readMoreLinkText");
+		public static string GetReadMoreText(IListableContent that) => that.Value<string>("readMoreText");
 	}
 }

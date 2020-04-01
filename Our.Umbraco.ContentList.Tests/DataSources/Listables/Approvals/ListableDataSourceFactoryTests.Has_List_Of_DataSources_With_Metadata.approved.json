@@ -1,5 +1,17 @@
 ﻿[
     {
+        "key": "Our.Umbraco.ContentList.DataSources.Listables.ListablesByLuceneDataSource, Our.Umbraco.ContentList",
+        "name": "Lucene Query",
+        "parameters": [
+            {
+                "label": "Query",
+                "key": "query",
+                "view": "/Umbraco/views/propertyeditors/textbox/textbox.html",
+                "config": null
+            }
+        ]
+    },
+    {
         "key": "Our.Umbraco.ContentList.DataSources.Listables.ListablesByXPathDataSource, Our.Umbraco.ContentList",
         "name": "XPath Query",
         "parameters": [
@@ -29,18 +41,6 @@
                         }
                     ]
                 }
-            }
-        ]
-    },
-    {
-        "key": "Our.Umbraco.ContentList.DataSources.Listables.ListablesByLuceneDataSource, Our.Umbraco.ContentList",
-        "name": "Lucene Query",
-        "parameters": [
-            {
-                "label": "Query",
-                "key": "query",
-                "view": "/Umbraco/views/propertyeditors/textbox/textbox.html",
-                "config": null
             }
         ]
     },

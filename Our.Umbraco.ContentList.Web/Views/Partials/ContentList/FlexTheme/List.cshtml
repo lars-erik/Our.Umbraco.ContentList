@@ -7,7 +7,7 @@
 }
 
 <div class="contentlist col-xs-12">
-    <div class=" flex">
+    <div class="flex">
         @if (list.Count == 0 && UmbracoContext.IsFrontEndUmbracoRequest)
         {
             <p>No items found...</p>
@@ -22,11 +22,9 @@
             </div>
         }
 
-        @for (i = 0; i < list.Count; i++)
+        @foreach(var item in list)
         {
-            var listable = list[i];
-
-            @Html.ContentListItem(listable)
+            @Html.ContentListItem(item)
         }
     </div>
     <div>

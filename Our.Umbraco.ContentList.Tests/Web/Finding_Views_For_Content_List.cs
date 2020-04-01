@@ -52,7 +52,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
             var helper = CreateHtmlHelper(model);
 
             var listItem = Mock.Of<IListableContent>();
-            Mock.Get(listItem).Setup(i => i.DocumentTypeAlias).Returns(documentType);
+            Mock.Get(listItem).Setup(i => i.ContentTypeName).Returns(documentType);
 
             Mock.Get(view)
                 .Setup(v => v.Render(Match.Create<ViewContext>(c => c.ViewData.Model == listItem), It.IsAny<StringWriter>()))

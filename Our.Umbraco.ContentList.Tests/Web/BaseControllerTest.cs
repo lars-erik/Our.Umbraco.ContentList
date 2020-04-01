@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using Moq;
 using NUnit.Framework;
+using Our.Umbraco.ContentList.Install;
 using Umbraco.Core.Configuration.UmbracoSettings;
 using Umbraco.Core.Models;
 using Umbraco.Core.Models.PublishedContent;
@@ -24,7 +25,10 @@ namespace Our.Umbraco.ContentList.Tests.Web
         public void SetUp()
         {
             UmbracoSupport = new UmbracoSupport();
-            UmbracoSupport.SetupUmbraco();
+            UmbracoSupport.SetupUmbraco(composition =>
+            {
+                composition.WithListableDataSources();
+            });
         }
 
         [TearDown]

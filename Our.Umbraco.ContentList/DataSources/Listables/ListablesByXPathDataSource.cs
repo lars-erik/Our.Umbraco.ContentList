@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Our.Umbraco.ContentList.Web;
 using Umbraco.Core;
-using Umbraco.Web;
-using Umbraco.Web.Composing;
 using Umbraco.Web.PublishedCache;
 
 //using Umbraco.Web;

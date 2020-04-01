@@ -2,10 +2,15 @@
 using ApprovalTests;
 using ApprovalTests.Reporters;
 using ApprovalTests.Reporters.Windows;
+using Examine;
+using Moq;
 using NUnit.Framework;
 using Our.Umbraco.ContentList.DataSources.Listables;
 using Our.Umbraco.ContentList.Install;
+using Umbraco.Core;
+using Umbraco.Core.Composing;
 using Umbraco.Tests.Testing;
+using Umbraco.Web.PublishedCache;
 
 namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
 {
@@ -18,7 +23,19 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
         {
             base.Compose();
 
+            var examineManager = Mock.Of<IExamineManager>();
+            var index = Mock.Of<IIndex>();
+            Mock.Get(examineManager).Setup(x => x.TryGetIndex(It.IsAny<string>(), out index));
+            Composition.Register(typeof(IExamineManager), examineManager);
+
             new ListableDataSourcesComposer().Compose(Composition);
+        }
+
+        public override void SetUp()
+        {
+            base.SetUp();
+
+            Current.Factory.GetInstance<IPublishedSnapshotAccessor>().PublishedSnapshot = Mock.Of<IPublishedSnapshot>();
         }
 
         [Test]

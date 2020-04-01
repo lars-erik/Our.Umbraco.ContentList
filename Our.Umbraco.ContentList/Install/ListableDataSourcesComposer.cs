@@ -19,6 +19,14 @@ namespace Our.Umbraco.ContentList.Install
         }
     }
 
+    public static class CompositionExtensions
+    {
+        public static void WithListableDataSources(this Composition composition)
+        {
+            new ListableDataSourcesComposer().Compose(composition);
+        }
+    }
+
     public class ListableDataSourceCollectionBuilder : SetCollectionBuilderBase<ListableDataSourceCollectionBuilder, ListableDataSourceCollection, IListableDataSource>
     {
         protected override ListableDataSourceCollectionBuilder This => this;

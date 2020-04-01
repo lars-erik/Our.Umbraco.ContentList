@@ -5,6 +5,7 @@ using Moq;
 using NUnit.Framework;
 using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.DataSources.Listables;
+using Our.Umbraco.ContentList.Install;
 using Umbraco.Core.Models.PublishedContent;
 using Umbraco.Tests.TestHelpers;
 using Umbraco.Tests.Testing;
@@ -22,7 +23,10 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
         public void Setup()
         {
             umbracoSupport = new UmbracoSupport();
-            umbracoSupport.SetupUmbraco();
+            umbracoSupport.SetupUmbraco(composition =>
+            {
+                new ListableDataSourcesComposer().Compose(composition);
+            });
         }
 
         [TearDown]
@@ -66,19 +70,19 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
             };
 
             contextContentMock.Setup(c => c.Children).Returns(children);
-            listableChildMock.Setup(c => c.Name).Returns("b");
-            listableChild2Mock.Setup(c => c.Name).Returns("a");
+            listableChildMock.Setup(c => c.ListHeading).Returns("b");
+            listableChild2Mock.Setup(c => c.ListHeading).Returns("a");
             listableChildMock.Setup(c => c.SortOrder).Returns(1);
             listableChild2Mock.Setup(c => c.SortOrder).Returns(2);
-            listableChildMock.Setup(c => c.CreateDate).Returns(DateTime.Now.AddHours(-1));
-            listableChild2Mock.Setup(c => c.CreateDate).Returns(DateTime.Now);
+            listableChildMock.Setup(c => c.SortDate).Returns(DateTime.Now.AddHours(-1));
+            listableChild2Mock.Setup(c => c.SortDate).Returns(DateTime.Now);
 
             #endregion
 
             var dataSource = new ListableChildrenDataSource();
             var result = dataSource.Query(new ContentListQuery(contextContentMock.Object, new Dictionary<string, string> { { "sort", parameter } }), new QueryPaging());
 
-            Assert.That(result.First().Name, Is.EqualTo(expectedFirstTitle));
+            Assert.That(result.First().ListHeading, Is.EqualTo(expectedFirstTitle));
         }
 
         [Test]
