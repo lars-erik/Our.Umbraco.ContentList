@@ -11,6 +11,10 @@ Features themable views and extensible data sources.
 
 `install-package Our.Umbraco.Community.ContentList -pre`
 
+## Demo
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/7O6Es1SNf9s" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## Requirements
 
 The list component is built around an `IListableContent` interface, partially derived from `IPublishedContent`.  
