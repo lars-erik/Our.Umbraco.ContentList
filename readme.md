@@ -1,4 +1,4 @@
-﻿# Our Umbraco Content List
+# Our Umbraco Content List
 
 ## Overview
 
@@ -48,9 +48,11 @@ The "Listable Content" model generated will have a complemetary interface genera
 minute it's used as a composition. We can hook this interface up to the "core" `IListableContent`
 interface by adding a partial to the models folder:
 
-    public partial interface IListableContent : Our.Umbraco.ContentList.IListableContent
-    {
-    }
+```c#
+public partial interface IListableContent : Our.Umbraco.ContentList.IListableContent
+{
+}
+```
 
 Note that the core interface has the same name, so it has to be prefixed with its namespace.
 
@@ -58,21 +60,25 @@ There are a select few properties that needs to be implemented specifically sinc
 the generated model or `IPublishedContent` properties. In order for the model not to break, we have
 to implement them on each document type with the composition, including the generated composition model:
 
-    public partial class ListableContent
-    {
-        public string ListImageUrl => ListImage?.Url;
-        public string ContentTypeName => ContentType.Alias;
-        public DateTime SortDate => CreateDate;
-    }
+```c#
+public partial class ListableContent
+{
+    public string ListImageUrl => ListImage?.Url;
+    public string ContentTypeName => ContentType.Alias;
+    public DateTime SortDate => CreateDate;
+}
+```
 
 And for each composed document type:
 
-    public partial class Page
-    {
-        public string ListImageUrl => ListImage?.Url;
-        public string ContentTypeName => ContentType.Alias;
-        public DateTime SortDate => CreateDate;
-    }
+```c#
+public partial class Page
+{
+    public string ListImageUrl => ListImage?.Url;
+    public string ContentTypeName => ContentType.Alias;
+    public DateTime SortDate => CreateDate;
+}
+```
 
 That's it! We can now go into any grid where the Content List editor is enabled and start using it.  
 (Remember to build, though. 🙂)
@@ -104,16 +110,20 @@ or the property exposed by the `SortDate` property.
 You can add your own datasources as well by implementing `IListableDataSource` and registering 
 them with the listable content datasource collection builder:
 
-    composition
-        .WithCollectionBuilder<ListableDataSourceCollectionBuilder>()
-        .Add(typeof(YourType))
+```c#
+composition
+    .WithCollectionBuilder<ListableDataSourceCollectionBuilder>()
+    .Add(typeof(YourType))
+```
 
 You can also use the type loader to load all of your data sources at once:
 
-    var allTypes = composition.TypeLoader.GetTypes<IListableDataSource>(specificAssemblies:new []{ GetType().Assembly });
-    composition
-        .WithCollectionBuilder<ListableDataSourceCollectionBuilder>()
-        .Add(allTypes);
+```c#
+var allTypes = composition.TypeLoader.GetTypes<IListableDataSource>(specificAssemblies:new []{ GetType().Assembly });
+composition
+    .WithCollectionBuilder<ListableDataSourceCollectionBuilder>()
+    .Add(allTypes);
+```
 
 Of course you can also remove built-ins you don't want.
 
@@ -141,35 +151,41 @@ Inside a theme folder there needs to be at least *one* view called `List.cshtml`
 
 A very simple Bootstrap 3 theme could be made with the following markup:
 
-    @inherits UmbracoViewPage<ContentListModel>
-    @using Our.Umbraco.ContentList.Web
+```razor
+@inherits UmbracoViewPage<ContentListModel>
+@using Our.Umbraco.ContentList.Web
 
-    <div class="contentlist">
-        @foreach(var item in Model.Items)
-        {
-        <div class="@Model.ColumnStyling.ColumnClasses(" col-sm-", "col-md-" , "col-lg-" ) list-item @item.ContentTypeName ">
-            <img src="item.ListImageUrl"/> 
-            <h3>@item.ListHeading</h3>
-            <div>@item.ListSummary</div>
-            <a href="@item.Url">@item.ReadMoreText</a>
-        </div>
-        }
+<div class="contentlist">
+    @foreach(var item in Model.Items)
+    {
+    <div class="@Model.ColumnStyling.ColumnClasses(" col-sm-", "col-md-" , "col-lg-" ) list-item @item.ContentTypeName ">
+        <img src="item.ListImageUrl"/> 
+        <h3>@item.ListHeading</h3>
+        <div>@item.ListSummary</div>
+        <a href="@item.Url">@item.ReadMoreText</a>
     </div>
+    }
+</div>
+```
 
 There is an extra extension however, enabling us to create different views for each type of listed content.  
 By replacing the iterated markup with:
 
-    @Html.ContentListItem(item)
+```razor
+@Html.ContentListItem(item)
+```
 
 The component will look for another view in the theme folder called `ListItem.cshtml`.  
 Here's an example of the above content in such view:
 
-    @model Our.Umbraco.ContentList.IListableContent
+```razor
+@model Our.Umbraco.ContentList.IListableContent
 
-    <img src="Model.ListImageUrl"/> 
-    <h3>@Model.ListHeading</h3>
-    <div>@Model.ListSummary</div>
-    <a href="@Model.Url">@Model.ReadMoreText</a>
+<img src="Model.ListImageUrl"/> 
+<h3>@Model.ListHeading</h3>
+<div>@Model.ListSummary</div>
+<a href="@Model.Url">@Model.ReadMoreText</a>
+```
 
 Now if we wanted, say a product, to have a different view, we could add another view with the
 *content type alias* as its name, and `Html.ContentListItem` will pick that view instead of the default `ListItem.cshtml`.  
@@ -178,15 +194,17 @@ The item *will* be of the given type, so it'll be safe to cast the model to a pr
 
 **Product.cshtml**
 
-    @model YourSite.Models.Product
+```razor
+@model YourSite.Models.Product
 
-    <div class="listed-product">
-        <img src="Model.ListImageUrl"/> 
-        <h3>@Model.ListHeading</h3>
-        <div>@Model.ListSummary</div>
-        <a href="@Model.Url">@Model.ReadMoreText</a>
-        <div class="huge-price">@Model.Price</div>
-    </div>
+<div class="listed-product">
+    <img src="Model.ListImageUrl"/> 
+    <h3>@Model.ListHeading</h3>
+    <div>@Model.ListSummary</div>
+    <a href="@Model.Url">@Model.ReadMoreText</a>
+    <div class="huge-price">@Model.Price</div>
+</div>
+```
 
 For example views, see the [Bootstrap 3 example](Our.Umbraco.ContentList.Web/Views/Partials/ContentList/NiceTheme/List.cshtml)
 and [Flexbox example](Our.Umbraco.ContentList.Web/Views/Partials/ContentList/FlexTheme/List.cshtml) in the source code.
@@ -212,11 +230,13 @@ Ticking "show paging" sets a boolean on the `ContentListModel`.
 There is a helper in the core assembly that will show a pager if this property is true:
 For a Bootstrap styled pager, the following markup can be used. The parameters
 
-    <div class="col-md-12">
-        <nav>
-            @Html.ContentListPager(Model, pagerClasses: "pagination", pagerElement:"ul", itemElement:"li")
-        </nav>
-    </div>
+```razor
+<div class="col-md-12">
+    <nav>
+        @Html.ContentListPager(Model, pagerClasses: "pagination", pagerElement:"ul", itemElement:"li")
+    </nav>
+</div>
+```
 
 The elements and classes can be changed for use with other CSS frameworks.
 
