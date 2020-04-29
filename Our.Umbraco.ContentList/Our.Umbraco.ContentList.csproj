@@ -289,6 +289,7 @@
     <Compile Include="Web\DataSources\ListableDataSourceController.cs" />
     <Compile Include="Web\IParameterValue.cs" />
     <Compile Include="Web\ListableContentExtensions.cs" />
+    <Compile Include="Web\ListTemplate.cs" />
     <Compile Include="Web\PagingHtmlExtensions.cs" />
     <Compile Include="Web\RenderingHtmlExtensions.cs" />
     <Compile Include="DataSources\Listables\IListableDataSource.cs" />

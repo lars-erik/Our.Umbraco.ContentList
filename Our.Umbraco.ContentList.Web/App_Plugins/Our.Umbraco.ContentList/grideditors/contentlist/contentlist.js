@@ -27,7 +27,7 @@
         return { id: obj.key, value: obj.name };
     }
 
-    function ContentListEditorController(scope, http, q, datasourceService, templatesService, defaultSettings, editorState, sce) {
+    function ContentListEditorController(scope, http, q, datasourceService, templatesService, defaultSettings, editorState, sce, dsState) {
         
         function initialize() {
             if (!scope.control.editor.config.settings.datasource) {
@@ -51,11 +51,13 @@
             scope.datasources = sources;
             scope.control.editor.config.settings.datasource.config.items = $.map(scope.datasources, keyNameToIdValue);
             scope.control.editor.config.settings.datasource.config.datasources = scope.datasources;
+            dsState.all = scope.datasources;
         }
 
         function templatesLoaded(templates) {
             scope.templates = templates;
-            scope.control.editor.config.settings.view.config.items = $.map(scope.templates, function (t) { return { id:t, value:t }; });
+            scope.control.editor.config.settings.view.config.items = $.map(scope.templates, function (t) { return { id: t.name, value: t.name }; });
+            scope.control.editor.config.settings.view.config.all= scope.templates;
         }
 
         function previewLoaded(response) {
@@ -144,10 +146,11 @@
     function ParametersController(scope, http) {
     }
 
-    function DataSourceController(scope) {
+    function DataSourceController(scope, dsState) {
         var first = true;
 
         scope.model.value = JSON.parse(JSON.stringify(scope.model.value));
+        dsState.ds = scope.model.value;
 
         function getParameters(sourceKey) {
             var source = $.grep(scope.model.config.datasources, function (ds) { return ds.key === sourceKey; })[0];
@@ -184,6 +187,7 @@
         scope.$watch("datasourceProperty.value", function (newVal, oldVal) {
             if (newVal !== oldVal && scope.datasourceProperty.value) {
                 scope.model.value.type = scope.datasourceProperty.value;
+                dsState.ds = scope.model.value;
             }
             if (newVal !== oldVal || first) {
                 first = false;
@@ -210,10 +214,54 @@
     }
 
     var module = angular.module("our.umbraco.contentlist", ["ngSanitize"]);
+    var currentDataSource = new (function () {
+        this.ds = {};
+    })();
+
+    module.factory("our.umbraco.contentlist.currentDatasource",
+        [
+            function() {
+                return currentDataSource;
+            }
+        ]);
 
     module.controller("our.umbraco.contentlist.datasource.controller", [
         "$scope",
+        "our.umbraco.contentlist.currentDatasource",
         DataSourceController
+    ]);
+
+    module.controller("our.umbraco.contentlist.theme.controller", [
+        "$scope",
+        "our.umbraco.contentlist.currentDatasource",
+        function (scope, dsState) {
+            var nameEx = /\.([^\.]+),/i,
+                getName = function(str) {
+                    return ((str || "").match(nameEx) || [])[1];
+                };
+            
+            scope.dsState = dsState;
+            scope.type = dsState.ds.type;
+            scope.shortType = getName(scope.type);
+
+            scope.$watch("dsState.ds.type",
+                function() {
+                    scope.type = dsState.ds.type;
+                    scope.shortType = getName(scope.type);
+                });
+
+            scope.shouldShow = function (item, i, a) {
+                var template = $.grep(scope.model.config.all, function (x) { return x.name === item.value; })[0];
+                if (template) {
+                    if ((template.compatibleSources || []).length === 0) {
+                        return true;
+                    } else {
+                        return $.grep(template.compatibleSources, function(x) { return x === scope.shortType; }).length > 0;
+                    }
+                }
+                return true;
+            };
+        }
     ]);
 
     module.controller("our.umbraco.contentlist.editor.controller", [
@@ -225,6 +273,7 @@
         "our.umbraco.contentlist.defaultSettings",
         "editorState",
         "$sce",
+        "our.umbraco.contentlist.currentDatasource",
         ContentListEditorController
     ]);
 
@@ -280,7 +329,7 @@
             "label": "Theme",
             "key": "view",
             "description": "How the list should look",
-            "view": "/app_plugins/our.umbraco.contentlist/propertyeditors/dropdown/dropdown.html",
+            "view": "/app_plugins/our.umbraco.contentlist/propertyeditors/theme/theme.html",
             "config": {
                 "items": [
                 ]

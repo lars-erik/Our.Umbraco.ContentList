@@ -1,6 +1,16 @@
 ﻿@inherits UmbracoViewPage<ContentListModel>
 @using Our.Umbraco.ContentList.Web
 
+@functions
+{
+
+    public string Echo()
+    {
+        return "Echo... echo...";
+    }
+
+}
+
 <div class="contentlist">
 @if (!Model.Items.Any())
 {

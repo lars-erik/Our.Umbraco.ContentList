@@ -3,6 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Web.Hosting;
 using System.Web.Http;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Umbraco.Core;
 using Umbraco.Core.Cache;
 using Umbraco.Core.Configuration;
@@ -34,18 +36,18 @@ namespace Our.Umbraco.ContentList.Web
         }
 
         [HttpGet]
-        public List<string> ListTemplates()
+        public List<ListTemplate> ListTemplates()
         {
-            List<string> templates = new List<string>();
-            var rootInfo = new DirectoryInfo(path);
+            List<ListTemplate> templates = new List<ListTemplate>();
+            var rootDir = new DirectoryInfo(path);
 
-            if (rootInfo.Exists)
+            if (rootDir.Exists)
             { 
                 templates.AddRange(
-                    rootInfo
+                    rootDir
                     .EnumerateDirectories()
                     .Where(p => File.Exists(p.FullName + "/List.cshtml"))
-                    .Select(p => p.Name)
+                    .Select(MapTemplate)
                     .ToList()
                 );
             }
@@ -55,17 +57,48 @@ namespace Our.Umbraco.ContentList.Web
             {
                 var legacyTemplates = sampleInfo
                     .EnumerateFiles("*.cshtml")
-                    .Select(f => f.Name.Replace(".cshtml", ""))
-                    .Where(n => !templates.Contains(n))
+                    .Select(f => new ListTemplate(f.Name.Replace(".cshtml", "")))
+                    .Where(n => templates.All(x => x.Name != n.Name))
                     .ToList();
 
                 if (legacyTemplates.Count > 1 || templates.Count > 0)
-                    legacyTemplates.Remove("Sample");
+                {
+                    var sample = legacyTemplates.FirstOrDefault(x => x.Name == "Sample");
+                    if (sample != null)
+                    {
+                        legacyTemplates.Remove(sample);
+                    }
+                }
                 
                 templates.AddRange(legacyTemplates);
             }
 
             return templates;
-        } 
+        }
+
+        private static ListTemplate MapTemplate(DirectoryInfo p)
+        {
+            var list = new ListTemplate(p.Name);
+            var configPath = Path.Combine(p.FullName, "list.json");
+            if (File.Exists(configPath))
+            {
+                try
+                {
+                    var content = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(configPath));
+                    if (content?.GetValue("compatibleSources") != null)
+                    {
+                        var sources = content.Value<JArray>("compatibleSources");
+                        if (sources != null)
+                        {
+                            list.CompatibleSources = sources.ToObject<string[]>();
+                        }
+                    }
+                }
+                catch
+                {
+                }
+            }
+            return list;
+        }
     }
 }

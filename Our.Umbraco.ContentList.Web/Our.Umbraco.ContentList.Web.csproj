@@ -434,6 +434,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Plugins\Our.Umbraco.ContentList\propertyeditors\datasource\datasource.html" />
+    <Content Include="App_Plugins\Our.Umbraco.ContentList\propertyeditors\theme\theme.html" />
     <Content Include="App_Plugins\Our.Umbraco.ContentList\propertyeditors\dropdown\dropdown.html" />
     <Content Include="App_Plugins\uSync8\backoffice\uSync8\dashboard.html" />
     <Content Include="App_Plugins\uSync8\backoffice\uSync8\uSyncDashboardController.js" />
@@ -622,6 +623,7 @@
     <Content Include="scripts\jquery-1.9.1.min.map" />
     <Content Include="Views\Partials\ContentList\FlexTheme\List.cshtml" />
     <Content Include="Views\Partials\ContentList\FlexTheme\ListItem.cshtml" />
+    <Content Include="Views\Partials\ContentList\NiceTheme\list.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
