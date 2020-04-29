@@ -1,9 +1,25 @@
 ﻿@model dynamic
+@using System.Text.RegularExpressions
 @using Umbraco.Web.Composing
 @using Umbraco.Web.Templates
 
+@functions
+{
+
+    public static MatchEvaluator Replace(dynamic model)
+    {
+        Func<Match, string> evaluator = m =>
+        {
+            return model.config[m.Groups[1].Value];
+        };
+        return new MatchEvaluator(evaluator);
+    }
+}
+
 @if (Model.editor.config.markup != null)
 {
+    Regex configRegex = new Regex(@"#config\.([^#]+)#");
+
     string markup = Model.editor.config.markup.ToString();
     markup = markup.Replace("#value#", Html.ReplaceLineBreaksForHtml(HttpUtility.HtmlEncode((string)Model.value.ToString())).ToString());
 
@@ -11,6 +27,8 @@
     {
         markup = markup.Replace("#style#", Model.editor.config.style.ToString());
     }
+
+    markup = configRegex.Replace(markup, Replace(Model));
 
     <text>
         @Html.Raw(markup)

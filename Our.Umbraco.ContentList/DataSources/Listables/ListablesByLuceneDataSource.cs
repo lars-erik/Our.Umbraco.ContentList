@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Examine;
 using Examine.LuceneEngine.Providers;
-using Our.Umbraco.ContentList.Web;
+using Examine.Search;
 using Umbraco.Core;
-using Umbraco.Core.Models;
 using Umbraco.Core.Models.PublishedContent;
 using Umbraco.Web.PublishedCache;
 
@@ -51,9 +49,39 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
 
         private ISearchResults Search(ContentListQuery query)
         {
-            var luceneQuery = searcher.CreateQuery().NativeQuery(query.CustomParameters["query"]);
-            var searchResults = luceneQuery.Execute();
-            return searchResults;
+            // Fields?
+            var fullstringKey = query.CustomParameters["queryParameter"];
+            var phrase = query.HttpContext.Request.QueryString[fullstringKey];
+            var showIfNoPhrase = query.CustomParameters.ContainsKey("showIfNoPhrase")
+                                && query.CustomParameters["showIfNoPhrase"] == "1";
+            var hasPhrase = !String.IsNullOrWhiteSpace(phrase);
+            var shouldShow = showIfNoPhrase || hasPhrase;
+            var controlQuery = query.CustomParameters["query"];
+
+            // Build lucene query
+            if (shouldShow)
+            {
+                var booleanQuery = CreateControlQuery(controlQuery);
+                if (hasPhrase)
+                {
+                    booleanQuery = CreatePhraseQuery(booleanQuery, phrase);
+                }
+
+                var searchResults = booleanQuery.Execute();
+                return searchResults;
+            }
+
+            return EmptySearchResults.Instance;
+        }
+
+        protected virtual IBooleanOperation CreateControlQuery(string controlQuery)
+        {
+            return searcher.CreateQuery().NativeQuery(controlQuery);
+        }
+
+        protected virtual IBooleanOperation CreatePhraseQuery(IBooleanOperation luceneQuery, string phrase)
+        {
+            return luceneQuery.And().GroupedOr(searcher.GetAllIndexedFields(), phrase.Split(' '));
         }
     }
 
@@ -69,7 +97,19 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
                 {
                     Key = "query",
                     Label = "Query",
+                    View = "/Umbraco/views/propertyeditors/textarea/textarea.html"
+                },
+                new DataSourceParameterDefinition
+                {
+                    Key = "queryParameter",
+                    Label = "Fulltext Querystring Parameter",
                     View = "/Umbraco/views/propertyeditors/textbox/textbox.html"
+                },
+                new DataSourceParameterDefinition
+                {
+                    Key = "showIfNoPhrase",
+                    Label = "Show if no querystring parameter",
+                    View = "/Umbraco/views/prevalueeditors/boolean.html"
                 }
             };
         }

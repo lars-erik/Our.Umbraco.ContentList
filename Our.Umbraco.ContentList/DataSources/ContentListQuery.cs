@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using Our.Umbraco.ContentList.Web;
 using Umbraco.Core.Models.PublishedContent;
 
@@ -34,6 +35,8 @@ namespace Our.Umbraco.ContentList.DataSources
         }
 
         public IPublishedContent ContextContent { get; set; }
+        
+        public HttpContextBase HttpContext { get; set; }
 
         public IDictionary<string, string> CustomParameters { get; set; }
     }

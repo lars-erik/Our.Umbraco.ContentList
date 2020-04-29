@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web.Http;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -185,9 +186,12 @@ namespace Our.Umbraco.ContentList.Web
             return datasourceFactory.Create(configuration.DataSource.Type);
         }
 
-        private static ContentListQuery CreateQuery(ContentListConfiguration configuration, IPublishedContent contextContent)
+        private ContentListQuery CreateQuery(ContentListConfiguration configuration, IPublishedContent contextContent)
         {
-            return new ContentListQuery(contextContent, configuration.DataSource.Parameters);
+            return new ContentListQuery(contextContent, configuration.DataSource.Parameters)
+            {
+                HttpContext = HttpContext
+            };
         }
 
         private int FindPageParameter(ContentListConfiguration configuration)

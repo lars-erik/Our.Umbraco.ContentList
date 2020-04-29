@@ -46,5 +46,22 @@
             "style": "border-left: 3px solid #ccc; padding: 10px; color: #ccc; font-family: serif; font-style: italic; font-size: 18px",
             "markup": "<blockquote>#value#</blockquote>"
         }
+    },
+    {
+        "name": "Searchbox",
+        "alias": "searchbox",
+        "view": "textstring",
+        "icon": "icon-search",
+        "config": {
+            "style": "border-left: 3px solid #ccc; padding: 10px; color: #ccc; font-family: serif; font-style: italic; font-size: 18px",
+            "markup": "<form method=\"get\"><input name=\"#config.name#\" placeholder=\"#value#\"></form>",
+            "settings": {
+                "name": {
+                    "key": "name",
+                    "label": "Parameter name",
+                    "view": "textstring"
+                }
+            }
+        }
     }
 ]

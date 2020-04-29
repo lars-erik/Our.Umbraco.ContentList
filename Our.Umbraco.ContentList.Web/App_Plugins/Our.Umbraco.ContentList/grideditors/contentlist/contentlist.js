@@ -69,12 +69,8 @@
         }
 
         function isValid() {
-            var i;
-            for (i = 0; i < scope.model.config.datasource.parameters.length; i++) {
-                if (!scope.model.config.datasource.parameters[i].value) {
-                    return false;
-                }
-            }
+            // TODO: Figure way to validate parameters
+
             if (!scope.model.config.datasource.type) {
                 return false;
             }
