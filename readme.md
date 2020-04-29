@@ -103,6 +103,10 @@ The component comes with four built-in data sources:
   - Lists all nodes found from the query, implementing IListableContent
 - Lucene query
   - As above, but using a native lucene query instead
+  - The lucene source can be mapped to a querystring phrase
+  - For a user-input search phrase, the "Lucene query" parameter
+    should be used to control or scope the user search.
+    The two queries will be anded together.
 
 Most data sources also have a sort parameter that orders by the listed items' property `SortOrder` 
 or the property exposed by the `SortDate` property.
@@ -208,6 +212,20 @@ The item *will* be of the given type, so it'll be safe to cast the model to a pr
 
 For example views, see the [Bootstrap 3 example](Our.Umbraco.ContentList.Web/Views/Partials/ContentList/NiceTheme/List.cshtml)
 and [Flexbox example](Our.Umbraco.ContentList.Web/Views/Partials/ContentList/FlexTheme/List.cshtml) in the source code.
+
+#### Limiting a theme to given data sources
+
+To limit a theme to a set of data sources, a `list.json` file can be added to the theme directory:
+
+{
+    "compatibleSources": [
+        "ListablesByLuceneDataSource",
+        "ListableByNodeDataSource"
+    ] 
+}
+
+As long as there are data source type names in the `compatibleSources` array,
+the theme will only be available for those data sources.
 
 ### Page Size
 
