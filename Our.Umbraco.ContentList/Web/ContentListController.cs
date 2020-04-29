@@ -108,6 +108,7 @@ namespace Our.Umbraco.ContentList.Web
             var model = new ContentListModel
             {
                 Items = data,
+                Query = query,
                 Configuration = configuration,
                 ColumnStyling = new ContentListColumnStyling(configuration.Columns),
                 Paging = CreatePagingModel(queryPaging, configuration, total),

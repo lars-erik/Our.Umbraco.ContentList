@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Our.Umbraco.ContentList.DataSources;
 
 namespace Our.Umbraco.ContentList.Web
 {
@@ -10,6 +11,7 @@ namespace Our.Umbraco.ContentList.Web
         public ContentListColumnStyling ColumnStyling { get; set; }
         public ContentListPaging Paging { get; set; }
         public string Hash { get; set; }
+        public ContentListQuery Query { get; set; }
     }
 
     public class ContentListPaging

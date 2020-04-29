@@ -624,6 +624,8 @@
     <Content Include="Views\Partials\ContentList\FlexTheme\List.cshtml" />
     <Content Include="Views\Partials\ContentList\FlexTheme\ListItem.cshtml" />
     <Content Include="Views\Partials\ContentList\NiceTheme\list.json" />
+    <Content Include="Views\Partials\ContentList\SearchResult\List.cshtml" />
+    <Content Include="Views\Partials\ContentList\SearchResult\list.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
