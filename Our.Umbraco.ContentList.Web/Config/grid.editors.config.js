@@ -54,7 +54,7 @@
         "icon": "icon-search",
         "config": {
             "style": "border-left: 3px solid #ccc; padding: 10px; color: #ccc; font-family: serif; font-style: italic; font-size: 18px",
-            "markup": "<form method=\"get\"><input name=\"#config.name#\" placeholder=\"#value#\"></form>",
+            "markup": "<form method=\"get\"><input name=\"#config.name#\" placeholder=\"#value#\"><button>Søk</button></form>",
             "settings": {
                 "name": {
                     "key": "name",

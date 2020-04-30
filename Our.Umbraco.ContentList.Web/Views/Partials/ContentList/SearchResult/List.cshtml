@@ -1,6 +1,21 @@
 ﻿@inherits UmbracoViewPage<ContentListModel>
 @using Our.Umbraco.ContentList.Web
 
+@{
+    var queryParameterKey = Model.Query.CustomParameters["queryParameter"];
+}
+@if (queryParameterKey != null)
+{ 
+<div>
+    <form class="form" role="form">
+        <div class="form-group">
+            <input type="text" class="form-control" name="@queryParameterKey" value="@Request.QueryString[queryParameterKey]" placeholder="Søk" /> <button class="btn"><i class="glyphicon glyphicon-search"></i></button>
+        </div>
+
+    </form>
+</div>
+}
+
 <div class="contentlist">
     @if (!Model.Items.Any())
     {

@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>Our.Umbraco.Community.ContentList</id>
-        <version>1.0.0-beta03</version>
+        <version>1.0.0-beta04</version>
         <authors>Lars-Erik Aabech</authors>
         <owners>Lars-Erik Aabech</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
