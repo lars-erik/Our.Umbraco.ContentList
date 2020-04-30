@@ -81,7 +81,15 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
 
         protected virtual IBooleanOperation CreatePhraseQuery(IBooleanOperation luceneQuery, string phrase)
         {
-            return luceneQuery.And().GroupedOr(searcher.GetAllIndexedFields(), phrase.Split(' '));
+            return luceneQuery.And()
+                .GroupedOr(
+                    searcher.GetAllIndexedFields(), 
+                    phrase.Split(' ').Select(x => (IExamineValue)new ExamineValue(Examineness.Boosted, x, 1.5f))
+                        .Union(
+                            phrase.Split(' ').Select(x => (IExamineValue)new ExamineValue(Examineness.SimpleWildcard, x + "*"))
+                        )
+                        .ToArray()
+                );
         }
     }
 
