@@ -633,6 +633,7 @@
     <Content Include="Views\Partials\ContentList\Rss\List.cshtml" />
     <Content Include="Views\Partials\ContentList\Rss\list.json" />
     <Content Include="Views\Partials\ContentList\Rss\ListItem.cshtml" />
+    <None Include="Views\Partials\ContentList\FlexTheme\list.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

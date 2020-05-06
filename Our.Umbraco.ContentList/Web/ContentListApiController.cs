@@ -93,6 +93,8 @@ namespace Our.Umbraco.ContentList.Web
                             list.CompatibleSources = sources.ToObject<string[]>();
                         }
                     }
+
+                    list.DisableColumnsSetting = content?.Value<bool>("disableColumnsSetting") ?? false;
                 }
                 catch
                 {

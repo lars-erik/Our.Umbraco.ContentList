@@ -218,12 +218,21 @@
         this.ds = {};
     })();
 
-    module.factory("our.umbraco.contentlist.currentDatasource",
-        [
-            function() {
-                return currentDataSource;
-            }
-        ]);
+    var currentTemplate = new (function () {
+        this.template = {};
+    })();
+
+    module.factory("our.umbraco.contentlist.currentDatasource", [
+        function() {
+            return currentDataSource;
+        }
+    ]);
+
+    module.factory("our.umbraco.contentlist.currentTemplate", [
+        function() {
+            return currentTemplate;
+        }
+    ]);
 
     module.controller("our.umbraco.contentlist.datasource.controller", [
         "$scope",
@@ -234,12 +243,17 @@
     module.controller("our.umbraco.contentlist.theme.controller", [
         "$scope",
         "our.umbraco.contentlist.currentDatasource",
-        function (scope, dsState) {
+        "our.umbraco.contentlist.currentTemplate",
+        function (scope, dsState, templateState) {
             var nameEx = /\.([^\.]+),/i,
                 getName = function(str) {
                     return ((str || "").match(nameEx) || [])[1];
                 };
-            
+
+            function findTemplate(name) {
+                return $.grep(scope.model.config.all, function (x) { return x.name === name; })[0];
+            }
+
             scope.dsState = dsState;
             scope.type = dsState.ds.type;
             scope.shortType = getName(scope.type);
@@ -251,7 +265,7 @@
                 });
 
             scope.shouldShow = function (item, i, a) {
-                var template = $.grep(scope.model.config.all, function (x) { return x.name === item.value; })[0];
+                var template = findTemplate(item.value);
                 if (template) {
                     if ((template.compatibleSources || []).length === 0) {
                         return true;
@@ -261,6 +275,24 @@
                 }
                 return true;
             };
+
+            scope.$watch("model.value",
+                function() {
+                    templateState.currentTemplate = findTemplate(scope.model.value);
+                });
+        }
+    ]);
+
+    module.controller("our.umbraco.contentlist.columnssettingcontroller", [
+        "$scope",
+        "our.umbraco.contentlist.currentTemplate",
+        function (scope, templateState) {
+            scope.templateState = templateState;
+            scope.supportColumns = true;
+            scope.$watch("templateState.currentTemplate",
+                function() {
+                    scope.supportColumns = !(templateState.currentTemplate || {}).disableColumnsSetting;
+                });
         }
     ]);
 

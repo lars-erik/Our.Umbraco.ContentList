@@ -17,7 +17,11 @@ namespace Our.Umbraco.ContentList.Web
 
         [JsonProperty("name")]
         public string Name { get; set; }
+        
         [JsonProperty("compatibleSources")]
         public string[] CompatibleSources { get; set; }
+
+        [JsonProperty("disableColumnsSetting")]
+        public bool DisableColumnsSetting { get; set; }
     }
 }

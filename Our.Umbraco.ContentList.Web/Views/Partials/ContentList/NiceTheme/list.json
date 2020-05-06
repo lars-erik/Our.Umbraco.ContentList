@@ -1,6 +1,7 @@
 {
     "compatibleSources": [
         "ListablesByLuceneDataSource",
-        "ListableByNodeDataSource"
+        "ListableByNodeDataSource",
+        "ListableChildrenDataSource"
     ] 
 }

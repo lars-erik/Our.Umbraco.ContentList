@@ -11,6 +11,11 @@ Features themable views and extensible data sources.
 
 `install-package Our.Umbraco.Community.ContentList -pre`
 
+### Plugins
+
+**RSS Feed:**  
+`install-package Our.Umbraco.ContentList.Rss -pre`
+
 ## Demo
 
 There's a [half an hour demo and tutorial over on youtube](https://youtu.be/7O6Es1SNf9s) for the more visually inclined learners.
@@ -217,15 +222,32 @@ and [Flexbox example](Our.Umbraco.ContentList.Web/Views/Partials/ContentList/Fle
 
 To limit a theme to a set of data sources, a `list.json` file can be added to the theme directory:
 
+```json
 {
     "compatibleSources": [
         "ListablesByLuceneDataSource",
         "ListableByNodeDataSource"
     ] 
 }
+```
 
 As long as there are data source type names in the `compatibleSources` array,
 the theme will only be available for those data sources.
+
+#### Disabling the columns setting for a theme
+
+For themes where `Model.ColumnStyling.*` aren't used, the columns setting won't do anything.  
+It is possible to turn it off by adding `"disableColumnsSetting": true` to the `list.json` file:  
+
+```json
+{
+    "compatibleSources": [
+    ],
+    "disableColumnsSetting": true
+}
+```
+
+Both config options are optional and can be completely omitted.
 
 ### Page Size
 
