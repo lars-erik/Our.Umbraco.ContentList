@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit.3.12.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" />
   <Import Project="..\packages\uSync.8.5.1\build\uSync.props" Condition="Exists('..\packages\uSync.8.5.1\build\uSync.props')" />
   <Import Project="..\packages\UmbracoCms.8.5.3\build\UmbracoCms.props" Condition="Exists('..\packages\UmbracoCms.8.5.3\build\UmbracoCms.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
@@ -163,6 +164,9 @@
     </Reference>
     <Reference Include="NPoco, Version=3.9.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NPoco.3.9.4\lib\net45\NPoco.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -626,6 +630,9 @@
     <Content Include="Views\Partials\ContentList\NiceTheme\list.json" />
     <Content Include="Views\Partials\ContentList\SearchResult\List.cshtml" />
     <Content Include="Views\Partials\ContentList\SearchResult\list.json" />
+    <Content Include="Views\Partials\ContentList\Rss\List.cshtml" />
+    <Content Include="Views\Partials\ContentList\Rss\list.json" />
+    <Content Include="Views\Partials\ContentList\Rss\ListItem.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -662,6 +669,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Our.Umbraco.ContentList.Rss\Our.Umbraco.ContentList.Rss.csproj">
+      <Project>{cc67f0fa-82cd-428e-ab16-c1d289389c06}</Project>
+      <Name>Our.Umbraco.ContentList.Rss</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Our.Umbraco.ContentList\Our.Umbraco.ContentList.csproj">
       <Project>{ecb32c86-99b9-4568-969d-0ad9b2580c93}</Project>
       <Name>Our.Umbraco.ContentList</Name>
@@ -704,6 +715,7 @@
     <Error Condition="!Exists('..\packages\UmbracoCms.8.5.3\build\UmbracoCms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\UmbracoCms.8.5.3\build\UmbracoCms.targets'))" />
     <Error Condition="!Exists('..\packages\uSync.8.5.1\build\uSync.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\uSync.8.5.1\build\uSync.props'))" />
     <Error Condition="!Exists('..\packages\uSync.8.5.1\build\uSync.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\uSync.8.5.1\build\uSync.targets'))" />
+    <Error Condition="!Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.12.0\build\NUnit.props'))" />
   </Target>
   <Import Project="..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.1\tools\AutoMapper.targets')" />
   <Import Project="..\packages\Umbraco.SqlServerCE.4.0.0.1\build\Umbraco.SqlServerCE.targets" Condition="Exists('..\packages\Umbraco.SqlServerCE.4.0.0.1\build\Umbraco.SqlServerCE.targets')" />

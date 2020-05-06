@@ -4,7 +4,7 @@ namespace Our.Umbraco.ContentList
 {
     public interface IPublicationMetadata
     {
-        IHtmlString Author
+        string Author
         {
             get;
         }

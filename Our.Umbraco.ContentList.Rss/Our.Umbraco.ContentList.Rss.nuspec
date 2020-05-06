@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+    <metadata>
+        <id>Our.Umbraco.ContentList.Rss</id>
+        <version>$version$</version>
+        <title>$title$</title>
+        <authors>Lars-Erik Aabech</authors>
+        <owners>Lars-Erik Aabech</owners>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <license type="expression">MIT</license>
+        <projectUrl>https://github.com/lars-erik/Our.Umbraco.ContentList</projectUrl>
+        <description>Adds an RSS data source to Our.Umbraco.Community.ContentList</description>
+        <releaseNotes></releaseNotes>
+        <copyright>Copyright © 2020 Lars-Erik Aabech</copyright>
+        <tags>Umbraco ContentList Productivity Rss</tags>
+        <dependencies>
+            <dependency id="Our.Umbraco.Community.ContentList.Core" version="[1.0.0-beta05,)"/>
+        </dependencies>
+    </metadata>
+</package>
