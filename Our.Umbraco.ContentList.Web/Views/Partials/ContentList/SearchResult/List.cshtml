@@ -8,8 +8,11 @@
 { 
 <div>
     <form class="form" role="form">
-        <div class="form-group">
-            <input type="text" class="form-control" name="@queryParameterKey" value="@Request.QueryString[queryParameterKey]" placeholder="Søk" /> <button class="btn"><i class="glyphicon glyphicon-search"></i></button>
+        <div class="input-group">
+            <input type="text" class="form-control" name="@queryParameterKey" value="@Request.QueryString[queryParameterKey]" placeholder="Søk" />
+            <span class="input-group-addon">
+                <button class="btn btn-xs"><i class="glyphicon glyphicon-search"></i></button>
+            </span>
         </div>
 
     </form>
