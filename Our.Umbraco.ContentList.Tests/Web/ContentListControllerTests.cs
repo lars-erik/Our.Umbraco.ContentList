@@ -37,13 +37,26 @@ namespace Our.Umbraco.ContentList.Tests.Web
             viewEngineMock = new Mock<IViewEngine>();
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(viewEngineMock.Object);
-            viewEngineMock
-                .Setup(v => v.FindPartialView(It.IsAny<ControllerContext>(), It.IsAny<string>(), It.IsAny<bool>()))
-               .Returns(new ViewEngineResult(new string[0]));
 
+            // First call for backwards compatible templates is not found in tests
+            StubNoTemplateFound();
+
+            // Second call for OSS version template is found
+            StubTemplateFound();
+        }
+
+        private void StubTemplateFound()
+        {
             viewEngineMock
                 .Setup(v => v.FindPartialView(It.IsAny<ControllerContext>(), It.IsAny<string>(), It.IsAny<bool>()))
                 .Returns(new ViewEngineResult(Mock.Of<IView>(), viewEngineMock.Object));
+        }
+
+        private void StubNoTemplateFound()
+        {
+            viewEngineMock
+                .Setup(v => v.FindPartialView(It.IsAny<ControllerContext>(), It.IsAny<string>(), It.IsAny<bool>()))
+                .Returns(new ViewEngineResult(new string[0]));
         }
 
         [Test]
@@ -125,7 +138,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
         public void Pages_Result()
         {
             var expectedData = new List<IPublishedContent>();
-            for(var i = 0; i<20; i++)
+            for (var i = 0; i < 20; i++)
                 expectedData.Add(StubListableContent().Object);
 
             var controller = CreateController(expectedData, "6oa2bs/RmP5oMC06vaLh8A=2");
@@ -152,7 +165,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
                 ShowPaging = true
             };
 
-            Assert.AreEqual(JsonConvert.SerializeObject(expectedPaging), JsonConvert.SerializeObject(model.Paging));            
+            Assert.AreEqual(JsonConvert.SerializeObject(expectedPaging), JsonConvert.SerializeObject(model.Paging));
         }
 
         [Test]
@@ -170,7 +183,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
                 ShowPaging = true
             };
 
-            Assert.AreEqual(JsonConvert.SerializeObject(expectedPaging), JsonConvert.SerializeObject(model.Paging));            
+            Assert.AreEqual(JsonConvert.SerializeObject(expectedPaging), JsonConvert.SerializeObject(model.Paging));
         }
 
         [Test]
@@ -188,7 +201,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
                 ShowPaging = true
             };
 
-            Assert.AreEqual(JsonConvert.SerializeObject(expectedPaging), JsonConvert.SerializeObject(model.Paging));            
+            Assert.AreEqual(JsonConvert.SerializeObject(expectedPaging), JsonConvert.SerializeObject(model.Paging));
         }
 
         [Test]
@@ -208,7 +221,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
             var controller = CreateController(children, configuration.CreateHash() + "=2", factory);
 
             controller.List(configuration);
-            
+
             Mock.Get(dataSource).Verify(s => s.Query(It.IsAny<ContentListQuery>(), Match.Create<QueryPaging>(p => ValidatePagingParameter(p, expectedSkip, expectedPageSize))));
         }
 
@@ -248,6 +261,45 @@ namespace Our.Umbraco.ContentList.Tests.Web
             Mock.Get(dataSource).Verify(s => s.Query(It.IsAny<ContentListQuery>(), Match.Create<QueryPaging>(p => p.PreSkip == 5)));
         }
 
+        [Test]
+        public void Handles_Incomplete_Configuration_Well()
+        {
+            Assert.Inconclusive("Really don't - throw nullrefs etc. JSON will (hopefully) 'always' have values.");
+        }
+
+        [Test]
+        public void Returns_Error_View_When_DataSource_Is_Blank()
+        {
+            var controller = CreateController(new List<IPublishedContent>(), "1", new ListableDataSourceFactory());
+            var parameters = new ContentListConfiguration() { DataSource = new ContentListDataSource { Type = "" } };
+
+            var result = controller.List(parameters);
+
+            Assert.That(result.ViewName, Contains.Substring("Errors.cshtml"));
+            Assert.That(result.Model, Is.EquivalentTo(new[]
+            {
+                "Couldn't find listable datasource ''"
+            }));
+        }
+
+        [Test]
+        public void Returns_Error_View_When_Template_Not_Found()
+        {
+            viewEngineMock.Reset();
+            StubNoTemplateFound();
+
+            var controller = CreateController(new List<IPublishedContent>(), "1", new ListableDataSourceFactory());
+            var parameters = new ContentListConfiguration() { DataSource = new ContentListDataSource { Type = typeof(ListableChildrenDataSource).AssemblyQualifiedName } };
+
+            var result = controller.List(parameters);
+
+            Assert.That(result.ViewName, Contains.Substring("Errors.cshtml"));
+            Assert.That(result.Model, Is.EquivalentTo(new[]
+            {
+                "No content list view called  found"
+            }));
+        }
+
         private static Mock<IPublishedContent> StubListableContent()
         {
             var listableContentStub = new Mock<IListableContent>().As<IPublishedContent>();
@@ -270,7 +322,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
             var controller = CreateController(children, query.CreateHash() + "=" + page);
 
             var result = controller.List(query);
-            var model = (ContentListModel) result.Model;
+            var model = (ContentListModel)result.Model;
             return model;
         }
 
@@ -286,7 +338,8 @@ namespace Our.Umbraco.ContentList.Tests.Web
         {
             var parameters = new ContentListConfiguration
             {
-                DataSource = new ContentListDataSource { 
+                DataSource = new ContentListDataSource
+                {
                     Type = typeof(ListableChildrenDataSource).FullName,
                     Parameters = new List<DataSourceParameterValue>()
                 },
@@ -309,11 +362,11 @@ namespace Our.Umbraco.ContentList.Tests.Web
                 Current.Logger,
                 Current.ProfilingLogger,
                 new UmbracoHelper(
-                    publishedContentMock.Object, 
-                    Mock.Of<ITagQuery>(), 
+                    publishedContentMock.Object,
+                    Mock.Of<ITagQuery>(),
                     Mock.Of<ICultureDictionaryFactory>(),
-                    Mock.Of<IUmbracoComponentRenderer>(), 
-                    Mock.Of<IPublishedContentQuery>(), 
+                    Mock.Of<IUmbracoComponentRenderer>(),
+                    Mock.Of<IPublishedContentQuery>(),
                     new MembershipHelper(
                         umbracoContext.HttpContext,
                         Mock.Of<IPublishedMemberCache>(),

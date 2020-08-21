@@ -12,7 +12,7 @@ namespace Our.Umbraco.ContentList.Web
     public class ContentListConfiguration
     {
         [JsonProperty("datasource")]
-        public ContentListDataSource DataSource { get; set; }
+        public ContentListDataSource DataSource { get; set; } = new ContentListDataSource();
         [JsonProperty("view")]
         public string View { get; set; }
         [JsonProperty("pagesize")]
@@ -20,7 +20,7 @@ namespace Our.Umbraco.ContentList.Web
         [JsonProperty("showPaging")]
         public bool ShowPaging { get; set; }
         [JsonProperty("columns")]
-        public ContentListColumns Columns { get; set; }
+        public ContentListColumns Columns { get; set; } = new ContentListColumns();
 
         [JsonProperty("skip")]
         public int Skip { get; set; }

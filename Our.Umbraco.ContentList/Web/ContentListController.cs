@@ -57,8 +57,18 @@ namespace Our.Umbraco.ContentList.Web
 
         public ViewResult List(ContentListConfiguration configuration)
         {
-            var contextContent = UmbracoContext.PublishedRequest.PublishedContent;
-            return List(configuration, contextContent);
+            try
+            {
+                var contextContent = UmbracoContext.PublishedRequest.PublishedContent;
+                return List(configuration, contextContent);
+            }
+            catch (Exception ex)
+            {
+                return View("~/App_Plugins/Our.Umbraco.ContentList/Views/ContentList/Errors.cshtml", new []
+                {
+                    ex.Message
+                });
+            }
         }
 
         public ActionResult Preview(PreviewContentListConfiguration configuration)
@@ -122,7 +132,7 @@ namespace Our.Umbraco.ContentList.Web
         private QueryPaging CreateQueryPaging(ContentListConfiguration configuration, long total)
         {
             var currentPage = FindPageParameter(configuration);
-            var maxPage = total / configuration.PageSize;
+            var maxPage = total / Math.Max(configuration.PageSize, 1);
             var zerobasePage = Math.Min(Math.Max(currentPage - 1, 0), maxPage);
             var querySkip = zerobasePage * configuration.PageSize;
             var pagingParameter = new QueryPaging(querySkip, configuration.PageSize, configuration.Skip);

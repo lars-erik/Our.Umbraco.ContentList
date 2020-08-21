@@ -479,6 +479,7 @@
     <Content Include="Config\Lang\zh-CN.user.xml" />
     <Content Include="Config\logviewer.searches.config.js" />
     <Content Include="App_Plugins\My.Custom.ContentList\package.manifest" />
+    <Content Include="App_Plugins\Our.Umbraco.ContentList\Views\ContentList\Errors.cshtml" />
     <None Include="Content\flexlist.less" />
     <Content Include="Content\flexlist.css">
       <DependentUpon>flexlist.less</DependentUpon>

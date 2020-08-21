@@ -31,7 +31,7 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
 
         public static IEnumerable<IListableContent> Apply(IEnumerable<IListableContent> listables, IDictionary<string, string> parameters)
         {
-            if (parameters.ContainsKey("sort") && sorters.ContainsKey(parameters["sort"]))
+            if (parameters.ContainsKey("sort") && sorters.ContainsKey(parameters["sort"] ?? ""))
             {
                 listables = sorters[parameters["sort"]](listables);
             }

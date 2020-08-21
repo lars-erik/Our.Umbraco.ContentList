@@ -14,7 +14,7 @@ namespace Our.Umbraco.ContentList.DataSources
         }
 
         public ContentListQuery(IPublishedContent contextContent, IEnumerable<IParameterValue> customParameters)
-            : this(contextContent, customParameters.ToDictionary(x => x.Key, x => x.Value))
+            : this(contextContent, customParameters?.ToDictionary(x => x.Key, x => x.Value))
         {
         }
 
