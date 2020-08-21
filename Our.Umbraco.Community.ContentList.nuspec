@@ -2,7 +2,7 @@
 <package >
     <metadata>
         <id>Our.Umbraco.Community.ContentList</id>
-        <version>1.0.0-beta06</version>
+        <version>1.0.0-beta07</version>
         <authors>Lars-Erik Aabech</authors>
         <owners>Lars-Erik Aabech</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -13,7 +13,7 @@
         <copyright>Copyright 2020 Lars-Erik Aabech</copyright>
         <tags>Umbraco ContentList Productivity</tags>
         <dependencies>
-            <dependency id="Our.Umbraco.Community.ContentList.Core" version="[1.0.0-beta06,)"/>
+            <dependency id="Our.Umbraco.Community.ContentList.Core" version="[1.0.0-beta07,)"/>
         </dependencies>
     </metadata>
     <files>
