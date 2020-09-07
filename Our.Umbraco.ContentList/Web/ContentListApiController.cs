@@ -94,6 +94,7 @@ namespace Our.Umbraco.ContentList.Web
                         }
                     }
 
+                    list.DisplayName = content?.Value<string>("displayName");
                     list.DisableColumnsSetting = content?.Value<bool>("disableColumnsSetting") ?? false;
                 }
                 catch

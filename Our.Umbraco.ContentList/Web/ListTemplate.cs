@@ -23,5 +23,8 @@ namespace Our.Umbraco.ContentList.Web
 
         [JsonProperty("disableColumnsSetting")]
         public bool DisableColumnsSetting { get; set; }
+
+        [JsonProperty("displayName")]
+        public string DisplayName { get; set; }
     }
 }

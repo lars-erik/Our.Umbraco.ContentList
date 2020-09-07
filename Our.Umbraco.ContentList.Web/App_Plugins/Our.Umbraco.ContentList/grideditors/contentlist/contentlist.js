@@ -56,7 +56,7 @@
 
         function templatesLoaded(templates) {
             scope.templates = templates;
-            scope.control.editor.config.settings.view.config.items = $.map(scope.templates, function (t) { return { id: t.name, value: t.name }; });
+            scope.control.editor.config.settings.view.config.items = $.map(scope.templates, function (t) { return { id: t.name, value: t.displayName || t.name  }; });
             scope.control.editor.config.settings.view.config.all= scope.templates;
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Web.Security;
 using Moq;
 using NUnit.Framework;
@@ -59,7 +60,7 @@ namespace Our.Umbraco.ContentList.Tests.Web
         private void AssertTemplates(string themePath, string[] expected)
         {
             var controller = CreateController(themePath);
-            var templates = controller.ListTemplates();
+            var templates = controller.ListTemplates().Select(x => x.Name);
             Assert.That(templates, Is.EquivalentTo(expected));
         }
 

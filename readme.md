@@ -249,6 +249,19 @@ It is possible to turn it off by adding `"disableColumnsSetting": true` to the `
 
 Both config options are optional and can be completely omitted.
 
+#### Showing a nice name for the theme
+
+For themes in need of a friendlier name than supported by folder names, the config setting `displayName`
+can be added to the `list.json` file:  
+
+```json
+{
+    "displayName": "Beautiful brand layout ™"
+}
+```
+
+Both config options are optional and can be completely omitted.
+
 ### Page Size
 
 Page size limits the count of items shown in a list. See also the "Show paging" parameter.
