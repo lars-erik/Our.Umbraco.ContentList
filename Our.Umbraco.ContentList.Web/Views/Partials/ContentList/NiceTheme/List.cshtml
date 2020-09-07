@@ -1,17 +1,11 @@
-﻿@inherits UmbracoViewPage<ContentListModel>
+@inherits UmbracoViewPage<ContentListModel>
 @using Our.Umbraco.ContentList.Web
 
-@functions
-{
-
-    public string Echo()
-    {
-        return "Echo... echo...";
-    }
-
+@{
+    var i = 0;
 }
 
-<div class="contentlist">
+<div class="contentlist blogg">
 @if (!Model.Items.Any())
 {
     if (UmbracoContext.IsFrontEndUmbracoRequest)
@@ -31,9 +25,28 @@
 
 @foreach(var item in Model.Items)
 {
-    <div class="@Model.ColumnStyling.ColumnClasses(" col-sm-", "col-md-" , "col-lg-" ) list-item @item.ContentTypeName ">
-        @Html.ContentListItem(item)
+
+    <div class="bloggInnlegg">
+        <div class="@Model.ColumnStyling.ColumnClasses(" col-sm-", "col-md-" , "col-lg-" ) list-item @item.ContentTypeName ">
+            @Html.ContentListItem(item)
+        </div>
     </div>
+    if (Model.ColumnStyling.IsLargeBreak(i))
+    {
+        <div class="clearfix visible-lg"></div>
+    }
+
+    if (Model.ColumnStyling.IsMediumBreak(i))
+    {
+        <div class="clearfix visible-md"></div>
+    }
+
+    if (Model.ColumnStyling.IsMediumBreak(i))
+    {
+        <div class="clearfix visible-sm"></div>
+    }
+
+    i++;
 }
     <div class="col-md-12">
         <nav>
@@ -41,4 +54,3 @@
         </nav>
     </div>
 </div>
-
