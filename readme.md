@@ -16,6 +16,12 @@ Features themable views and extensible data sources.
 **RSS Feed:**  
 `install-package Our.Umbraco.ContentList.Rss -pre`
 
+### Running this repo's web locally
+
+Clear the connection string and version setting.  
+Run the installer to set up a clean new database (ie. SQL CE).  
+Import everything using uSync under settings.
+
 ## Demo
 
 There's a [half an hour demo and tutorial over on youtube](https://youtu.be/7O6Es1SNf9s) for the more visually inclined learners.
