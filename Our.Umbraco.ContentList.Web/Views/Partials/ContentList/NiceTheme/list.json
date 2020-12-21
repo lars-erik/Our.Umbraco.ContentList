@@ -1,5 +1,6 @@
 {
     "compatibleSources": [
+        "MultiPickerDataSource",
         "ListablesByLuceneDataSource",
         "ListableByNodeDataSource",
         "ListableChildrenDataSource"
