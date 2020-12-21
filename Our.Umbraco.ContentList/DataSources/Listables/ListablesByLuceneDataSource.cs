@@ -86,7 +86,7 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
                     searcher.GetAllIndexedFields(), 
                     phrase.Split(' ').Select(x => (IExamineValue)new ExamineValue(Examineness.Boosted, x, 1.5f))
                         .Union(
-                            phrase.Split(' ').Select(x => (IExamineValue)new ExamineValue(Examineness.SimpleWildcard, x + "*"))
+                            phrase.Split(' ').Select(x => (IExamineValue)new ExamineValue(Examineness.ComplexWildcard, x))
                         )
                         .ToArray()
                 );
