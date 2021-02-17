@@ -1,5 +1,8 @@
 # Our Umbraco Content List
 
+![Nuget](https://img.shields.io/nuget/v/Our.Umbraco.Community.ContentList)
+![Nuget](https://img.shields.io/nuget/dt/Our.Umbraco.Community.ContentList)
+
 ## Overview
 
 An responsive content list component for the Umbraco grid.
