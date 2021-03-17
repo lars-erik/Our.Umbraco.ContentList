@@ -13,14 +13,14 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
     [DataSourceMetadata(typeof(ListablesByLuceneDataSourceMetadata))]
     public class ListablesByLuceneDataSource : IListableDataSource
     {
-        private readonly LuceneSearcher searcher;
-        private IPublishedContentCache contentCache;
+        protected readonly IExamineManager ExamineManager;
+        protected LuceneSearcher Searcher = null;
+        protected IPublishedContentCache ContentCache;
 
         public ListablesByLuceneDataSource(IExamineManager examineManager, IPublishedSnapshotAccessor snapshotAccessor)
         {
-            examineManager.TryGetIndex("ExternalIndex", out var index);
-            searcher = (LuceneSearcher)index.GetSearcher();
-            contentCache = snapshotAccessor.PublishedSnapshot.Content;
+            this.ExamineManager = examineManager;
+            ContentCache = snapshotAccessor.PublishedSnapshot.Content;
         }
 
         public IQueryable<IListableContent> Query(ContentListQuery query, QueryPaging queryPaging)
@@ -32,6 +32,7 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
                 .Take((int)queryPaging.Take)
                 .Select(GetContent)
                 .OfType<IListableContent>()
+                .ToList()
                 .AsQueryable()
                 ;
             return result;
@@ -42,13 +43,19 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
             return Search(query).TotalItemCount - preSkip;
         }
 
-        private IPublishedContent GetContent(ISearchResult r)
+        protected virtual object GetContent(ISearchResult r)
         {
-            return contentCache.GetById(Convert.ToInt32(r.Id));
+            return ContentCache.GetById(Convert.ToInt32(r.Id));
         }
 
         private ISearchResults Search(ContentListQuery query)
         {
+            if (Searcher == null)
+            {
+                ExamineManager.TryGetIndex(query.CustomParameters["index"].IfNullOrWhiteSpace("ExternalIndex"), out var index);
+                Searcher = (LuceneSearcher)index.GetSearcher();
+            }
+
             // Fields?
             var fullstringKey = query.CustomParameters["queryParameter"];
             var phrase = query.HttpContext.Request.QueryString[fullstringKey];
@@ -76,14 +83,14 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
 
         protected virtual IBooleanOperation CreateControlQuery(string controlQuery)
         {
-            return searcher.CreateQuery().NativeQuery(controlQuery);
+            return Searcher.CreateQuery().NativeQuery(controlQuery);
         }
 
         protected virtual IBooleanOperation CreatePhraseQuery(IBooleanOperation luceneQuery, string phrase)
         {
             return luceneQuery.And()
                 .GroupedOr(
-                    searcher.GetAllIndexedFields(), 
+                    Searcher.GetAllIndexedFields(),
                     phrase.Split(' ').Select(x => (IExamineValue)new ExamineValue(Examineness.Boosted, x, 1.5f))
                         .Union(
                             phrase.Split(' ').Select(x => (IExamineValue)new ExamineValue(Examineness.ComplexWildcard, x))
@@ -98,7 +105,7 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
         public ListablesByLuceneDataSourceMetadata()
         {
             Name = "Lucene Query";
-            Key = typeof (ListablesByLuceneDataSource).GetFullNameWithAssembly();
+            Key = typeof(ListablesByLuceneDataSource).GetFullNameWithAssembly();
             Parameters = new List<DataSourceParameterDefinition>
             {
                 new DataSourceParameterDefinition
@@ -106,6 +113,12 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
                     Key = "query",
                     Label = "Query",
                     View = "/Umbraco/views/propertyeditors/textarea/textarea.html"
+                },
+                new DataSourceParameterDefinition
+                {
+                    Key = "index",
+                    Label = "Examine Index Name",
+                    View = "/Umbraco/views/propertyeditors/textbox/textbox.html"
                 },
                 new DataSourceParameterDefinition
                 {
