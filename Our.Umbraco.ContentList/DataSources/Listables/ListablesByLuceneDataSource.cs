@@ -61,17 +61,18 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
             var phrase = query.HttpContext.Request.QueryString[fullstringKey];
             var showIfNoPhrase = query.CustomParameters.ContainsKey("showIfNoPhrase")
                                 && query.CustomParameters["showIfNoPhrase"] == "1";
+            var noFullStringKey = String.IsNullOrEmpty(fullstringKey);
             var hasPhrase = !String.IsNullOrWhiteSpace(phrase);
-            var shouldShow = showIfNoPhrase || hasPhrase;
+            var shouldShow = showIfNoPhrase || hasPhrase || noFullStringKey;
             var controlQuery = query.CustomParameters["query"];
 
             // Build lucene query
             if (shouldShow)
             {
-                var booleanQuery = CreateControlQuery(controlQuery);
+                IQueryExecutor booleanQuery = CreateControlQuery(controlQuery);
                 if (hasPhrase)
                 {
-                    booleanQuery = CreatePhraseQuery(booleanQuery, phrase);
+                    booleanQuery = CreatePhraseQuery((IBooleanOperation)booleanQuery, phrase);
                 }
 
                 var searchResults = booleanQuery.Execute();
@@ -86,7 +87,7 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
             return Searcher.CreateQuery().NativeQuery(controlQuery);
         }
 
-        protected virtual IBooleanOperation CreatePhraseQuery(IBooleanOperation luceneQuery, string phrase)
+        protected virtual IQueryExecutor CreatePhraseQuery(IBooleanOperation luceneQuery, string phrase)
         {
             return luceneQuery.And()
                 .GroupedOr(

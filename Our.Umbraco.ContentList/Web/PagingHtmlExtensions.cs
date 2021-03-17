@@ -85,7 +85,7 @@ namespace Our.Umbraco.ContentList.Web
                         otherParams != "" ? otherParams + "&" : ""
                         );
                 else
-                    builder.AppendFormat("<span>{0}</span>", i + 1);
+                    builder.AppendFormat("<a class=\"{0} active\">{1}</a>", anchorClasses, i + 1);
 
                 if (!itemElement.IsNullOrWhiteSpace())
                     builder.AppendFormat("</{0}>", itemElement);
