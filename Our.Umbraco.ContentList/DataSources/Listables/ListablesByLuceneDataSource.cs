@@ -30,7 +30,7 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
                 .Skip((int)queryPaging.PreSkip)
                 .Skip((int)queryPaging.Skip)
                 .Take((int)queryPaging.Take)
-                .Select(GetContent)
+                .Select(x => GetContent(x, query))
                 .OfType<IListableContent>()
                 .ToList()
                 .AsQueryable()
@@ -43,7 +43,7 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
             return Search(query).TotalItemCount - preSkip;
         }
 
-        protected virtual object GetContent(ISearchResult r)
+        protected virtual object GetContent(ISearchResult r, ContentListQuery query)
         {
             return ContentCache.GetById(Convert.ToInt32(r.Id));
         }
