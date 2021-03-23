@@ -39,7 +39,7 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
         {
             if (cachedResult == null)
             {
-                cachedResult = (query.CustomParameters["nodes"] ?? "")
+                cachedResult = (query.CustomParameter<string>("nodes") ?? "")
                     .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                     .Select(id => contentCache.GetById(Convert.ToInt32(id)))
                     .OfType<IListableContent>()

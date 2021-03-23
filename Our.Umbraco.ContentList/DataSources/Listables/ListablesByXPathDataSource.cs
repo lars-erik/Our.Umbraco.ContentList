@@ -34,7 +34,7 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
 
         private IEnumerable<IListableContent> Query(ContentListQuery query)
         {
-            var contents = contentCache.GetByXPath(query.CustomParameters["xpath"]);
+            var contents = contentCache.GetByXPath(query.CustomParameter<string>("xpath"));
             var listables = contents.OfType<IListableContent>().Where(c => c.IsVisible());
             return listables;
         }

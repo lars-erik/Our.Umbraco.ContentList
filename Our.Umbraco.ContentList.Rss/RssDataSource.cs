@@ -61,7 +61,7 @@ namespace Our.Umbraco.ContentList.Rss
 
         private async Task<Stream> GetStream(ContentListQuery query)
         {
-            var url = query.CustomParameters["url"];
+            var url = query.CustomParameter<string>("url");
             var response = await client.GetAsync(url);
             return await response.Content.ReadAsStreamAsync();
         }

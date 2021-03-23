@@ -40,7 +40,7 @@ namespace Our.Umbraco.ContentList.Web
         [JsonProperty("key")]
         public string Key { get; set; }
         [JsonProperty("value")]
-        public string Value { get; set; }
+        public object Value { get; set; }
     }
 
     [ModelBinder(typeof(JsonBinder))]

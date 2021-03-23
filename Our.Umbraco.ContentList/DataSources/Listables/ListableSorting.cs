@@ -29,11 +29,11 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
             {"datedesc", list => list.OrderByDescending(ContentDate)},
         };
 
-        public static IEnumerable<IListableContent> Apply(IEnumerable<IListableContent> listables, IDictionary<string, string> parameters)
+        public static IEnumerable<IListableContent> Apply(IEnumerable<IListableContent> listables, IDictionary<string, object> parameters)
         {
-            if (parameters.ContainsKey("sort") && sorters.ContainsKey(parameters["sort"] ?? ""))
+            if (parameters.ContainsKey("sort") && sorters.ContainsKey(parameters["sort"]?.ToString() ?? ""))
             {
-                listables = sorters[parameters["sort"]](listables);
+                listables = sorters[parameters["sort"].ToString()](listables);
             }
             return listables;
         }

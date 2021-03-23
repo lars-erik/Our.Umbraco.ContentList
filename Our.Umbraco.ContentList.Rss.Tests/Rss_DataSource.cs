@@ -22,7 +22,7 @@ namespace Our.Umbraco.ContentList.Rss.Tests
     public class Rss_DataSource
     {
         private readonly ContentListQuery query = new ContentListQuery(
-            Mock.Of<IPublishedContent>(), new Dictionary<string, string>
+            Mock.Of<IPublishedContent>(), new Dictionary<string, object>
             {
                 {"url", "https://blog.aabech.no/rss"}
             }

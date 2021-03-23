@@ -3,6 +3,6 @@
     public interface IParameterValue
     {
         string Key { get; set; }
-        string Value { get; set; }
+        object Value { get; set; }
     }
 }

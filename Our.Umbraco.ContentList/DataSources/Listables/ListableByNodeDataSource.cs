@@ -36,7 +36,7 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
 
         private IEnumerable<IListableContent> BaseQuery(ContentListQuery query, int preSkip)
         {
-            if (Udi.TryParse(query.CustomParameters["parentNode"], out var contentId))
+            if (Udi.TryParse(query.CustomParameter<string>("parentNode"), out var contentId))
             {
                 // TODO: Inject
                 var content = contentCache.GetById(contentId);

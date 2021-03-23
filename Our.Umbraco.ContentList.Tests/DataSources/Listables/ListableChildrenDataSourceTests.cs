@@ -80,7 +80,7 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.Listables
             #endregion
 
             var dataSource = new ListableChildrenDataSource();
-            var result = dataSource.Query(new ContentListQuery(contextContentMock.Object, new Dictionary<string, string> { { "sort", parameter } }), new QueryPaging());
+            var result = dataSource.Query(new ContentListQuery(contextContentMock.Object, new Dictionary<string, object> { { "sort", parameter } }), new QueryPaging());
 
             Assert.That(result.First().ListHeading, Is.EqualTo(expectedFirstTitle));
         }

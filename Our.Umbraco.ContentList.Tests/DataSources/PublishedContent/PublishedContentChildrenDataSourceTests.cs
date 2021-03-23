@@ -56,7 +56,7 @@ namespace Our.Umbraco.ContentList.Tests.DataSources.PublishedContent
 
             #endregion
 
-            var dataSource = new PublishedContentChildrenDataSource(new ContentListQuery(contextContentMock.Object, new Dictionary<string, string> { { "sort", parameter } }));
+            var dataSource = new PublishedContentChildrenDataSource(new ContentListQuery(contextContentMock.Object, new Dictionary<string, object> { { "sort", parameter } }));
             var result = dataSource.Query(new QueryPaging());
 
             Assert.That(result.First().Name, Is.EqualTo(expectedFirstTitle));

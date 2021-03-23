@@ -38,6 +38,11 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
             return result;
         }
 
+        protected virtual void PrepareQuery(ContentListQuery query)
+        {
+            
+        }
+
         public long Count(ContentListQuery query, long preSkip)
         {
             return Search(query).TotalItemCount - preSkip;
@@ -52,28 +57,25 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
         {
             if (Searcher == null)
             {
-                ExamineManager.TryGetIndex(query.CustomParameters["index"].IfNullOrWhiteSpace("ExternalIndex"), out var index);
+                PrepareQuery(query);
+                ExamineManager.TryGetIndex(query.CustomParameter<string>("index").IfNullOrWhiteSpace("ExternalIndex"), out var index);
                 Searcher = (LuceneSearcher)index.GetSearcher();
             }
 
-            // Fields?
-            var fullstringKey = query.CustomParameters["queryParameter"];
+            // TODO: Fields? Extract individual class per operation? (See dupe in createphrase...)
+            var fullstringKey = query.CustomParameter<string>("queryParameter");
             var phrase = query.HttpContext.Request.QueryString[fullstringKey];
             var showIfNoPhrase = query.CustomParameters.ContainsKey("showIfNoPhrase")
-                                && query.CustomParameters["showIfNoPhrase"] == "1";
+                                && query.CustomParameter<string>("showIfNoPhrase") == "1";
             var noFullStringKey = String.IsNullOrEmpty(fullstringKey);
             var hasPhrase = !String.IsNullOrWhiteSpace(phrase);
             var shouldShow = showIfNoPhrase || hasPhrase || noFullStringKey;
-            var controlQuery = query.CustomParameters["query"];
 
             // Build lucene query
             if (shouldShow)
             {
-                IQueryExecutor booleanQuery = CreateControlQuery(controlQuery);
-                if (hasPhrase)
-                {
-                    booleanQuery = CreatePhraseQuery((IBooleanOperation)booleanQuery, phrase);
-                }
+                IQueryExecutor booleanQuery = CreateControlQuery(query);
+                booleanQuery = CreatePhraseQuery((IBooleanOperation)booleanQuery, query);
 
                 var searchResults = booleanQuery.Execute();
                 return searchResults;
@@ -82,22 +84,31 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
             return EmptySearchResults.Instance;
         }
 
-        protected virtual IBooleanOperation CreateControlQuery(string controlQuery)
+        protected virtual IBooleanOperation CreateControlQuery(ContentListQuery query)
         {
-            return Searcher.CreateQuery().NativeQuery(controlQuery);
+            return Searcher.CreateQuery().NativeQuery(query.CustomParameter<string>("query"));
         }
 
-        protected virtual IQueryExecutor CreatePhraseQuery(IBooleanOperation luceneQuery, string phrase)
+        protected virtual IQueryExecutor CreatePhraseQuery(IBooleanOperation luceneQuery, ContentListQuery query)
         {
-            return luceneQuery.And()
-                .GroupedOr(
-                    Searcher.GetAllIndexedFields(),
-                    phrase.Split(' ').Select(x => (IExamineValue)new ExamineValue(Examineness.Boosted, x, 1.5f))
-                        .Union(
-                            phrase.Split(' ').Select(x => (IExamineValue)new ExamineValue(Examineness.ComplexWildcard, x))
-                        )
-                        .ToArray()
-                );
+            var fullstringKey = query.CustomParameter<string>("queryParameter");
+            var phrase = query.HttpContext.Request.QueryString[fullstringKey];
+            var hasPhrase = !String.IsNullOrWhiteSpace(phrase);
+            if (hasPhrase)
+            {
+                luceneQuery = luceneQuery.And()
+                    .GroupedOr(
+                        Searcher.GetAllIndexedFields(),
+                        phrase.Split(' ').Select(x => (IExamineValue) new ExamineValue(Examineness.Boosted, x, 1.5f))
+                            .Union(
+                                phrase.Split(' ').Select(x =>
+                                    (IExamineValue) new ExamineValue(Examineness.ComplexWildcard, x))
+                            )
+                            .ToArray()
+                    );
+            }
+
+            return luceneQuery;
         }
     }
 

@@ -23,21 +23,33 @@ namespace Our.Umbraco.ContentList.DataSources
         {
         }
 
-        public ContentListQuery(IDictionary<string, string> customParameters)
+        public ContentListQuery(IDictionary<string, object> customParameters)
             : this(null, customParameters)
         {
         }
 
-        public ContentListQuery(IPublishedContent contextContent, IDictionary<string, string> customParameters)
+        public ContentListQuery(IPublishedContent contextContent, IDictionary<string, object> customParameters)
         {
             ContextContent = contextContent;
             CustomParameters = customParameters;
         }
 
         public IPublishedContent ContextContent { get; set; }
-        
+
         public HttpContextBase HttpContext { get; set; }
 
-        public IDictionary<string, string> CustomParameters { get; set; }
+        public IDictionary<string, object> CustomParameters { get; set; }
+
+        public T CustomParameter<T>(string key)
+        {
+            try
+            {
+                return (T)CustomParameters[key];
+            }
+            catch
+            {
+                return default;
+            }
+        }
     }
 }
