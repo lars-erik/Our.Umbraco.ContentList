@@ -64,6 +64,7 @@ namespace Our.Umbraco.ContentList.Web
             }
             catch (Exception ex)
             {
+                Logger.Error(typeof(ContentListController), ex);
                 return View("~/App_Plugins/Our.Umbraco.ContentList/Views/ContentList/Errors.cshtml", new []
                 {
                     ex.Message

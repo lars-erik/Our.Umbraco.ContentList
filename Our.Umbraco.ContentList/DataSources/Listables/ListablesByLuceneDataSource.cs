@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using Examine;
 using Examine.LuceneEngine.Providers;
@@ -16,6 +17,8 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
         protected readonly IExamineManager ExamineManager;
         protected LuceneSearcher Searcher = null;
         protected IPublishedContentCache ContentCache;
+
+        protected string[] SearchFields = new string[0];
 
         public ListablesByLuceneDataSource(IExamineManager examineManager, IPublishedSnapshotAccessor snapshotAccessor)
         {
@@ -40,7 +43,7 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
 
         protected virtual void PrepareQuery(ContentListQuery query)
         {
-            
+
         }
 
         public long Count(ContentListQuery query, long preSkip)
@@ -55,11 +58,23 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
 
         private ISearchResults Search(ContentListQuery query)
         {
+            var indexName = query.CustomParameter<string>("index").IfNullOrWhiteSpace(Constants.UmbracoIndexes.ExternalIndexName);
             if (Searcher == null)
             {
                 PrepareQuery(query);
-                ExamineManager.TryGetIndex(query.CustomParameter<string>("index").IfNullOrWhiteSpace("ExternalIndex"), out var index);
+                ExamineManager.TryGetIndex(indexName, out var index);
                 Searcher = (LuceneSearcher)index.GetSearcher();
+            }
+
+            SearchFields = Searcher.GetAllIndexedFields();
+            var filter = ConfigurationManager.AppSettings["Our.Umbraco.ContentList.SearchFields." + indexName];
+            if (filter != null)
+            {
+                var includedFields = filter.Split(new[] {',', ' '}, StringSplitOptions.RemoveEmptyEntries);
+                if (includedFields.Any())
+                {
+                    SearchFields = SearchFields.Intersect(includedFields).ToArray();
+                }
             }
 
             // TODO: Fields? Extract individual class per operation? (See dupe in createphrase...)
@@ -96,13 +111,14 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
             var hasPhrase = !String.IsNullOrWhiteSpace(phrase);
             if (hasPhrase)
             {
+                var terms = phrase.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 luceneQuery = luceneQuery.And()
                     .GroupedOr(
-                        Searcher.GetAllIndexedFields(),
-                        phrase.Split(' ').Select(x => (IExamineValue) new ExamineValue(Examineness.Boosted, x, 1.5f))
+                        SearchFields,
+                        terms.Select(x => (IExamineValue)new ExamineValue(Examineness.Boosted, x, 1.5f))
                             .Union(
-                                phrase.Split(' ').Select(x =>
-                                    (IExamineValue) new ExamineValue(Examineness.ComplexWildcard, x))
+                                terms.Select(x =>
+                                    (IExamineValue)new ExamineValue(Examineness.ComplexWildcard, x))
                             )
                             .ToArray()
                     );
