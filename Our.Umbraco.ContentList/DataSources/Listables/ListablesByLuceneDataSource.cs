@@ -58,10 +58,11 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
 
         private ISearchResults Search(ContentListQuery query)
         {
+            PrepareQuery(query);
+
             var indexName = query.CustomParameter<string>("index").IfNullOrWhiteSpace(Constants.UmbracoIndexes.ExternalIndexName);
             if (Searcher == null)
             {
-                PrepareQuery(query);
                 ExamineManager.TryGetIndex(indexName, out var index);
                 Searcher = (LuceneSearcher)index.GetSearcher();
             }

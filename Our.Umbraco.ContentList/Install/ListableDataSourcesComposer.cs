@@ -31,7 +31,7 @@ namespace Our.Umbraco.ContentList.Install
     {
         protected override ListableDataSourceCollectionBuilder This => this;
 
-        protected override Lifetime CollectionLifetime => Lifetime.Request;
+        protected override Lifetime CollectionLifetime => Lifetime.Transient;
     }
 
     public class ListableDataSourceCollection : BuilderCollectionBase<IListableDataSource>
