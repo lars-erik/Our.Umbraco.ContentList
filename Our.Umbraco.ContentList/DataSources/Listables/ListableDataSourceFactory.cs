@@ -9,7 +9,6 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
     public class ListableDataSourceFactory
     {
         static readonly object LockObj = new object();
-        private static List<DataSourceMetadata> datasources;
 
         public virtual IListableDataSource Create(string key)
         {
@@ -33,18 +32,12 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
 
         public static List<DataSourceMetadata> GetDataSources()
         {
-            lock(LockObj)
-            {
-                if (datasources != null)
-                    return datasources;
-
-                // TODO: Should we be able to access IRegister?
-                var listableDataSourceTypes = Current.Factory
-                    .GetAllInstances<IListableDataSource>()
-                    .Select(x => x.GetType());
-                datasources = listableDataSourceTypes.Select(FindMetadata).ToList();
-                return datasources;
-            }
+            // TODO: Should we be able to access IRegister?
+            var listableDataSourceTypes = Current.Factory
+                .GetAllInstances<IListableDataSource>()
+                .Select(x => x.GetType());
+            var dataSources = listableDataSourceTypes.Select(FindMetadata).ToList();
+            return dataSources;
         }
 
         private static DataSourceMetadata FindMetadata(Type type)
