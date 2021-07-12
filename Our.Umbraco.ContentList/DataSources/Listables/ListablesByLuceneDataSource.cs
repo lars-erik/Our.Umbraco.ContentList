@@ -100,9 +100,16 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
             return EmptySearchResults.Instance;
         }
 
-        protected virtual IBooleanOperation CreateControlQuery(ContentListQuery query)
+        protected virtual IQueryExecutor CreateControlQuery(ContentListQuery query)
         {
-            return Searcher.CreateQuery().NativeQuery(query.CustomParameter<string>("query"));
+            var controlQueryText = query.CustomParameter<string>("query");
+            var luceneQuery = Searcher.CreateQuery();
+            if (String.IsNullOrWhiteSpace(controlQueryText))
+            {
+                return luceneQuery.NativeQuery("*:*");
+            }
+            return luceneQuery.NativeQuery(controlQueryText);
+
         }
 
         protected virtual IQueryExecutor CreatePhraseQuery(IBooleanOperation luceneQuery, ContentListQuery query)
