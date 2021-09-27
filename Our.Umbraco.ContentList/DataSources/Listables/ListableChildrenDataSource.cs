@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Our.Umbraco.ContentList.Web;
 using Umbraco.Core;
+using Umbraco.Core.Composing;
 using Umbraco.Core.Models;
+using Umbraco.Core.Services;
 
 namespace Our.Umbraco.ContentList.DataSources.Listables
 {
@@ -20,7 +22,9 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
 
             if (query.ContextContent == null)
                 return new List<IListableContent>().AsQueryable();
-            var listables = query.ContextContent.Children.OfType<IListableContent>().Where(c => c.IsVisible());
+
+            var culture = LanguageParameter.Culture(query);
+            var listables = query.ContextContent.Children(culture).OfType<IListableContent>().Where(c => c.IsVisible());
             listables = ListableSorting.Apply(listables, query.CustomParameters);
             listables = listables.Skip((int)queryPaging.PreSkip).Skip((int)queryPaging.Skip).Take((int)queryPaging.Take);
             return listables.AsQueryable();
@@ -50,6 +54,8 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
             {
                 ListableSorting.Parameter
             };
+
+            LanguageParameter.Add(Parameters);
         }
     }
 }

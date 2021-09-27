@@ -36,12 +36,14 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
 
         private IEnumerable<IListableContent> BaseQuery(ContentListQuery query, int preSkip)
         {
+            var culture = LanguageParameter.Culture(query);
+
             if (Udi.TryParse(query.CustomParameter<string>("parentNode"), out var contentId))
             {
                 // TODO: Inject
                 var content = contentCache.GetById(contentId);
                 return content
-                    .Children
+                    .Children(culture)
                     .OfType<IListableContent>()
                     .Skip(preSkip);
             }
@@ -65,6 +67,8 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
                 },
                 ListableSorting.Parameter
             };
+
+            LanguageParameter.Add(Parameters);
         }
 
     }
