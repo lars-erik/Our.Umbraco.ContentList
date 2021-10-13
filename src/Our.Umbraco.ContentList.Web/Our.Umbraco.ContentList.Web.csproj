@@ -28,6 +28,10 @@
         <Compile Include="umbraco/models/**" Exclude="**/*.flag" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Our.Umbraco.ContentList.WebModels\Our.Umbraco.ContentList.WebModels.csproj" />
+    </ItemGroup>
+
     <PropertyGroup>
         <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
     </PropertyGroup>

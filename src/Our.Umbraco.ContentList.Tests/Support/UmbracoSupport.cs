@@ -21,6 +21,7 @@ using Umbraco.Cms.Infrastructure.PublishedCache;
 using Umbraco.Cms.Tests.Common;
 using Umbraco.Cms.Tests.Common.Testing;
 using Umbraco.Cms.Tests.Integration.Testing;
+using Umbraco.Cms.Web.Common.DependencyInjection;
 using Umbraco.Extensions;
 
 namespace Our.Umbraco.ContentList.Tests.Support
@@ -29,6 +30,7 @@ namespace Our.Umbraco.ContentList.Tests.Support
     public class UmbracoSupport : UmbracoIntegrationTest
     {
         private readonly BPlusTree<int, ContentNodeKit> localDb;
+        private readonly Action<IDataTypeService, IContentTypeService> setupContentTypes;
         private IPublishedSnapshot publishedSnapshot;
         private IPublishedSnapshotAccessor publishedSnapshotAccessor;
         private FakeDataTypeService dataTypeService;
@@ -36,15 +38,24 @@ namespace Our.Umbraco.ContentList.Tests.Support
         private ContentStore contentStore;
         private TestVariationContextAccessor variationContextAccessor;
 
-        public UmbracoSupport(BPlusTree<int, ContentNodeKit> localDb = null)
+        public UmbracoSupport(BPlusTree<int, ContentNodeKit> localDb = null, Action<IDataTypeService, IContentTypeService> setupContentTypes = null)
         {
             this.localDb = localDb;
+            this.setupContentTypes = setupContentTypes;
         }
 
         public override void Setup()
         {
             base.Setup();
             SetupRequest();
+
+            StaticServiceProvider.Instance = Services;
+
+            if (setupContentTypes != null)
+            {
+                setupContentTypes(GetService<IDataTypeService>(), GetService<IContentTypeService>());
+                SetupContentCache();
+            }
         }
 
         public T GetService<T>()
@@ -122,7 +133,7 @@ namespace Our.Umbraco.ContentList.Tests.Support
 
             variationContextAccessor = new TestVariationContextAccessor();
             variationContextAccessor.VariationContext = new VariationContext();
-            services.AddSingleton<IVariationContextAccessor>(variationContextAccessor);
+                services.AddSingleton<IVariationContextAccessor>(variationContextAccessor);
 
             var snapshotService = new FakePublishedSnapshotService(publishedSnapshot);
             services.AddSingleton<IPublishedSnapshotService>(snapshotService);

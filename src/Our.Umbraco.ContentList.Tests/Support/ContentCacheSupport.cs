@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSharpTest.Net.Collections;
+using Newtonsoft.Json;
 using Umbraco.Cms.Core.Configuration.Models;
 using Umbraco.Cms.Infrastructure.PublishedCache;
 using Umbraco.Cms.Infrastructure.PublishedCache.DataSource;
@@ -25,6 +26,20 @@ namespace Our.Umbraco.ContentList.Tests.Support
         {
             var allContent = BTree.GetTree(path, true, new NuCacheSettings());
             return allContent;
+        }
+
+        public BPlusTree<int, ContentNodeKit> GetFromJsonResource(string resourceName)
+        {
+            using var resource = typeof(ContentCacheSupport).Assembly.GetManifestResourceStream(resourceName);
+            using var reader = new StreamReader(resource);
+            var json = reader.ReadToEnd();
+            var content = JsonConvert.DeserializeObject<Dictionary<int, ContentNodeKit>>(
+                json,
+                new ContentNodeSerializer()
+            );
+            var tree = new BPlusTree<int, ContentNodeKit>();
+            tree.AddRange(content);
+            return tree;
         }
     }
 }
