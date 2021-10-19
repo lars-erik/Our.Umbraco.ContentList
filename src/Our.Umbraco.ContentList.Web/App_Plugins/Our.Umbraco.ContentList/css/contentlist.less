@@ -1,0 +1,103 @@
+﻿.block() {
+    display: block;
+    overflow: hidden;
+}
+
+.column() {
+    display: inline-block;
+    float: left;
+}
+
+.umb-editors {
+    .contentlist-datasource-property {
+        .parameters-property {
+            position: relative !important;
+
+            .umb-editor {
+                background-color: transparent;
+                position: relative !important;
+                box-shadow: 0 0 0 0 !important;
+            }
+        }
+
+        .inner-property {
+            position: relative !important;
+            padding-bottom: 20px;
+
+            .umb-editor {
+                background-color: transparent;
+                position: relative !important;
+                box-shadow: 0 0 0 0 !important;
+            }
+        }
+
+        label.control-label {
+            float: none;
+        }
+    }
+}
+
+.our-content-list {
+
+    .new-contentlist {
+        min-height: 100px;
+        text-align: center;
+        padding-top: 30px;
+        cursor: pointer;
+
+        a:focus, a:hover {
+            text-decoration: none;
+        }
+    }
+
+    .preview {
+
+        .row {
+            .block();
+        }
+
+        .gutter {
+            .block();
+            padding: 15px;
+        }
+
+        .col-md-1 {
+            .column();
+            width: 8.33%;
+        }
+
+        .col-md-2 {
+            .column();
+            width: 16.66%;
+        }
+
+        .col-md-3 {
+            .column();
+            width: 25%;
+        }
+
+        .col-md-4 {
+            .column();
+            width: 33%;
+        }
+
+        .col-md-6 {
+            .column();
+            width: 50%;
+        }
+
+        .col-md-12 {
+            .column();
+            width: 100%;
+        }
+
+        .pagination {
+            li {
+                display: inline-block;
+                float: left;
+                border: 1px solid gray;
+                padding: 5px;
+            }
+        }
+    }
+}

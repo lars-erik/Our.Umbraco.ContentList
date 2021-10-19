@@ -1,0 +1,18 @@
+﻿{
+  "javascript": [
+    "~/App_Plugins/Our.Umbraco.ContentList/grideditors/contentlist/contentlist.js"
+  ],
+  "css": [
+    "~/App_Plugins/Our.Umbraco.ContentList/css/contentlist.css"
+  ],
+  "gridEditors": [
+    {
+      "name": "Content List",
+      "alias": "content.list",
+      "view": "~/App_Plugins/Our.Umbraco.ContentList/grideditors/contentlist/contentlist.html",
+      "render": "~/App_Plugins/Our.Umbraco.ContentList/Views/ContentList/ContentList.cshtml",
+      "icon": "icon-list",
+      "config": { "settings": {} }
+    }
+  ]
+}

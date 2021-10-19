@@ -1,0 +1,11 @@
+﻿<div ng-controller="our.umbraco.contentlist.parameters.controller" class="contentlist-parameter-list">
+    <div class="inner-property" ng-repeat="property in model.config.items">
+        <umb-property property="property">
+            <div style="position: relative;">
+                <umb-editor model="property" is-pre-value="true"></umb-editor>
+            </div>
+        </umb-property>
+    </div>
+
+</div>
+
