@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="approvaltests" Version="5.7.1" />
     <PackageReference Include="Umbraco.Cms.Tests.Integration" Version="9.0.1" />
 
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />

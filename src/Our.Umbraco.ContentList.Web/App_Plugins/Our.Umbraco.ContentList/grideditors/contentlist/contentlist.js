@@ -114,7 +114,7 @@
     function createDataSourceService(q, http, requestHelper) {
         return {
             getDataSources: function () {
-                var url = requestHelper.getApiUrl("Our.Umbraco.ContentList.Web.DataSources.ListableDataSource", "GetDataSources"),
+                var url = requestHelper.getApiUrl("Our.Umbraco.ContentList.Controllers.ContentListApi", "GetDataSources"),
                     def = q.defer();
 
                 http.get(url)
@@ -130,7 +130,7 @@
     function createTemplatesService(q, http, requestHelper) {
         return {
             getTemplates: function () {
-                var url = requestHelper.getApiUrl("Our.Umbraco.ContentList.Web.ContentListApi", "ListTemplates"),
+                var url = requestHelper.getApiUrl("Our.Umbraco.ContentList.Controllers.ContentListApi", "ListTemplates"),
                     def = q.defer();
 
                 http.get(url)
