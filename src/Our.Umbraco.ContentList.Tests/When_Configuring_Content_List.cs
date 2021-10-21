@@ -18,6 +18,7 @@ using Our.Umbraco.ContentList.Tests.Support;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
+using Umbraco.Cms.Core.Hosting;
 using Umbraco.Cms.Core.Logging;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Tests.Integration.Implementations;
@@ -26,7 +27,7 @@ namespace Our.Umbraco.ContentList.Tests
 {
     [TestFixture]
     [UseReporter(typeof(VisualStudioReporter))]
-    public class When_Enumerating_DataSources
+    public class When_Configuring_Content_List
     {
         private UmbracoSupport support;
         private ContentListApiController controller;
@@ -51,6 +52,9 @@ namespace Our.Umbraco.ContentList.Tests
 
             services.AddSingleton(typeof(ILocalizationService), Mock.Of<ILocalizationService>());
             services.AddTransient(typeof(ContentListApiController));
+            var hostingEnvironment = Mock.Of<IHostingEnvironment>();
+            services.AddSingleton(typeof(IHostingEnvironment), hostingEnvironment);
+            Mock.Get(hostingEnvironment).Setup(x => x.MapPathWebRoot(It.IsAny<string>())).Returns("/");
 
             builder.Build();
 
@@ -66,11 +70,19 @@ namespace Our.Umbraco.ContentList.Tests
         }
 
         [Test]
-        public void Shows_Registered_DataSource_Metadata()
+        public void Shows_Registered_DataSources()
         {
             var sourceTypes = controller.GetDataSources();
             
             Approvals.VerifyAll("Source types", sourceTypes, x => $"{x.Name,-30}{x.Key}");
+        }
+
+        [Test]
+        public void Shows_Sample_Template_When_None_Exist()
+        {
+            var sourceTypes = controller.GetTemplates();
+            
+            Approvals.VerifyAll("Templates", sourceTypes, x => $"{x.Name,-30}{x.DisplayName}");
         }
     }
 }

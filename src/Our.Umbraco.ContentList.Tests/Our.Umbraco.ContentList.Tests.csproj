@@ -26,4 +26,10 @@
     <ProjectReference Include="..\Our.Umbraco.ContentList\Our.Umbraco.ContentList.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="When_Configuring_Content_List.Shows_Registered_DataSource_Metadata.approved.txt">
+      <DependentUpon>When_Configuring_Content_List.cs</DependentUpon>
+    </None>
+  </ItemGroup>
+
 </Project>

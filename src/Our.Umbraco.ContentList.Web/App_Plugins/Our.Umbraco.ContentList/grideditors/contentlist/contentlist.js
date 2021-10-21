@@ -130,7 +130,7 @@
     function createTemplatesService(q, http, requestHelper) {
         return {
             getTemplates: function () {
-                var url = requestHelper.getApiUrl("Our.Umbraco.ContentList.Controllers.ContentListApi", "ListTemplates"),
+                var url = requestHelper.getApiUrl("Our.Umbraco.ContentList.Controllers.ContentListApi", "GetTemplates"),
                     def = q.defer();
 
                 http.get(url)
