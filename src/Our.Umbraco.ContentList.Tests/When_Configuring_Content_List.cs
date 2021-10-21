@@ -30,7 +30,8 @@ namespace Our.Umbraco.ContentList.Tests
     public class When_Configuring_Content_List
     {
         private UmbracoSupport support;
-        private ContentListApiController controller;
+        private IHostingEnvironment hostingEnvironment;
+        private ServiceProvider provider;
 
         [SetUp]
         public void Setup()
@@ -52,15 +53,12 @@ namespace Our.Umbraco.ContentList.Tests
 
             services.AddSingleton(typeof(ILocalizationService), Mock.Of<ILocalizationService>());
             services.AddTransient(typeof(ContentListApiController));
-            var hostingEnvironment = Mock.Of<IHostingEnvironment>();
+            hostingEnvironment = Mock.Of<IHostingEnvironment>();
             services.AddSingleton(typeof(IHostingEnvironment), hostingEnvironment);
-            Mock.Get(hostingEnvironment).Setup(x => x.MapPathWebRoot(It.IsAny<string>())).Returns("/");
 
             builder.Build();
 
-            var provider = services.BuildServiceProvider();
-
-            controller = provider.GetService<ContentListApiController>();
+            provider = services.BuildServiceProvider();
         }
 
         [TearDown]
@@ -72,7 +70,9 @@ namespace Our.Umbraco.ContentList.Tests
         [Test]
         public void Shows_Registered_DataSources()
         {
-            var sourceTypes = controller.GetDataSources();
+            var controller = provider.GetService<ContentListApiController>();
+
+            var sourceTypes = controller?.GetDataSources();
             
             Approvals.VerifyAll("Source types", sourceTypes, x => $"{x.Name,-30}{x.Key}");
         }
@@ -80,7 +80,29 @@ namespace Our.Umbraco.ContentList.Tests
         [Test]
         public void Shows_Sample_Template_When_None_Exist()
         {
-            var sourceTypes = controller.GetTemplates();
+            Mock.Get(hostingEnvironment).Setup(x => x.MapPathContentRoot("~/Views/Partials/ContentList"))
+                .Returns<string>(s => AppDomain.CurrentDomain.BaseDirectory);
+            Mock.Get(hostingEnvironment).Setup(x => x.MapPathContentRoot("~/App_Plugins/Our.Umbraco.ContentList/Views/ContentList/ListViews"))
+                .Returns<string>(s => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\Our.Umbraco.ContentList.Web\App_Plugins\Our.Umbraco.ContentList\Views\ContentList\Listviews"));
+
+            var controller = provider.GetService<ContentListApiController>();
+
+            var sourceTypes = controller?.GetTemplates();
+            
+            Approvals.VerifyAll("Templates", sourceTypes, x => $"{x.Name,-30}{x.DisplayName}");
+        }
+
+        [Test]
+        public void Shows_Templates_From_Partial_Views()
+        {
+            Mock.Get(hostingEnvironment).Setup(x => x.MapPathContentRoot("~/Views/Partials/ContentList"))
+                .Returns<string>(s => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\Our.Umbraco.ContentList.Web\Views\Partials\ContentList"));
+            Mock.Get(hostingEnvironment).Setup(x => x.MapPathContentRoot("~/App_Plugins/Our.Umbraco.ContentList/Views/ContentList/ListViews"))
+                .Returns<string>(s => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\Our.Umbraco.ContentList.Web\App_Plugins\Our.Umbraco.ContentList\Views\ContentList\Listviews"));
+
+            var controller = provider.GetService<ContentListApiController>();
+
+            var sourceTypes = controller?.GetTemplates();
             
             Approvals.VerifyAll("Templates", sourceTypes, x => $"{x.Name,-30}{x.DisplayName}");
         }
