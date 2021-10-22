@@ -26,6 +26,7 @@ namespace Our.Umbraco.ContentList.Composition
                 var sourceType = (Type)prop?.GetValue(null);
                 if (sourceType != null)
                 {
+                    services.AddTransient(sourceType);
                     services.AddTransient(typeof(IListableDataSource), sourceType);
                 }
             }

@@ -1,43 +1,46 @@
 ﻿using System;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Newtonsoft.Json;
 using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.Models;
-using Umbraco.Cms.Core.Cache;
-using Umbraco.Cms.Core.Logging;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PublishedCache;
-using Umbraco.Cms.Core.Routing;
-using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
-using Umbraco.Cms.Infrastructure.Persistence;
-using Umbraco.Cms.Web.Common.Attributes;
-using Umbraco.Cms.Web.Common.Controllers;
-using Umbraco.Cms.Web.Website.Controllers;
 
 namespace Our.Umbraco.ContentList.Controllers
 {
-    [PluginController("OurContentList")]
-    [IgnoreAntiforgeryToken]
-    public class ContentListController : SurfaceController
+    public class ContentListController : Controller
     {
         private readonly IPublishedSnapshotAccessor snapshotAccessor;
         private readonly IRazorViewEngine viewEngine;
+        private readonly IUmbracoContextAccessor umbracoContextAccessor;
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly ContentListQueryHandler contentListQueryHandler;
         private readonly IServiceProvider provider;
 
-        public ContentListController(IServiceProvider provider, IPublishedSnapshotAccessor snapshotAccessor, IRazorViewEngine viewEngine, IUmbracoContextAccessor umbracoContextAccessor, IUmbracoDatabaseFactory databaseFactory, ServiceContext services, AppCaches appCaches, IProfilingLogger profilingLogger, IPublishedUrlProvider publishedUrlProvider) : base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
+        public ContentListController(
+            IServiceProvider provider, 
+            IPublishedSnapshotAccessor snapshotAccessor, 
+            IRazorViewEngine viewEngine, 
+            IUmbracoContextAccessor umbracoContextAccessor, 
+            IHttpContextAccessor httpContextAccessor,
+            ContentListQueryHandler contentListQueryHandler
+        )
         {
             this.snapshotAccessor = snapshotAccessor;
             this.viewEngine = viewEngine;
+            this.umbracoContextAccessor = umbracoContextAccessor;
+            this.httpContextAccessor = httpContextAccessor;
+            this.contentListQueryHandler = contentListQueryHandler;
             this.provider = provider;
-        }
-
-        public override void OnActionExecuting(ActionExecutingContext context)
-        {
-            base.OnActionExecuting(context);
         }
 
         [HttpGet]
@@ -47,19 +50,24 @@ namespace Our.Umbraco.ContentList.Controllers
         }
 
         [HttpPost]
-        public ActionResult PostEcho([FromBody]string input)
+        public ActionResult PostEcho(string input)
         {
             return Ok(input);
         }
 
         [HttpPost]
-        public ActionResult Preview(PreviewContentListConfiguration configuration)
+        [LowerCaseInputJson]
+        public ActionResult Preview(
+            [ModelBinder(typeof(LowerCaseJsonBinder))]
+            PreviewContentListConfiguration configuration
+        )
         {
             try
             {
                 snapshotAccessor.TryGetPublishedSnapshot(out var snapshot);
                 var contextContent = snapshot.Content.GetById(configuration.ContentId);
-                return List(configuration, contextContent);
+                var viewResult = ViewComponent("ContentList", new { configuration, contextContent });
+                return viewResult;
             }
             catch (Exception ex)
             {
@@ -85,19 +93,92 @@ namespace Our.Umbraco.ContentList.Controllers
         {
             snapshotAccessor.TryGetPublishedSnapshot(out var snapshot);
             var contextContent = snapshot.Content.GetById(configuration.ContentId);
-            var query = CreateQuery(configuration, contextContent);
-            var datasource = CreateDataSource(configuration);
+            var query = contentListQueryHandler.CreateQuery(configuration, contextContent);
+            var datasource = contentListQueryHandler.CreateDataSource(configuration);
             var total = datasource.Count(query, configuration.Skip);
-            return Json(total);
+            return new ObjectResult(total);
         }
 
-        private ViewResult List(ContentListConfiguration configuration, IPublishedContent contextContent)
-        {
-            var datasource = CreateDataSource(configuration);
+    }
 
-            var query = CreateQuery(configuration, contextContent);
+    public class ContentListQueryHandler
+    {
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IServiceProvider provider;
+
+        public ContentListQueryHandler(IHttpContextAccessor httpContextAccessor, IServiceProvider provider)
+        {
+            this.httpContextAccessor = httpContextAccessor;
+            this.provider = provider;
+        }
+
+        public QueryPaging CreateQueryPaging(ContentListConfiguration configuration, long total)
+        {
+            var currentPage = FindPageParameter(configuration);
+            var maxPage = total / Math.Max(configuration.PageSize, 1);
+            var zerobasePage = Math.Min(Math.Max(currentPage - 1, 0), maxPage);
+            var querySkip = zerobasePage * configuration.PageSize;
+            var pagingParameter = new QueryPaging(querySkip, configuration.PageSize, configuration.Skip);
+            return pagingParameter;
+        }
+
+        public IListableDataSource CreateDataSource(ContentListConfiguration configuration)
+        {
+            var typeName = configuration.DataSource.Type;
+            var type = Type.GetType(typeName);
+            var dataSource = (IListableDataSource)provider.GetService(type);
+            return dataSource;
+        }
+
+        public ContentListQuery CreateQuery(ContentListConfiguration configuration, IPublishedContent contextContent)
+        {
+            return new ContentListQuery(contextContent, configuration.DataSource.Parameters)
+            {
+                HttpContext = httpContextAccessor.HttpContext
+            };
+        }
+
+        private int FindPageParameter(ContentListConfiguration configuration)
+        {
+            int page;
+            var hash = configuration.CreateHash();
+            var request = httpContextAccessor.HttpContext?.Request;
+            if (!Int32.TryParse(request?.Query?[hash], out page))
+                page = 1;
+            return page;
+        }
+    }
+
+    public class ContentListViewComponent : ViewComponent
+    {
+        private readonly IRazorViewEngine viewEngine;
+        private readonly ContentListQueryHandler contentListQueryHandler;
+
+        public ContentListViewComponent(
+            IRazorViewEngine viewEngine,
+            ContentListQueryHandler contentListQueryHandler
+        )
+        {
+            this.viewEngine = viewEngine;
+            this.contentListQueryHandler = contentListQueryHandler;
+        }
+
+        public async Task<IViewComponentResult> InvokeAsync(ContentListConfiguration configuration, IPublishedContent contextContent)
+        {
+            var model = Execute(configuration, contextContent);
+
+            var viewName = FindView(configuration);
+            var result = View(viewName, model);
+            return await Task.FromResult(result);
+        }
+
+        private ContentListModel Execute(ContentListConfiguration configuration, IPublishedContent contextContent)
+        {
+            var datasource = contentListQueryHandler.CreateDataSource(configuration);
+
+            var query = contentListQueryHandler.CreateQuery(configuration, contextContent);
             var total = datasource.Count(query, configuration.Skip);
-            var queryPaging = CreateQueryPaging(configuration, total);
+            var queryPaging = contentListQueryHandler.CreateQueryPaging(configuration, total);
 
             var data = datasource.Query(query, queryPaging);
 
@@ -110,19 +191,7 @@ namespace Our.Umbraco.ContentList.Controllers
                 Paging = CreatePagingModel(queryPaging, configuration, total),
                 Hash = configuration.CreateHash()
             };
-
-            var viewName = FindView(configuration);
-            return View(viewName, model);
-        }
-
-        private QueryPaging CreateQueryPaging(ContentListConfiguration configuration, long total)
-        {
-            var currentPage = FindPageParameter(configuration);
-            var maxPage = total / Math.Max(configuration.PageSize, 1);
-            var zerobasePage = Math.Min(Math.Max(currentPage - 1, 0), maxPage);
-            var querySkip = zerobasePage * configuration.PageSize;
-            var pagingParameter = new QueryPaging(querySkip, configuration.PageSize, configuration.Skip);
-            return pagingParameter;
+            return model;
         }
 
         private string FindView(ContentListConfiguration configuration)
@@ -133,7 +202,7 @@ namespace Our.Umbraco.ContentList.Controllers
 
             path = "~/Views/Partials/ContentList/" + name + "/List.cshtml";
 
-            foundView = viewEngine.FindView(ControllerContext, path, false);
+            foundView = viewEngine.FindView(ViewContext, path, false);
 
             if (foundView == null)
             {
@@ -144,7 +213,7 @@ namespace Our.Umbraco.ContentList.Controllers
             {
                 // TODO: No test validates this
                 path = "~/App_Plugins/Our.Umbraco.ContentList/Views/ContentList/ListViews/" + name + ".cshtml";
-                foundView = viewEngine.FindView(ControllerContext, path, false);
+                foundView = viewEngine.FindView(ViewContext, path, false);
             }
 
             if (foundView == null)
@@ -182,30 +251,38 @@ namespace Our.Umbraco.ContentList.Controllers
                 ShowPaging = configuration.ShowPaging
             };
         }
+    }
 
-        private IListableDataSource CreateDataSource(ContentListConfiguration configuration)
+    public class LowerCaseInputJsonAttribute : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var typeName = configuration.DataSource.Type;
-            var type = Type.GetType(typeName);
-            var dataSource = (IListableDataSource)provider.GetService(type);
-            return dataSource;
-        }
-
-        private ContentListQuery CreateQuery(ContentListConfiguration configuration, IPublishedContent contextContent)
-        {
-            return new ContentListQuery(contextContent, configuration.DataSource.Parameters)
+            var request = context.HttpContext.Request;
+            if (request.ContentType == "application/json")
             {
-                HttpContext = HttpContext
-            };
-        }
-
-        private int FindPageParameter(ContentListConfiguration configuration)
-        {
-            int page;
-            var hash = configuration.CreateHash();
-            if (!Int32.TryParse(Request.Query[hash], out page))
-                page = 1;
-            return page;
+                request.EnableBuffering();
+            }
         }
     }
+
+
+    public class LowerCaseJsonBinder : IModelBinder
+    {
+        public async Task BindModelAsync(ModelBindingContext bindingContext)
+        {
+            var paramName = bindingContext.ModelName;
+            var providedValue = bindingContext.ValueProvider.GetValue(paramName);
+            if (providedValue.FirstValue != null &&
+                providedValue.FirstValue.GetType() == bindingContext.ModelType)
+                return;
+
+            var request = bindingContext.HttpContext.Request;
+
+            var stream = request.Body;
+            var readStream = new StreamReader(stream, Encoding.UTF8);
+            var json = await readStream.ReadToEndAsync();
+            bindingContext.Result = ModelBindingResult.Success(JsonConvert.DeserializeObject(json, bindingContext.ModelType));
+        }
+    }
+
 }

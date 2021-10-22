@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
@@ -10,6 +11,7 @@ using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Notifications;
+using Umbraco.Cms.Web.Common.ApplicationBuilder;
 using Umbraco.Extensions;
 
 namespace Our.Umbraco.ContentList.Composition
@@ -24,8 +26,24 @@ namespace Our.Umbraco.ContentList.Composition
                 .Add(allMeta);
 
             builder.Services.AddTransient(typeof(DataSourceMetadataFactory));
+            builder.Services.AddTransient(typeof(ContentListQueryHandler));
 
             builder.AddNotificationHandler<ServerVariablesParsingNotification, AddControllersToApiPaths>();
+
+            builder.Services.Configure<UmbracoPipelineOptions>(options =>
+                {
+                    options.AddFilter(new UmbracoPipelineFilter(nameof(ContentListController))
+                    {
+                        Endpoints = app => app.UseEndpoints(endpoints =>
+                        {
+                            endpoints.MapControllerRoute(
+                                "ContentList",
+                                "umbraco/ourcontentlist/contentlist/{action}",
+                                new {Controller = "ContentList"});
+                        })
+                    });
+                }
+            );
         }
     }
 

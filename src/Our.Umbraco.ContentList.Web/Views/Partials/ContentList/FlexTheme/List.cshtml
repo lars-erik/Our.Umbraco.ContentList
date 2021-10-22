@@ -1,4 +1,4 @@
-﻿@inherits UmbracoViewPage<ContentListModel>
+﻿@inherits UmbracoViewPage<Our.Umbraco.ContentList.Models.ContentListModel>
 @using Our.Umbraco.ContentList.Web
 
 @{
@@ -8,11 +8,11 @@
 
 <div class="contentlist col-xs-12">
     <div class="flex">
-        @if (list.Count == 0 && UmbracoContext.IsFrontEndUmbracoRequest)
+        @if (list.Count == 0 && UmbracoContext.IsFrontEndUmbracoRequest())
         {
             <p>No items found...</p>
         }
-        @if (list.Count == 0 && !UmbracoContext.IsFrontEndUmbracoRequest)
+        @if (list.Count == 0 && !UmbracoContext.IsFrontEndUmbracoRequest())
         {
             <div class="container-fluid new-contentlist">
                 <a class="color-orange">
