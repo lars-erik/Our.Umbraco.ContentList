@@ -1,3 +1,0 @@
-﻿Source types
-
-List of children             Our.Umbraco.ContentList.DataSources.ListableChildrenDataSource, Our.Umbraco.ContentList

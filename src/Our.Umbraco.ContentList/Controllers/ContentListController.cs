@@ -85,8 +85,6 @@ namespace Our.Umbraco.ContentList.Controllers
                     );
                 }
             }
-
-            return new OkObjectResult(new object());
         }
 
         public ActionResult Count(PreviewContentListConfiguration configuration)
