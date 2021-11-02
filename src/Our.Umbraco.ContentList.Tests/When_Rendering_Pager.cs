@@ -31,13 +31,6 @@ namespace Our.Umbraco.ContentList.Tests
                 services.AddRenderingSupport();
             });
             support.Setup();
-
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            support?.TearDownUmbraco();
         }
 
         [Test]
@@ -76,12 +69,18 @@ namespace Our.Umbraco.ContentList.Tests
             
             var result = await support.GetService<ViewRenderer>().Render("PagerTest", model);
 
-            Console.WriteLine(result);
+            Console.WriteLine("\n" + result);
 
             using (ApprovalResults.ForScenario(page))
             {
                 Approvals.VerifyHtml(result);
             }
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            support?.TearDownUmbraco();
         }
 
         private void SetupRequestPath(int page, ContentListConfiguration config)
