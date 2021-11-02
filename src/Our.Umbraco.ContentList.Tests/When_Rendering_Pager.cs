@@ -18,11 +18,6 @@ namespace Our.Umbraco.ContentList.Tests
     [TestFixture]
     public class When_Rendering_Pager
     {
-        private ContentListQueryHandler queryHandler;
-        private ViewRenderer viewRenderer;
-        private Dictionary<string, StringValues> queryValues;
-        private IHttpContextAccessor contextAccessor;
-
         private UmbracoSupport support;
 
         [SetUp]
@@ -37,35 +32,12 @@ namespace Our.Umbraco.ContentList.Tests
             });
             support.Setup();
 
-            viewRenderer = support.GetService<ViewRenderer>();
-            queryHandler = support.GetService<ContentListQueryHandler>();
-            contextAccessor = support.GetService<IHttpContextAccessor>();
-
-            queryValues = new Dictionary<string, StringValues>{{"unrelated", new StringValues("xyz")}};
         }
 
         [TearDown]
         public void TearDown()
         {
             support?.TearDownUmbraco();
-        }
-
-        // TODO: Should be able to move this to support
-        private DefaultHttpContext CreateHttpContext()
-        {
-            var ctx = new DefaultHttpContext
-            {
-                Request =
-                {
-                    Scheme = "https",
-                    Host = new HostString("example.com"),
-                    Path = new PathString("/a/b"),
-                    Query = new QueryCollection(queryValues)
-                },
-                RequestServices = support.Services
-            };
-
-            return ctx;
         }
 
         [Test]
@@ -94,18 +66,15 @@ namespace Our.Umbraco.ContentList.Tests
                 PageSize = 10,
             };
 
-            queryValues.Add(config.CreateHash(), new StringValues(page.ToString()));
-            
-            Mock.Get(contextAccessor).Setup(x => x.HttpContext).Returns(CreateHttpContext());
-            
-            var pagerModel = CreatePagingModel(config);
+            SetupRequestPath(page, config);
+
             var model = new ContentListModel
             {
                 Configuration = config,
-                Paging = pagerModel
+                Paging = CreatePagingModel(config)
             };
             
-            var result = await viewRenderer.Render("PagerTest", model);
+            var result = await support.GetService<ViewRenderer>().Render("PagerTest", model);
 
             Console.WriteLine(result);
 
@@ -115,9 +84,21 @@ namespace Our.Umbraco.ContentList.Tests
             }
         }
 
+        private void SetupRequestPath(int page, ContentListConfiguration config)
+        {
+            support.ReplaceHttpRequest(
+                "/a/b",
+                new Dictionary<string, StringValues>
+                {
+                    {"unrelated", new StringValues("xyz")},
+                    {config.CreateHash(), new StringValues(page.ToString())}
+                }
+            );
+        }
+
         private ContentListPaging CreatePagingModel(ContentListConfiguration config)
         {
-            var queryPaging = queryHandler.CreateQueryPaging(config, 100);
+            var queryPaging = support.GetService<ContentListQueryHandler>().CreateQueryPaging(config, 100);
             var pagerModel = ContentListViewComponent.CreatePagingModel(queryPaging, config, 100);
             return pagerModel;
         }

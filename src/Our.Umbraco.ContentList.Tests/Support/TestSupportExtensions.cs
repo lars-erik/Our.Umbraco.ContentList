@@ -12,10 +12,12 @@ namespace Our.Umbraco.ContentList.Tests.Support
         {
             services.AddTransient<ViewRenderer>();
 
+            // This is required by RazorViewEngine
             var diagnosticSource = new DiagnosticListener("Microsoft.AspNetCore");
             services.AddSingleton<DiagnosticSource>(diagnosticSource);
             services.AddSingleton(diagnosticSource);
 
+            // Get the MvcBuilder and add web and package view providers
             services.AddMvc()
                 .AddRazorRuntimeCompilation(options =>
                 {
@@ -26,9 +28,12 @@ namespace Our.Umbraco.ContentList.Tests.Support
                 {
                     options.ViewLocationFormats.Add("/Views/TestViews/{0}.cshtml");
                 })
+                // Required for runtime compilation of views from those assemblies (the slow part?)
                 .AddApplicationPart(typeof(IListableContent).Assembly)
-                .AddApplicationPart(typeof(Web.Program).Assembly);
+                .AddApplicationPart(typeof(Web.Program).Assembly)
+                ;
 
+            // Required to discover view components (same as .AddViewComponentsAsServices())
             services.Replace(ServiceDescriptor.Singleton<IViewComponentActivator, ServiceBasedViewComponentActivator>());
 
         }

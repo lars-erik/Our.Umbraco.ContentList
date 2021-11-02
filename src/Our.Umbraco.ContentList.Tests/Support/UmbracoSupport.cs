@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CSharpTest.Net.Collections;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using Moq;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Configuration.Models;
@@ -113,7 +115,6 @@ namespace Our.Umbraco.ContentList.Tests.Support
             httpContext.Request.PathBase = new PathString();
             httpContext.Request.Path = new PathString("/");
             httpContext.Request.QueryString = QueryString.Empty;
-            var url = httpContext.Request.GetEncodedUrl();
         }
 
         public override void ConfigureServices(IServiceCollection services)
@@ -159,6 +160,31 @@ namespace Our.Umbraco.ContentList.Tests.Support
         {
             base.TearDown_Logging();
             Task.Run(async () => await base.TearDownAsync()).Wait();
+        }
+
+        public void ReplaceHttpRequest(string path, Dictionary<string, StringValues> queryValues)
+        {
+            var httpContext = CreateHttpContext(path, queryValues);
+            Mock.Get(GetService<IHttpContextAccessor>())
+                .Setup(x => x.HttpContext)
+                .Returns(httpContext);
+        }
+
+        private DefaultHttpContext CreateHttpContext(string path, Dictionary<string, StringValues> queryValues)
+        {
+            var ctx = new DefaultHttpContext
+            {
+                Request =
+                {
+                    Scheme = "https",
+                    Host = new HostString("example.com"),
+                    Path = new PathString(path),
+                    Query = new QueryCollection(queryValues)
+                },
+                RequestServices = Services
+            };
+
+            return ctx;
         }
     }
 }
