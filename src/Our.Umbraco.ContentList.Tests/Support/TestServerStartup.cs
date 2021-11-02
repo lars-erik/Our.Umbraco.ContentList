@@ -5,9 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Moq;
+using Our.Umbraco.ContentList.Controllers;
 
 namespace Our.Umbraco.ContentList.Tests.Support
 {
@@ -30,6 +33,8 @@ namespace Our.Umbraco.ContentList.Tests.Support
                 ;
             
             services.AddTransient<ViewRenderer>();
+            services.AddTransient<ContentListQueryHandler>();
+            services.AddSingleton(Mock.Of<IHttpContextAccessor>());
             
             return services.BuildServiceProvider();
         }

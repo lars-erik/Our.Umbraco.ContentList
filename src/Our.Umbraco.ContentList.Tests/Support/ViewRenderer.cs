@@ -17,12 +17,14 @@ namespace Our.Umbraco.ContentList.Tests.Support
         private readonly IRazorViewEngine viewEngine;
         private readonly ITempDataProvider tempDataProvider;
         private readonly IServiceProvider serviceProvider;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public ViewRenderer(IRazorViewEngine viewEngine, ITempDataProvider tempDataProvider, IServiceProvider serviceProvider)
+        public ViewRenderer(IRazorViewEngine viewEngine, ITempDataProvider tempDataProvider, IServiceProvider serviceProvider, IHttpContextAccessor httpContextAccessor)
         {
             this.viewEngine = viewEngine;
             this.tempDataProvider = tempDataProvider;
             this.serviceProvider = serviceProvider;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<string> Render<TModel>(string name, TModel model)
@@ -63,9 +65,7 @@ namespace Our.Umbraco.ContentList.Tests.Support
 
         private ActionContext GetActionContext()
         {
-            var httpContext = new DefaultHttpContext();
-            httpContext.RequestServices = serviceProvider;
-            return new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
+            return new ActionContext(httpContextAccessor.HttpContext ?? throw new InvalidOperationException("No HTTP context"), new RouteData(), new ActionDescriptor());
         }
     }
 }

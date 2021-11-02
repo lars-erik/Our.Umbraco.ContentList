@@ -224,7 +224,7 @@ namespace Our.Umbraco.ContentList.Controllers
             return path;
         }
 
-        private ContentListPaging CreatePagingModel(
+        public static ContentListPaging CreatePagingModel(
             QueryPaging queryPaging,
             ContentListConfiguration configuration,
             long total)
