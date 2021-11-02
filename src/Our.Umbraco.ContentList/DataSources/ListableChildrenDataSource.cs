@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Our.Umbraco.ContentList.Models;
 using Our.Umbraco.ContentList.Parameters;
+using Umbraco.Cms.Core.Services;
 using Umbraco.Extensions;
 
 namespace Our.Umbraco.ContentList.DataSources
 {
-    public class ListableChildrenDataSource
+    public class ListableChildrenDataSource : IListableDataSource
     {
         public ListableChildrenDataSource()
         {
@@ -35,9 +34,44 @@ namespace Our.Umbraco.ContentList.DataSources
             {
                 throw new Exception("Child lists does not support skipping more than 32 bit values");
             }
-            return query.ContextContent == null
-                ? 0
-                : query.ContextContent.Children.Skip((int)preSkip).Count();
+            return query.ContextContent?.Children.Skip((int)preSkip).Count() ?? 0;
+        }
+    }
+
+    public class ListableChildrenMetadata : DataSourceMetadata<ListableChildrenDataSource>
+    {
+        private readonly ILocalizationService localizationService;
+        private DataSourceParameterDefinition languageParameter;
+        private bool loadLanguage = true;
+
+        public ListableChildrenMetadata(ILocalizationService localizationService)
+        {
+            this.localizationService = localizationService;
+        }
+
+        public override string Name => "List of children";
+
+        public override IEnumerable<DataSourceParameterDefinition> Parameters
+        {
+            get
+            {
+                yield return ListableSorting.Parameter;
+                if (UseLanguageParameter())
+                {
+                    yield return languageParameter;
+                }
+            }
+        }
+
+        private bool UseLanguageParameter()
+        {
+            if (loadLanguage)
+            {
+                languageParameter = LanguageParameter.Create(localizationService);
+                loadLanguage = false;
+            }
+
+            return languageParameter != null;
         }
     }
 }

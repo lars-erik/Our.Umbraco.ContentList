@@ -1,8 +1,9 @@
 ﻿@using Newtonsoft.Json
+@using Our.Umbraco.ContentList.Models
 @using Our.Umbraco.ContentList.Web
-@inherits WebViewPage<Newtonsoft.Json.Linq.JObject>
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Newtonsoft.Json.Linq.JObject>
 @{
     var configuration = JsonConvert.DeserializeObject<ContentListConfiguration>(Model["config"].ToString());
 }
 
-@Html.Action("List", "ContentList", new {configuration, area="OurContentList"})
+@await Component.InvokeAsync("ContentList", new {configuration, contextContent=Umbraco.AssignedContentItem})

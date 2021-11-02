@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Html;
 using Umbraco.Extensions;
 
 namespace Our.Umbraco.ContentList.Web.Models
@@ -14,6 +15,8 @@ namespace Our.Umbraco.ContentList.Web.Models
 
     public partial class ListableContent
     {
+        public string ContentTypeName => ContentType.Alias;
+        public string ListImageUrl { get; }
         public string Url => this.Url();
         public DateTime SortDate => this.CreateDate;
     }

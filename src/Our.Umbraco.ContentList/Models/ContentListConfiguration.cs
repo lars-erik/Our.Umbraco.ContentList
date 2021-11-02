@@ -9,21 +9,14 @@ using Newtonsoft.Json.Linq;
 
 namespace Our.Umbraco.ContentList.Models
 {
-    [ModelBinder(typeof(JsonBinder))]
     public class ContentListConfiguration
     {
-        [JsonProperty("datasource")]
         public ContentListDataSource DataSource { get; set; } = new ContentListDataSource();
-        [JsonProperty("view")]
         public string View { get; set; }
-        [JsonProperty("pagesize")]
         public int PageSize { get; set; }
-        [JsonProperty("showPaging")]
         public bool ShowPaging { get; set; }
-        [JsonProperty("columns")]
         public ContentListColumns Columns { get; set; } = new ContentListColumns();
 
-        [JsonProperty("skip")]
         public int Skip { get; set; }
 
         public string CreateHash()

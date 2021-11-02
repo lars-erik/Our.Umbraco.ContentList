@@ -1,0 +1,36 @@
+﻿@inherits UmbracoViewPage<Our.Umbraco.ContentList.Models.ContentListModel>
+@using Our.Umbraco.ContentList.Web
+
+@{
+    var list = Model.Items.ToList();
+    var i = 0;
+}
+
+<div class="contentlist col-xs-12">
+    <div class="flex">
+        @if (list.Count == 0 && UmbracoContext.IsFrontEndUmbracoRequest())
+        {
+            <p>No items found...</p>
+        }
+        @if (list.Count == 0 && !UmbracoContext.IsFrontEndUmbracoRequest())
+        {
+            <div class="container-fluid new-contentlist">
+                <a class="color-orange">
+                    <i class="icon icon-settings large"></i><br />
+                    Query returned no results. Try configuring it some more?
+                </a>
+            </div>
+        }
+
+        @foreach(var item in list)
+        {
+            @Html.ContentListItem(item)
+        }
+    </div>
+    <div>
+        <nav>
+            @Html.ContentListPager(Model, "pagination", "", "", "ul", "li")
+        </nav>
+    </div>
+
+</div>

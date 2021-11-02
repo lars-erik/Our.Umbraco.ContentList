@@ -1,0 +1,6 @@
+﻿Templates
+
+FlexTheme                     Two columns on top, then three
+NiceTheme                     
+Rss                           
+SearchResult                  

@@ -1,0 +1,17 @@
+﻿@using Umbraco.Web.Models
+@model Our.Umbraco.ContentList.IListableContent
+
+@if (!Model.ListImageUrl.IsNullOrWhiteSpace())
+{
+    <a href="@Model.Url"><img class="list-image widescreen" src="@Model.ListImageUrl.GetCropUrl(800, 500, imageCropMode:ImageCropMode.Crop)" style="width: 100%;" /></a>
+}
+
+<h3>
+    <a href="@Model.Url">@Model.ListHeading</a>
+</h3>
+<div class="list-summary">
+    @Model.ListSummary.ToString().StripHtml().Truncate(400)
+</div>
+<div>
+    <a href="@Model.Url" class="readmore">@Html.Raw(Model.ReadMoreText.IfNullOrWhiteSpace("Read more &rsaquo;"))</a>
+</div>
