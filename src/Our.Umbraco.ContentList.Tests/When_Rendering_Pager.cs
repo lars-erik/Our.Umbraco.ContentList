@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using ApprovalTests;
 using ApprovalTests.Namers;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using Moq;
 using NUnit.Framework;
+using Our.Umbraco.ContentList.Components;
 using Our.Umbraco.ContentList.Controllers;
 using Our.Umbraco.ContentList.Models;
 using Our.Umbraco.ContentList.Tests.Support;
@@ -20,29 +18,40 @@ namespace Our.Umbraco.ContentList.Tests
     [TestFixture]
     public class When_Rendering_Pager
     {
-        private TestServerFactory serverFactory;
-        private HttpRequest request;
         private ContentListQueryHandler queryHandler;
         private ViewRenderer viewRenderer;
         private Dictionary<string, StringValues> queryValues;
         private IHttpContextAccessor contextAccessor;
 
+        private UmbracoSupport support;
+
         [SetUp]
         public void SetUp()
         {
-            serverFactory = new TestServerFactory();
-            viewRenderer = serverFactory.GetRequiredService<ViewRenderer>();
-            queryHandler = serverFactory.GetRequiredService<ContentListQueryHandler>();
-            contextAccessor = serverFactory.GetRequiredService<IHttpContextAccessor>();
+            support = new UmbracoSupport(configureServices: services =>
+            {
+                services.AddTransient<ContentListQueryHandler>();
+                services.AddTransient<PagerComponent>();
+
+                services.AddRenderingSupport();
+            });
+            support.Setup();
+
+            viewRenderer = support.GetService<ViewRenderer>();
+            queryHandler = support.GetService<ContentListQueryHandler>();
+            contextAccessor = support.GetService<IHttpContextAccessor>();
 
             queryValues = new Dictionary<string, StringValues>{{"unrelated", new StringValues("xyz")}};
-            //Mock.Get(request).Setup(x => x.Query).Returns(() => n);
-            //Mock.Get(ctx).Setup(x => x.RequestServices).Returns(serverFactory.Services);
-            
-
         }
 
-        private void CreateHttpContext()
+        [TearDown]
+        public void TearDown()
+        {
+            support?.TearDownUmbraco();
+        }
+
+        // TODO: Should be able to move this to support
+        private DefaultHttpContext CreateHttpContext()
         {
             var ctx = new DefaultHttpContext
             {
@@ -53,10 +62,10 @@ namespace Our.Umbraco.ContentList.Tests
                     Path = new PathString("/a/b"),
                     Query = new QueryCollection(queryValues)
                 },
-                RequestServices = serverFactory.Services
+                RequestServices = support.Services
             };
 
-            Mock.Get(contextAccessor).Setup(x => x.HttpContext).Returns(ctx);
+            return ctx;
         }
 
         [Test]
@@ -86,8 +95,9 @@ namespace Our.Umbraco.ContentList.Tests
             };
 
             queryValues.Add(config.CreateHash(), new StringValues(page.ToString()));
-            CreateHttpContext();
-
+            
+            Mock.Get(contextAccessor).Setup(x => x.HttpContext).Returns(CreateHttpContext());
+            
             var pagerModel = CreatePagingModel(config);
             var model = new ContentListModel
             {

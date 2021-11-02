@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.AspNetCore.Html;
 using Umbraco.Cms.Core.Strings;
 
 namespace Our.Umbraco.ContentList

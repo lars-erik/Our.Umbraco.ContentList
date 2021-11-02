@@ -1,22 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CSharpTest.Net.Collections;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.Models;
 using Our.Umbraco.ContentList.Tests.Support;
 using Our.Umbraco.ContentList.Web.Models;
-using Umbraco.Cms.Core.Models;
-using Umbraco.Cms.Core.PublishedCache;
-using Umbraco.Cms.Core.Services;
-using Umbraco.Cms.Core.Web;
-using Umbraco.Cms.Tests.Common.Builders;
-using Umbraco.Cms.Tests.Common.Builders.Extensions;
 
 namespace Our.Umbraco.ContentList.Tests
 {

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CSharpTest.Net.Collections;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +29,7 @@ namespace Our.Umbraco.ContentList.Tests.Support
     {
         private readonly BPlusTree<int, ContentNodeKit> localDb;
         private readonly Action<IDataTypeService, IContentTypeService> setupContentTypes;
+        private readonly Action<IServiceCollection> configureServices;
         private IPublishedSnapshot publishedSnapshot;
         private IPublishedSnapshotAccessor publishedSnapshotAccessor;
         private FakeDataTypeService dataTypeService;
@@ -38,11 +37,17 @@ namespace Our.Umbraco.ContentList.Tests.Support
         private ContentStore contentStore;
         private TestVariationContextAccessor variationContextAccessor;
 
-        public UmbracoSupport(BPlusTree<int, ContentNodeKit> localDb = null, Action<IDataTypeService, IContentTypeService> setupContentTypes = null)
+        public UmbracoSupport(
+            BPlusTree<int, ContentNodeKit> localDb = null, 
+            Action<IDataTypeService, IContentTypeService> setupContentTypes = null,
+            Action<IServiceCollection> configureServices = null)
         {
             this.localDb = localDb;
             this.setupContentTypes = setupContentTypes;
+            this.configureServices = configureServices;
         }
+
+        public new IServiceProvider Services => base.Services;
 
         public override void Setup()
         {
@@ -137,6 +142,8 @@ namespace Our.Umbraco.ContentList.Tests.Support
 
             var snapshotService = new FakePublishedSnapshotService(publishedSnapshot);
             services.AddSingleton<IPublishedSnapshotService>(snapshotService);
+
+            configureServices?.Invoke(services);
         }
 
         public IUmbracoContext GetUmbracoContext()
