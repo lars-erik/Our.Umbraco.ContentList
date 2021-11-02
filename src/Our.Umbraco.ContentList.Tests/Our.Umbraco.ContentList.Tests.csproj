@@ -13,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="approvaltests" Version="5.7.1" />
+    <PackageReference Include="ApprovalTests" Version="5.7.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.11" />
     <PackageReference Include="Umbraco.Cms.Tests.Integration" Version="9.0.1" />
 
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
@@ -23,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Our.Umbraco.ContentList.WebModels\Our.Umbraco.ContentList.WebModels.csproj" />
+    <ProjectReference Include="..\Our.Umbraco.ContentList.Web\Our.Umbraco.ContentList.Web.csproj" />
     <ProjectReference Include="..\Our.Umbraco.ContentList\Our.Umbraco.ContentList.csproj" />
   </ItemGroup>
 
