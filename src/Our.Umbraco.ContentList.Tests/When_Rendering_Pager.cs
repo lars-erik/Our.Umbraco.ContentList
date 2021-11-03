@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ApprovalTests;
 using ApprovalTests.Namers;
+using ApprovalTests.Reporters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
@@ -38,6 +39,22 @@ namespace Our.Umbraco.ContentList.Tests
         [TestCase(2)]
         [TestCase(3)]
         public async Task On_Pages_One_Through_Three_Renders_One_Through_Five(int page)
+        {
+            await VerifyPager(page);
+        }
+
+        [Test]
+        [TestCase(5)]
+        [TestCase(6)]
+        public async Task On_Pages_Five_Through_Six_Renders_All_Arrows(int page)
+        {
+            await VerifyPager(page);
+        }
+
+        [Test]
+        [TestCase(4)]
+        [TestCase(7)]
+        public async Task On_Pages_Four_And_Seven_Leaves_One_Arrow(int page)
         {
             await VerifyPager(page);
         }
