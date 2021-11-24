@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using ApprovalTests;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Our.Umbraco.ContentList.DataSources;
@@ -44,10 +45,19 @@ namespace Our.Umbraco.ContentList.Tests
                 new QueryPaging(10)
             );
 
-            Console.WriteLine(ToJson(result));
-
             Assert.That(result.ToList(), Has.Count.EqualTo(2));
             Assert.That(result.First(), Is.TypeOf<Page>());
+
+            var content = result.Select(x => new
+            {
+                x.ListHeading,
+                ListSummary = x.ListSummary.ToHtmlString(),
+                x.ListImageUrl,
+                x.ContentTypeName
+            });
+
+            Approvals.VerifyJson(JsonConvert.SerializeObject(content));
+
         }
 
         [Test]

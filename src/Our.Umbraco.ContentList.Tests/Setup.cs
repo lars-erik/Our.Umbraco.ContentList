@@ -26,13 +26,20 @@ namespace Our.Umbraco.ContentList.Tests
 
         public static void ContentTypes(IDataTypeService dataTypeService, IContentTypeService contentTypeService)
         {
-            var dataType = new DataTypeBuilder()
+            var textDataType = new DataTypeBuilder()
                 .WithId(1)
                 .WithDatabaseType(ValueStorageType.Nvarchar)
-                .WithName("List heading")
                 .Build();
+            dataTypeService.Save(textDataType);
 
-            dataTypeService.Save(dataType);
+            var rteTypeBuilder = new DataTypeBuilder()
+                .WithId(2);
+            rteTypeBuilder
+                .AddEditor()
+                .WithAlias("Umbraco.TinyMCE");
+            var rteType = rteTypeBuilder.Build();
+
+            dataTypeService.Save(rteType);
 
             var contentTypeBuilder = new ContentTypeBuilder();
 
@@ -42,8 +49,11 @@ namespace Our.Umbraco.ContentList.Tests
             listableContentBuilder
                 .AddPropertyType()
                 .WithAlias("listHeading")
-                .WithDataTypeId(1)
-                .Build();
+                .WithDataTypeId(1);
+            listableContentBuilder
+                .AddPropertyType()
+                .WithAlias("listSummary")
+                .WithDataTypeId(2);
             var listableContentType = listableContentBuilder.Build();
 
             var pageBuilder = contentTypeBuilder

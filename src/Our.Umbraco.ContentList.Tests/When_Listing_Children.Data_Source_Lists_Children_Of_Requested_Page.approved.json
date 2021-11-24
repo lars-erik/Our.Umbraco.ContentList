@@ -1,0 +1,14 @@
+﻿[
+    {
+        "ListHeading": "About us",
+        "ListSummary": "<p>Here's all about us</p>",
+        "ListImageUrl": null,
+        "ContentTypeName": "page"
+    },
+    {
+        "ListHeading": "Contact us",
+        "ListSummary": "<p>Here's how to contact us</p>",
+        "ListImageUrl": null,
+        "ContentTypeName": "page"
+    }
+]

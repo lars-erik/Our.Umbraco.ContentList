@@ -3,29 +3,14 @@
     "Node": {
       "Id": 1059,
       "Uid": "64d01018-3dce-4efb-809f-a9705e166bbd",
-      "ContentType": null,
       "Level": 1,
-      "Path": "-1,1059",
-      "SortOrder": 0,
       "ParentContentId": -1,
-      "FirstChildContentId": -1,
-      "LastChildContentId": -1,
-      "NextSiblingContentId": -1,
-      "PreviousSiblingContentId": -1,
-      "CreateDate": "2021-10-13T16:38:30.84Z",
-      "CreatorId": -1,
-      "HasPublished": false,
-      "DraftModel": null,
-      "PublishedModel": null
+      "CreateDate": "2021-10-13T16:38:30.84Z"
     },
     "ContentTypeId": 1057,
-    "DraftData": null,
     "PublishedData": {
       "Name": "example.com",
       "UrlSegment": "examplecom",
-      "VersionId": 2,
-      "VersionDate": "2021-10-13T16:38:30.84Z",
-      "WriterId": -1,
       "TemplateId": 1056,
       "Published": true,
       "Properties": {
@@ -44,37 +29,20 @@
         ]
       },
       "CultureInfos": {}
-    },
-    "IsEmpty": false,
-    "IsNull": false
+    }
   },
   "1060": {
     "Node": {
       "Id": 1060,
       "Uid": "d5e6b7d9-90d2-4a3a-ad55-389f006646b0",
-      "ContentType": null,
-      "Level": 2,
-      "Path": "-1,1059,1060",
       "SortOrder": 0,
       "ParentContentId": 1059,
-      "FirstChildContentId": -1,
-      "LastChildContentId": -1,
-      "NextSiblingContentId": -1,
-      "PreviousSiblingContentId": -1,
-      "CreateDate": "2021-10-13T16:38:56.943Z",
-      "CreatorId": -1,
-      "HasPublished": false,
-      "DraftModel": null,
-      "PublishedModel": null
+      "CreateDate": "2021-10-13T16:38:56.943Z"
     },
     "ContentTypeId": 1057,
-    "DraftData": null,
     "PublishedData": {
       "Name": "About us",
       "UrlSegment": "about-us",
-      "VersionId": 8,
-      "VersionDate": "2021-10-13T16:39:35.03Z",
-      "WriterId": -1,
       "TemplateId": 1056,
       "Published": true,
       "Properties": {
@@ -97,37 +65,20 @@
         ]
       },
       "CultureInfos": {}
-    },
-    "IsEmpty": false,
-    "IsNull": false
+    }
   },
   "1061": {
     "Node": {
       "Id": 1061,
       "Uid": "706dafc7-73d7-4202-bb48-66462761be6d",
-      "ContentType": null,
-      "Level": 2,
-      "Path": "-1,1059,1061",
-      "SortOrder": 1,
+      "SortOrder": 1, 
       "ParentContentId": 1059,
-      "FirstChildContentId": -1,
-      "LastChildContentId": -1,
-      "NextSiblingContentId": -1,
-      "PreviousSiblingContentId": -1,
-      "CreateDate": "2021-10-13T16:39:11Z",
-      "CreatorId": -1,
-      "HasPublished": false,
-      "DraftModel": null,
-      "PublishedModel": null
+      "CreateDate": "2021-10-13T16:39:11Z"
     },
     "ContentTypeId": 1057,
-    "DraftData": null,
     "PublishedData": {
       "Name": "Contact us",
       "UrlSegment": "contact-us",
-      "VersionId": 7,
-      "VersionDate": "2021-10-13T16:39:24.167Z",
-      "WriterId": -1,
       "TemplateId": 1056,
       "Published": true,
       "Properties": {
@@ -150,8 +101,6 @@
         ]
       },
       "CultureInfos": {}
-    },
-    "IsEmpty": false,
-    "IsNull": false
+    }
   }
 }
