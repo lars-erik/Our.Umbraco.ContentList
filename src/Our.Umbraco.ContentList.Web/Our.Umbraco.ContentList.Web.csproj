@@ -8,8 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="usync" Version="9.0.2" />
-        <PackageReference Include="Umbraco.Cms" Version="9.0.1" />
+        <PackageReference Include="usync" Version="9.0.2" >
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Umbraco.Cms" Version="9.0.1">
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
     </ItemGroup>
 
     <!-- Force windows to use ICU. Otherwise Windows 10 2019H1+ will do it, but older windows 10 and most if not all winodws servers will run NLS -->

@@ -5,6 +5,39 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="umbraco\**" />
+    <EmbeddedResource Remove="umbraco\**" />
+    <None Remove="umbraco\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\lars-\.nuget\packages\microsoft.testplatform.testhost\16.11.0\build\netcoreapp2.1\x64\Microsoft.TestPlatform.PlatformAbstractions.dll" />
+    <Content Remove="C:\Users\lars-\.nuget\packages\microsoft.testplatform.testhost\16.11.0\build\netcoreapp2.1\x64\testhost.dll" />
+    <Content Remove="C:\Users\lars-\.nuget\packages\microsoft.testplatform.testhost\16.11.0\build\netcoreapp2.1\x64\testhost.exe" />
+    <Content Remove="C:\Users\lars-\.nuget\packages\umbraco.cms.tests.integration\9.0.1\contentFiles\any\net5.0\Microsoft.TestPlatform.PlatformAbstractions.dll" />
+    <Content Remove="C:\Users\lars-\.nuget\packages\umbraco.cms.tests.integration\9.0.1\contentFiles\any\net5.0\testhost.dll" />
+    <Content Remove="C:\Users\lars-\.nuget\packages\umbraco.cms.tests.integration\9.0.1\contentFiles\any\net5.0\testhost.exe" />
+    <Content Remove="C:\Users\lars-\.nuget\packages\umbraco.cms.tests.integration\9.0.1\contentFiles\any\net5.0\Umbraco.Examine.Lucene\UmbracoExamine\TestFiles\media.xml" />
+    <Content Remove="C:\Users\lars-\.nuget\packages\umbraco.cms.tests.integration\9.0.1\contentFiles\any\net5.0\Umbraco.Infrastructure\Services\Importing\CheckboxList-Content-Package.xml" />
+    <Content Remove="C:\Users\lars-\.nuget\packages\umbraco.cms.tests.integration\9.0.1\contentFiles\any\net5.0\Umbraco.Infrastructure\Services\Importing\CompositionsTestPackage-Random.xml" />
+    <Content Remove="C:\Users\lars-\.nuget\packages\umbraco.cms.tests.integration\9.0.1\contentFiles\any\net5.0\Umbraco.Infrastructure\Services\Importing\CompositionsTestPackage.xml" />
+    <Content Remove="C:\Users\lars-\.nuget\packages\umbraco.cms.tests.integration\9.0.1\contentFiles\any\net5.0\Umbraco.Infrastructure\Services\Importing\Dictionary-Package.xml" />
+    <Content Remove="C:\Users\lars-\.nuget\packages\umbraco.cms.tests.integration\9.0.1\contentFiles\any\net5.0\Umbraco.Infrastructure\Services\Importing\Fanoe-Package.xml" />
+    <Content Remove="C:\Users\lars-\.nuget\packages\umbraco.cms.tests.integration\9.0.1\contentFiles\any\net5.0\Umbraco.Infrastructure\Services\Importing\InheritedDocTypes-Package.xml" />
+    <Content Remove="C:\Users\lars-\.nuget\packages\umbraco.cms.tests.integration\9.0.1\contentFiles\any\net5.0\Umbraco.Infrastructure\Services\Importing\SingleDocType.xml" />
+    <Content Remove="C:\Users\lars-\.nuget\packages\umbraco.cms.tests.integration\9.0.1\contentFiles\any\net5.0\Umbraco.Infrastructure\Services\Importing\StandardMvc-Package.xml" />
+    <Content Remove="C:\Users\lars-\.nuget\packages\umbraco.cms.tests.integration\9.0.1\contentFiles\any\net5.0\Umbraco.Infrastructure\Services\Importing\TemplateOnly-Package.xml" />
+    <Content Remove="C:\Users\lars-\.nuget\packages\umbraco.cms.tests.integration\9.0.1\contentFiles\any\net5.0\Umbraco.Infrastructure\Services\Importing\TemplateOnly-Updated-Package.xml" />
+    <Content Remove="C:\Users\lars-\.nuget\packages\umbraco.cms.tests.integration\9.0.1\contentFiles\any\net5.0\Umbraco.Infrastructure\Services\Importing\uBlogsy-Package.xml" />
+    <Content Remove="C:\Users\lars-\.nuget\packages\umbraco.cms.tests.integration\9.0.1\contentFiles\any\net5.0\Umbraco.Infrastructure\Services\Importing\XsltSearch-Package.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\lars-\.nuget\packages\nunit3testadapter\3.17.0\build\netcoreapp2.1\nunit.engine.api.dll" />
+    <None Remove="C:\Users\lars-\.nuget\packages\nunit3testadapter\3.17.0\build\netcoreapp2.1\nunit.engine.core.dll" />
+    <None Remove="C:\Users\lars-\.nuget\packages\nunit3testadapter\3.17.0\build\netcoreapp2.1\nunit.engine.dll" />
+    <None Remove="C:\Users\lars-\.nuget\packages\nunit3testadapter\3.17.0\build\netcoreapp2.1\NUnit3.TestAdapter.dll" />
+    <None Remove="C:\Users\lars-\.nuget\packages\nunit3testadapter\3.17.0\build\netcoreapp2.1\NUnit3.TestAdapter.pdb" />
     <None Remove="site.json" />
   </ItemGroup>
 
