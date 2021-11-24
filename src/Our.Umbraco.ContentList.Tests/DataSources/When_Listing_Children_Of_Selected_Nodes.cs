@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using ApprovalTests;
-using Newtonsoft.Json;
 using NUnit.Framework;
 using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.Models;
@@ -10,7 +9,7 @@ using Our.Umbraco.ContentList.Web.Models;
 namespace Our.Umbraco.ContentList.Tests.DataSources
 {
     [TestFixture]
-    public class When_Listing_Children_Of_CurrentPage
+    class When_Listing_Children_Of_Selected_Nodes
     {
         private UmbracoSupport support;
 
@@ -35,26 +34,25 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
             var ctx = support.GetUmbracoContext();
             var home = ctx.Content.GetById(1000);
 
-            var dataSource = new ListableChildrenDataSource();
-            var result = dataSource.Query(
-                new ContentListQuery
-                {
-                    ContextContent = home
-                },
-                new QueryPaging(10)
-            );
+            var level1Children = home.Children;
+            Approvals.VerifyJson(level1Children.ToJson());
+            
+            Assert.Fail("Haven't started the data source. 😇");
+            //var dataSource = new ListableChildrenDataSource();
+            //var result = dataSource.Query(
+            //    new ContentListQuery
+            //    {
+            //        ContextContent = home
+            //    },
+            //    new QueryPaging(10)
+            //);
 
-            Assert.That(result.ToList(), Has.Count.EqualTo(2));
-            Assert.That(result.First(), Is.TypeOf<Page>());
+            //Assert.That(result.ToList(), Has.Count.EqualTo(2));
+            //Assert.That(result.First(), Is.TypeOf<Page>());
 
-            Approvals.VerifyJson(result.ToJson());
+            //Approvals.VerifyJson(result.ToJson());
 
         }
 
-        [Test]
-        public void Gets_Right_Metadata()
-        {
-            Assert.Inconclusive("Not done yet. Must move to DI.");
-        }
     }
 }

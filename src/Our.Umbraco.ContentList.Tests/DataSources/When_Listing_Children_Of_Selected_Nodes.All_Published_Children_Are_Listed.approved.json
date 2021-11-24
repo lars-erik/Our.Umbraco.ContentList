@@ -1,0 +1,24 @@
+﻿[
+    {
+        "ContentTypeName": "page",
+        "ListImageUrl": null,
+        "Url": "/item-1/",
+        "SortDate": "0001-01-01T00:00:00",
+        "Layout": null,
+        "ListHeading": "Item 1",
+        "ListImage": null,
+        "ListSummary": {},
+        "ReadMoreText": null
+    },
+    {
+        "ContentTypeName": "page",
+        "ListImageUrl": null,
+        "Url": "/item-2/",
+        "SortDate": "0001-01-01T00:00:00",
+        "Layout": null,
+        "ListHeading": "Item 2",
+        "ListImage": null,
+        "ListSummary": {},
+        "ReadMoreText": null
+    }
+]

@@ -11,7 +11,12 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="DataSources\When_Listing_Children_Of_Selected_Nodes.Content.json" />
+    </ItemGroup>
+
+    <ItemGroup>
         <EmbeddedResource Include="DataSources\When_Listing_Children_Of_CurrentPage.Content.json" DependentUpon="When_Listing_Children_Of_CurrentPage.cs" />
+        <EmbeddedResource Include="DataSources\When_Listing_Children_Of_Selected_Nodes.Content.json" DependentUpon="When_Listing_Children_Of_Selected_Nodes.cs" />
     </ItemGroup>
 
     <ItemGroup>
