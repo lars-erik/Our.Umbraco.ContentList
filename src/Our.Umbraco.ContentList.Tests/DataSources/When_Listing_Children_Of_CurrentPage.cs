@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using ApprovalTests;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
 using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.Models;
@@ -34,7 +37,7 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
         public void All_Published_Children_Are_Listed()
         {
             var ctx = support.GetUmbracoContext();
-            var home = ctx.Content.GetById(new Guid("64d01018-3dce-4efb-809f-a9705e166bbd"));
+            var home = ctx.Content.GetById(1000);
 
             var dataSource = new ListableChildrenDataSource();
             var result = dataSource.Query(
@@ -48,15 +51,7 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
             Assert.That(result.ToList(), Has.Count.EqualTo(2));
             Assert.That(result.First(), Is.TypeOf<Page>());
 
-            var content = result.Select(x => new
-            {
-                x.ListHeading,
-                ListSummary = x.ListSummary.ToHtmlString(),
-                x.ListImageUrl,
-                x.ContentTypeName
-            });
-
-            Approvals.VerifyJson(JsonConvert.SerializeObject(content));
+            Approvals.VerifyJson(ToJson(result));
 
         }
 
@@ -66,13 +61,21 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
             Assert.Inconclusive("Not done yet. Must move to DI.");
         }
 
-        private static string ToJson(IQueryable<IListableContent> result)
+        private static string ToJson(object data)
         {
-            return JsonConvert.SerializeObject(result, new JsonSerializerSettings
+            return JsonConvert.SerializeObject(data, new JsonSerializerSettings
             {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                Formatting = Formatting.Indented
+                ContractResolver = new TypeOnlyMembersContractResolver(),
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
+        }
+    }
+
+    public class TypeOnlyMembersContractResolver : DefaultContractResolver
+    {
+        protected override List<MemberInfo> GetSerializableMembers(Type objectType)
+        {
+            return objectType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Cast<MemberInfo>().ToList();
         }
     }
 }

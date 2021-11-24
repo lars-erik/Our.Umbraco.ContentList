@@ -1,14 +1,24 @@
 ﻿[
     {
-        "ListHeading": "About us",
-        "ListSummary": "<p>Here's all about us</p>",
+        "ContentTypeName": "page",
         "ListImageUrl": null,
-        "ContentTypeName": "page"
+        "Url": "/about-us/",
+        "SortDate": "0001-01-01T00:00:00",
+        "Layout": null,
+        "ListHeading": "About us",
+        "ListImage": null,
+        "ListSummary": {},
+        "ReadMoreText": null
     },
     {
-        "ListHeading": "Contact us",
-        "ListSummary": "<p>Here's how to contact us</p>",
+        "ContentTypeName": "page",
         "ListImageUrl": null,
-        "ContentTypeName": "page"
+        "Url": "/contact-us/",
+        "SortDate": "0001-01-01T00:00:00",
+        "Layout": null,
+        "ListHeading": "Contact us",
+        "ListImage": null,
+        "ListSummary": {},
+        "ReadMoreText": null
     }
 ]
