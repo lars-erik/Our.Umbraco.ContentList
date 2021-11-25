@@ -3,27 +3,36 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+
+        <ContentTargetFolders>.</ContentTargetFolders>
+
+        <Product>Our.Umbraco.ContentList</Product>
+        <Authors>Lars-Erik Aabech</Authors>
+        <PackageId>Our.Umbraco.ContentList</PackageId>
+        <Title>Our Umbraco ContentList</Title>
+        <Description>...</Description>
+        <Product>...</Product>
+        <PackageTags>umbraco plugin package grid contentlist</PackageTags>
+        <RootNamespace>Our.Umbraco.ContentList</RootNamespace>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
     </PropertyGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="App_Plugins\Our.Umbraco.ContentList\Views\Errors.cshtml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </EmbeddedResource>
+        <Content Include="App_Plugins\Our.Umbraco.ContentList\**\*.*" Exclude="App_Plugins\Our.Umbraco.ContentList\Views\**\*.*">
+            <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+            <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+        </Content>
+        <None Include="build\**\*.*">
+            <Pack>True</Pack>
+            <PackagePath>buildTransitive</PackagePath>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.0.1" />
         <PackageReference Include="Umbraco.Cms.Web.Common" Version="9.0.1" />
         <PackageReference Include="Umbraco.Cms.Web.Website" Version="9.0.1" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Update="App_Plugins\Our.Umbraco.ContentList\Views\ContentList.cshtml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Update="App_Plugins\Our.Umbraco.ContentList\Views\ListViews\Sample.cshtml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
     </ItemGroup>
 
 </Project>
