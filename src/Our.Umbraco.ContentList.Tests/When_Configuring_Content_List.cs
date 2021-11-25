@@ -74,7 +74,7 @@ namespace Our.Umbraco.ContentList.Tests
 
             var sourceTypes = controller?.GetDataSources();
             
-            Approvals.VerifyAll("Source types", sourceTypes, x => $"{x.Name,-30}{x.Key}");
+            Approvals.VerifyAll("Source types", sourceTypes, x => $"{x.Name,-46}{x.Key}");
         }
 
         [Test]

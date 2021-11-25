@@ -1,10 +1,13 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ApprovalTests;
 using NUnit.Framework;
 using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.Models;
+using Our.Umbraco.ContentList.Parameters;
 using Our.Umbraco.ContentList.Tests.Support;
 using Our.Umbraco.ContentList.Web.Models;
+using Umbraco.Cms.Core.PublishedCache;
 
 namespace Our.Umbraco.ContentList.Tests.DataSources
 {
@@ -34,23 +37,24 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
             var ctx = support.GetUmbracoContext();
             var home = ctx.Content.GetById(1000);
 
-            var level1Children = home.Children;
-            Approvals.VerifyJson(level1Children.ToJson());
-            
-            Assert.Fail("Haven't started the data source. 😇");
-            //var dataSource = new ListableChildrenDataSource();
-            //var result = dataSource.Query(
-            //    new ContentListQuery
-            //    {
-            //        ContextContent = home
-            //    },
-            //    new QueryPaging(10)
-            //);
+            var dataSource = new ChildrenOfMultipleDataSource(support.GetService<IPublishedSnapshotAccessor>());
+            var result = dataSource.Query(
+                new ContentListQuery
+                {
+                    ContextContent = home,
+                    CustomParameters =
+                    {
+                        { ListableSorting.Parameter.Key, ListableSorting.Parameter.Config.Items[0].Value },
+                        { "nodes", "1001,1002" }
+                    }
+                },
+                new QueryPaging(10)
+            );
 
-            //Assert.That(result.ToList(), Has.Count.EqualTo(2));
-            //Assert.That(result.First(), Is.TypeOf<Page>());
+            Assert.That(result.ToList(), Has.Count.EqualTo(4));
+            Assert.That(result.First(), Is.TypeOf<Page>());
 
-            //Approvals.VerifyJson(result.ToJson());
+            Approvals.VerifyJson(result.ToJson());
 
         }
 

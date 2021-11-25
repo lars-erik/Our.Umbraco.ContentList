@@ -1,3 +1,4 @@
 ﻿Source types
 
-List of children              Our.Umbraco.ContentList.DataSources.ListableChildrenDataSource, Our.Umbraco.ContentList
+Children from individually selected parents   Our.Umbraco.ContentList.DataSources.ChildrenOfMultipleDataSource, Our.Umbraco.ContentList
+List of children                              Our.Umbraco.ContentList.DataSources.ListableChildrenDataSource, Our.Umbraco.ContentList

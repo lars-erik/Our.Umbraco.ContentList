@@ -7,7 +7,7 @@ using Our.Umbraco.ContentList.Models;
 
 namespace Our.Umbraco.ContentList.Parameters
 {
-    public class ListableSorting
+    public static class ListableSorting
     {
         public static readonly DataSourceParameterDefinition Parameter = new DataSourceParameterDefinition
         {
@@ -32,7 +32,7 @@ namespace Our.Umbraco.ContentList.Parameters
             {"datedesc", list => list.OrderByDescending(ContentDate)},
         };
 
-        public static IEnumerable<IListableContent> Apply(IEnumerable<IListableContent> listables, IDictionary<string, object> parameters)
+        public static IEnumerable<IListableContent> ApplySorting(this IEnumerable<IListableContent> listables, IDictionary<string, object> parameters)
         {
             if (parameters.ContainsKey("sort") && sorters.ContainsKey(parameters["sort"]?.ToString() ?? ""))
             {

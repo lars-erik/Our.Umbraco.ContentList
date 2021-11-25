@@ -23,7 +23,7 @@ namespace Our.Umbraco.ContentList.DataSources
 
             var culture = LanguageParameter.Culture(query);
             var listables = query.ContextContent.Children(culture).OfType<IListableContent>().Where(c => c.IsVisible());
-            listables = ListableSorting.Apply(listables, query.CustomParameters);
+            listables = ListableSorting.ApplySorting(listables, query.CustomParameters);
             listables = listables.Skip((int)queryPaging.PreSkip).Skip((int)queryPaging.Skip).Take((int)queryPaging.Take);
             return listables.AsQueryable();
         }

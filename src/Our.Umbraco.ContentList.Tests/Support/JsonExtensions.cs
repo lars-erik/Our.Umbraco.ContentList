@@ -8,7 +8,7 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
         {
             return JsonConvert.SerializeObject(data, new JsonSerializerSettings
             {
-                ContractResolver = new TypeOnlyMembersContractResolver(),
+                ContractResolver = new PublishedContentContractResolver(),
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
         }
