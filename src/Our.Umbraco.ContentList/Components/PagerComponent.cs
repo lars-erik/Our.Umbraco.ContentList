@@ -19,7 +19,7 @@ namespace Our.Umbraco.ContentList.Components
 
             ViewData.Add("baseUrl", builder.Build(model));
             
-            return View("Pager", model.Paging);
+            return View("~/App_Plugins/Our.Umbraco.ContentList/Views/Components/ContentListPager/Pager.cshtml", model.Paging);
         }
     }
 }

@@ -14,6 +14,7 @@ using Our.Umbraco.ContentList.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Core.Web;
+using Umbraco.Cms.Web.Common.Attributes;
 
 namespace Our.Umbraco.ContentList.Controllers
 {
@@ -41,6 +42,12 @@ namespace Our.Umbraco.ContentList.Controllers
             this.httpContextAccessor = httpContextAccessor;
             this.contentListQueryHandler = contentListQueryHandler;
             this.provider = provider;
+        }
+
+        [HttpGet]
+        public ActionResult HelloWorld(string input)
+        {
+            return View("Echo");
         }
 
         [HttpGet]
@@ -200,21 +207,20 @@ namespace Our.Umbraco.ContentList.Controllers
 
             path = "~/Views/Partials/ContentList/" + name + "/List.cshtml";
 
-            foundView = viewEngine.FindView(ViewContext, path, false);
+            foundView = viewEngine.GetView(null, path, false);
 
             if (!foundView.Success)
             {
                 path = "~/App_Plugins/Our.Umbraco.ContentList/Views/ListViews/Sample.cshtml";
+                foundView = viewEngine.GetView(null, path, false);
             }
 
-            foundView = viewEngine.FindView(ViewContext, path, false);
-
-            if (foundView == null)
+            if (!foundView.Success)
             {
                 throw new Exception("No content list view called " + configuration.View + " found");
             }
 
-            return path;
+            return foundView.ViewName;
         }
 
         public static ContentListPaging CreatePagingModel(
