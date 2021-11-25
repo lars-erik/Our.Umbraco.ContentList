@@ -32,7 +32,7 @@
       "TemplateId": 1056,
       "Published": true,
       "Properties": {
-        "listHeading": [ { "v": "About us X" } ],
+        "listHeading": [ { "v": "About us" } ],
         "listSummary": [ { "v": "<p>Read all about us<\/p>" } ]
       }
     }

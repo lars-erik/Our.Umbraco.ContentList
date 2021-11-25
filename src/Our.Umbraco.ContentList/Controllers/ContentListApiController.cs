@@ -39,7 +39,6 @@ namespace Our.Umbraco.ContentList.Controllers
     public class ContentListApiController : UmbracoApiController
     {
         private readonly string path;
-        private readonly string samplePath;
         private readonly IServiceProvider serviceProvider;
 
         public ContentListApiController(IServiceProvider serviceProvider, IHostingEnvironment env)
@@ -47,7 +46,6 @@ namespace Our.Umbraco.ContentList.Controllers
             this.serviceProvider = serviceProvider;
 
             path = env.MapPathContentRoot("~/Views/Partials/ContentList");
-            samplePath = env.MapPathContentRoot("~/App_Plugins/Our.Umbraco.ContentList/Views/ContentList/ListViews");
         }
 
         [HttpGet]
@@ -79,25 +77,12 @@ namespace Our.Umbraco.ContentList.Controllers
                 );
             }
 
-            var sampleInfo = new DirectoryInfo(samplePath);
-            if (sampleInfo.Exists)
+            if (true || templates.Count == 0)
             {
-                var legacyTemplates = sampleInfo
-                    .EnumerateFiles("*.cshtml")
-                    .Select(f => new ListTemplate(f.Name.Replace(".cshtml", "")) { DisplayName = f.Name.Replace(".cshtml", "") })
-                    .Where(n => templates.All(x => x.Name != n.Name))
-                    .ToList();
-
-                if (legacyTemplates.Count > 1 || templates.Count > 0)
+                templates.Add(new ListTemplate("Sample")
                 {
-                    var sample = legacyTemplates.FirstOrDefault(x => x.Name == "Sample");
-                    if (sample != null)
-                    {
-                        legacyTemplates.Remove(sample);
-                    }
-                }
-
-                templates.AddRange(legacyTemplates);
+                    DisplayName = "Sample"
+                });
             }
 
             return templates;

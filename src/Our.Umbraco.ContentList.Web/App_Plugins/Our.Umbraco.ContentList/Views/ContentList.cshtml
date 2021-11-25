@@ -1,6 +1,5 @@
 ﻿@using Newtonsoft.Json
 @using Our.Umbraco.ContentList.Models
-@using Our.Umbraco.ContentList.Web
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Newtonsoft.Json.Linq.JObject>
 @{
     var configuration = JsonConvert.DeserializeObject<ContentListConfiguration>(Model["config"].ToString());

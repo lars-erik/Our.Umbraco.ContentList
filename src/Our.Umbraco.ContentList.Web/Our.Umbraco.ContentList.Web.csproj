@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="usync" Version="9.0.2" >
+        <PackageReference Include="usync" Version="9.0.2">
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Umbraco.Cms" Version="9.0.1">
@@ -30,6 +30,26 @@
         <Content Remove="umbraco/mediacache/**" />
         <Content Remove="umbraco/models/**" />
         <Compile Include="umbraco/models/**" Exclude="**/*.flag" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="App_Plugins\Our.Umbraco.ContentList\Views\Components\ContentListPager\Pager.cshtml" />
+      <Content Remove="App_Plugins\Our.Umbraco.ContentList\Views\ContentList.cshtml" />
+      <Content Remove="App_Plugins\Our.Umbraco.ContentList\Views\Errors.cshtml" />
+      <Content Remove="App_Plugins\Our.Umbraco.ContentList\Views\ListViews\Sample.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="App_Plugins\Our.Umbraco.ContentList\Views\Components\ContentListPager\Pager.cshtml" />
+      <EmbeddedResource Include="App_Plugins\Our.Umbraco.ContentList\Views\ContentList.cshtml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="App_Plugins\Our.Umbraco.ContentList\Views\Errors.cshtml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
+      <EmbeddedResource Include="App_Plugins\Our.Umbraco.ContentList\Views\ListViews\Sample.cshtml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>

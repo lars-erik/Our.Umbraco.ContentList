@@ -202,17 +202,12 @@ namespace Our.Umbraco.ContentList.Controllers
 
             foundView = viewEngine.FindView(ViewContext, path, false);
 
-            if (foundView == null)
+            if (!foundView.Success)
             {
-                path = null;
+                path = "~/App_Plugins/Our.Umbraco.ContentList/Views/ListViews/Sample.cshtml";
             }
 
-            if (path == null)
-            {
-                // TODO: No test validates this
-                path = "~/App_Plugins/Our.Umbraco.ContentList/Views/ContentList/ListViews/" + name + ".cshtml";
-                foundView = viewEngine.FindView(ViewContext, path, false);
-            }
+            foundView = viewEngine.FindView(ViewContext, path, false);
 
             if (foundView == null)
             {

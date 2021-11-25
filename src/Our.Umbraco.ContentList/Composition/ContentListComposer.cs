@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Primitives;
 using Our.Umbraco.ContentList.Controllers;
 using Our.Umbraco.ContentList.DataSources;
 using Umbraco.Cms.Core.Composing;
@@ -44,6 +47,39 @@ namespace Our.Umbraco.ContentList.Composition
                     });
                 }
             );
+
+            builder.Services.AddMvc().AddRazorRuntimeCompilation(options =>
+            {
+                options.FileProviders.Add(new InterceptedEmbeddedFileProvider(typeof(IListableContent).Assembly));
+            });
+
+        }
+    }
+
+    public class InterceptedEmbeddedFileProvider : IFileProvider
+    {
+        EmbeddedFileProvider inner;
+        public InterceptedEmbeddedFileProvider(Assembly assembly)
+        {
+            inner = new EmbeddedFileProvider(assembly);
+        }
+
+        public IFileInfo GetFileInfo(string subpath)
+        {
+            var fileInfo = inner.GetFileInfo(subpath);
+            return fileInfo;
+        }
+
+        public IDirectoryContents GetDirectoryContents(string subpath)
+        {
+            var directoryContents = inner.GetDirectoryContents(subpath);
+            return directoryContents;
+        }
+
+        public IChangeToken Watch(string pattern)
+        {
+            var changeToken = inner.Watch(pattern);
+            return changeToken;
         }
     }
 

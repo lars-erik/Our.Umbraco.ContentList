@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Views\Components\ContentListPager\Pager.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.0.1" />
     <PackageReference Include="Umbraco.Cms.Web.Common" Version="9.0.1" />
     <PackageReference Include="Umbraco.Cms.Web.Website" Version="9.0.1" />

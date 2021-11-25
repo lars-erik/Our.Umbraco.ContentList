@@ -10,7 +10,7 @@
       "name": "Content List",
       "alias": "content.list",
       "view": "~/App_Plugins/Our.Umbraco.ContentList/grideditors/contentlist/contentlist.html",
-      "render": "~/App_Plugins/Our.Umbraco.ContentList/Views/ContentList/ContentList.cshtml",
+      "render": "~/App_Plugins/Our.Umbraco.ContentList/Views/ContentList.cshtml",
       "icon": "icon-list",
       "config": { "settings": {} }
     }
