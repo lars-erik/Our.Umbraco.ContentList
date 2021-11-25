@@ -4,7 +4,7 @@
       "Id": 1000,
       "ParentContentId": -1,
       "SortOrder": 0,
-      "Uid": "85e2905b-524a-4a2f-9f81-312e8d7a2a71"
+      "Uid": "c095abab-4837-4766-959a-29a60bbc3dec"
     },
     "ContentTypeId": 1057,
     "PublishedData": {
@@ -23,16 +23,16 @@
       "Id": 1001,
       "ParentContentId": 1000,
       "SortOrder": 0,
-      "Uid": "1ee0c74e-b4ae-47e4-afa7-aafd7d283982"
+      "Uid": "1682ce29-c08c-41e0-813c-81ec76a2f99d"
     },
     "ContentTypeId": 1057,
     "PublishedData": {
-      "Name": "Item 1 awesome",
-      "UrlSegment": "item-1-awesome",
+      "Name": "Item 1",
+      "UrlSegment": "item-1",
       "TemplateId": 1056,
       "Published": true,
       "Properties": {
-        "listHeading": [ { "v": "Item 1 awesome" } ],
+        "listHeading": [ { "v": "Item 1" } ],
         "listSummary": [ { "v": null } ]
       }
     }
@@ -42,7 +42,7 @@
       "Id": 1002,
       "ParentContentId": 1000,
       "SortOrder": 1,
-      "Uid": "46882004-0204-44ba-aff1-dcc3b37a6543"
+      "Uid": "47a8ab95-65f7-4a6c-a4db-931cb9af1a37"
     },
     "ContentTypeId": 1057,
     "PublishedData": {
@@ -61,7 +61,7 @@
       "Id": 1003,
       "ParentContentId": 1001,
       "SortOrder": 0,
-      "Uid": "f81a4785-d5fc-4b76-a305-e4e681c51f25"
+      "Uid": "16cdd14e-8b7a-407f-b91d-015f4d68d5f9"
     },
     "ContentTypeId": 1057,
     "PublishedData": {
@@ -80,7 +80,7 @@
       "Id": 1004,
       "ParentContentId": 1001,
       "SortOrder": 1,
-      "Uid": "480ff0d7-83c4-4a6c-a2ec-bc9f0998db56"
+      "Uid": "3e5957fb-ea77-41f1-ab9d-3d6a111a3546"
     },
     "ContentTypeId": 1057,
     "PublishedData": {
@@ -99,7 +99,7 @@
       "Id": 1005,
       "ParentContentId": 1002,
       "SortOrder": 0,
-      "Uid": "05235c79-80f1-4bb6-a244-5cf68a2721e6"
+      "Uid": "f6936fff-5095-4720-9614-8fbfc465cf68"
     },
     "ContentTypeId": 1057,
     "PublishedData": {
@@ -118,7 +118,7 @@
       "Id": 1006,
       "ParentContentId": 1002,
       "SortOrder": 1,
-      "Uid": "26ae32c1-3c7d-47d1-b99f-cc60f7e9eb72"
+      "Uid": "2410d009-bace-49a5-b935-032e843a2a87"
     },
     "ContentTypeId": 1057,
     "PublishedData": {

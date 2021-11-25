@@ -21,8 +21,8 @@ namespace Our.Umbraco.ContentList.Tests.Support
             services.AddMvc()
                 .AddRazorRuntimeCompilation(options =>
                 {
+                    options.FileProviders.Add(new FakeFileSystemProvider("Our.Umbraco.ContentList"));
                     options.FileProviders.Add(new FakeFileSystemProvider("Our.Umbraco.ContentList.Web"));
-                    options.FileProviders.Add(new EmbeddedFileProvider(typeof(IListableContent).Assembly));
                 })
                 .AddRazorOptions(options =>
                 {

@@ -77,7 +77,7 @@ namespace Our.Umbraco.ContentList.Controllers
                 );
             }
 
-            if (true || templates.Count == 0)
+            if (templates.Count == 0)
             {
                 templates.Add(new ListTemplate("Sample")
                 {
