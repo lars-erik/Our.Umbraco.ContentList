@@ -48,10 +48,10 @@ namespace Our.Umbraco.ContentList.Composition
                 }
             );
 
-            builder.Services.AddMvc().AddRazorRuntimeCompilation(options =>
-            {
-                options.FileProviders.Add(new InterceptedEmbeddedFileProvider(typeof(IListableContent).Assembly));
-            });
+            //builder.Services.AddMvc().AddRazorRuntimeCompilation(options =>
+            //{
+            //    options.FileProviders.Add(new InterceptedEmbeddedFileProvider(typeof(IListableContent).Assembly));
+            //});
 
         }
     }

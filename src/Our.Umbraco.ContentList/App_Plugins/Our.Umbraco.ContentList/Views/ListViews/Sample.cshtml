@@ -1,5 +1,6 @@
 ﻿@using Umbraco.Extensions
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Our.Umbraco.ContentList.Models.ContentListModel>
+@addTagHelper *, Our.Umbraco.ContentList
 
 <div class="contentlist">
     <div class="alert alert-info">This is an example of a list view. List views should be created as ~/Views/Partials/ContentList/[ThemeName]/List.cshtml</div>
@@ -50,10 +51,10 @@
                 </div>
             }
         </div>
-        <div class="col-md-12">
-            <vc:content-list-pager model="Model"></vc:content-list-pager>
-        </div>
 
     }
+    <div class="col-md-12">
+        <vc:content-list-pager model="Model"></vc:content-list-pager>
+    </div>
 
 </div>

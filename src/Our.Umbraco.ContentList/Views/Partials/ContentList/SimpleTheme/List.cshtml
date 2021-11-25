@@ -1,0 +1,71 @@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Our.Umbraco.ContentList.Models.ContentListModel>
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Extensions
+@addTagHelper *, Our.Umbraco.ContentList
+
+@{
+    var i = 0;
+}
+
+<div class="contentlist simple">
+    @if (!Model.Items.Any())
+    {
+        if (UmbracoContext.IsFrontEndUmbracoRequest())
+        {
+            <p>No items found...</p>
+        }
+        else
+        {
+            <div class="container-fluid contentlist">
+                <a class="color-orange">
+                    <i class="icon icon-settings large"></i><br />
+                    Query returned no results. Try configuring it some more?
+                </a>
+            </div>
+        }
+    }
+    else
+    {
+        @foreach (var item in Model.Items)
+        {
+
+            <div class="@Model.ColumnStyling.ColumnClasses(" col-sm-", "col-md-" , "col-lg-" ) list-item @item.ContentTypeName ">
+                @if (!item.ListImageUrl.IsNullOrWhiteSpace())
+                {
+                    <a href="@item.Url"><img class="list-image widescreen" src="@item.ListImageUrl.GetCropUrl(800, 500, imageCropMode:ImageCropMode.Crop)" style="width: 100%;" /></a>
+                }
+
+                <h3>
+                    <a href="@item.Url">@item.ListHeading</a>
+                </h3>
+                <div class="list-summary">
+                    @item.ListSummary
+                </div>
+                <div>
+                    <a href="@item.Url" class="readmore">@Html.Raw(item.ReadMoreText.IfNullOrWhiteSpace("Read more &rsaquo;"))</a>
+                </div>
+            </div>
+            if (Model.ColumnStyling.IsLargeBreak(i))
+            {
+                <div class="clearfix visible-lg"></div>
+            }
+
+            if (Model.ColumnStyling.IsMediumBreak(i))
+            {
+                <div class="clearfix visible-md"></div>
+            }
+
+            if (Model.ColumnStyling.IsMediumBreak(i))
+            {
+                <div class="clearfix visible-sm"></div>
+            }
+
+            i++;
+        }
+        <div class="col-md-12">
+            <nav>
+                <vc:content-list-pager model="Model"></vc:content-list-pager>
+            </nav>
+        </div>
+    }
+</div>

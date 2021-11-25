@@ -1,5 +1,6 @@
 ﻿@model Our.Umbraco.ContentList.Models.ContentListPaging
-@{
+@if (Model.ShowPaging && Model.Pages > 1)
+{
     var size = 2;
     var total = size * 2 + 1;
 
@@ -18,35 +19,35 @@
             from = Math.Max(1, Model.Pages - size * 2);
         }
     }
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            @if (from > 2)
+            {
+                <li class="page-item"><a class="page-link" href="@Html.Raw(baseUrl + 1)">&lsaquo;&lsaquo;</a></li>
+            }
+            @if (from > 1)
+            {
+                <li class="page-item"><a class="page-link" href="@Html.Raw(baseUrl + (from - 1))">&lsaquo;</a></li>
+            }
+            @for (var p = from; p <= to; p++)
+            {
+                if (p == Model.Page)
+                {
+                    <li class="page-item">@p</li>
+                }
+                else
+                {
+                    <li class="page-item"><a class="page-link" href="@Html.Raw(baseUrl + p)">@p</a></li>
+                }
+            }
+            @if (to < Model.Pages)
+            {
+                <li class="page-item"><a class="page-link" href="@Html.Raw(baseUrl + (to + 1))">&rsaquo;</a></li>
+            }
+            @if (to < Model.Pages - 1)
+            {
+                <li class="page-item"><a class="page-link" href="@Html.Raw(baseUrl + Model.Pages)">&rsaquo;&rsaquo;</a></li>
+            }
+        </ul>
+    </nav>
 }
-<nav aria-label="Page navigation">
-    <ul class="pagination">
-        @if (from > 2)
-        {
-        <li class="page-item"><a class="page-link" href="@Html.Raw(baseUrl + 1)">&lsaquo;&lsaquo;</a></li>
-        }
-        @if (from > 1)
-        {
-        <li class="page-item"><a class="page-link" href="@Html.Raw(baseUrl + (from - 1))">&lsaquo;</a></li>
-        }
-        @for (var p = from; p <= to; p++)
-        {
-            if (p == Model.Page)
-            {
-        <li class="page-item">@p</li>
-            }
-            else
-            {
-        <li class="page-item"><a class="page-link" href="@Html.Raw(baseUrl + p)">@p</a></li>
-            }
-        }
-        @if (to < Model.Pages)
-        {
-        <li class="page-item"><a class="page-link" href="@Html.Raw(baseUrl + (to + 1))">&rsaquo;</a></li>
-        }
-        @if (to < Model.Pages - 1)
-        {
-        <li class="page-item"><a class="page-link" href="@Html.Raw(baseUrl + Model.Pages)">&rsaquo;&rsaquo;</a></li>
-        }
-    </ul>
-</nav>

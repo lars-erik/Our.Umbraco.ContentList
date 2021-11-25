@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Newtonsoft.Json;
 using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.Models;
+using Umbraco.Cms.Core.Hosting;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Core.Web;
@@ -158,14 +159,17 @@ namespace Our.Umbraco.ContentList.Controllers
     {
         private readonly IRazorViewEngine viewEngine;
         private readonly ContentListQueryHandler contentListQueryHandler;
+        private string path;
 
         public ContentListViewComponent(
             IRazorViewEngine viewEngine,
-            ContentListQueryHandler contentListQueryHandler
+            ContentListQueryHandler contentListQueryHandler,
+            IHostingEnvironment env
         )
         {
             this.viewEngine = viewEngine;
             this.contentListQueryHandler = contentListQueryHandler;
+            path = env.MapPathContentRoot("~/Views/Partials/ContentList");
         }
 
         public async Task<IViewComponentResult> InvokeAsync(ContentListConfiguration configuration, IPublishedContent contextContent)
@@ -211,8 +215,12 @@ namespace Our.Umbraco.ContentList.Controllers
 
             if (!foundView.Success)
             {
-                path = "~/App_Plugins/Our.Umbraco.ContentList/Views/ListViews/Sample.cshtml";
-                foundView = viewEngine.GetView(null, path, false);
+                var rootDir = new DirectoryInfo(path);
+                if (name == "Sample" || !rootDir.Exists)
+                { 
+                    path = "~/App_Plugins/Our.Umbraco.ContentList/Views/ListViews/Sample.cshtml";
+                    foundView = viewEngine.GetView(null, path, false);
+                }
             }
 
             if (!foundView.Success)

@@ -8,13 +8,15 @@
 
         <Product>Our.Umbraco.ContentList</Product>
         <Authors>Lars-Erik Aabech</Authors>
-        <PackageId>Our.Umbraco.ContentList</PackageId>
+        <PackageId>Our.Umbraco.Community.ContentList</PackageId>
         <Title>Our Umbraco ContentList</Title>
         <Description>...</Description>
         <Product>...</Product>
         <PackageTags>umbraco plugin package grid contentlist</PackageTags>
         <RootNamespace>Our.Umbraco.ContentList</RootNamespace>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Version>2.0.0-alpha-01</Version>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
 
     </PropertyGroup>
 
@@ -34,5 +36,6 @@
         <PackageReference Include="Umbraco.Cms.Web.Common" Version="9.0.1" />
         <PackageReference Include="Umbraco.Cms.Web.Website" Version="9.0.1" />
     </ItemGroup>
+
 
 </Project>
