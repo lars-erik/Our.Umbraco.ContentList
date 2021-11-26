@@ -1,10 +1,7 @@
-﻿using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ApprovalTests.Namers;
 using NUnit.Framework;
 using Our.Umbraco.ContentList.DataSources;
-using Our.Umbraco.ContentList.Web.Models;
 
 namespace Our.Umbraco.ContentList.Tests.DataSources
 {
@@ -18,8 +15,7 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
         [Test]
         public async Task All_Published_Children_Are_Listed()
         {
-            var configuration = CreateConfiguration(typeof(ChildrenOfCurrentPageDataSource), "SimpleTheme");
-            var result = await Fixture.Execute(configuration, UmbracoContext.Content.GetById(1000));
+            var result = await ExecuteSimpleTheme<ChildrenOfCurrentPageDataSource>();
 
             using (ApprovalResults.ForScenario(IntegrationMode))
             { 

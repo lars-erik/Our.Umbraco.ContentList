@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ApprovalTests.Namers;
 using NUnit.Framework;
 using Our.Umbraco.ContentList.DataSources;
@@ -17,14 +16,15 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
         [Test]
         public async Task All_Published_Children_Are_Listed()
         {
-            var parameters = CreateDefaultParameters();
-            parameters.Add(new DataSourceParameterValue
-            {
-                Key = "nodes",
-                Value = "1001,1002"
-            });
-            var configuration = CreateConfiguration(typeof(ChildrenOfMultipleDataSource), "SimpleTheme", parameters);
-            var result = await Fixture.Execute(configuration, UmbracoContext.Content.GetById(1000));
+            var result = await ExecuteSimpleTheme<ChildrenOfMultipleDataSource>(
+                CreateParameters(
+                    new DataSourceParameterValue
+                    {
+                        Key = "nodes",
+                        Value = "1001,1002"
+                    }
+                )
+            );
 
             using (ApprovalResults.ForScenario(IntegrationMode))
             {

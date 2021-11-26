@@ -82,14 +82,21 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
             return configuration;
         }
 
-        protected static List<DataSourceParameterValue> CreateDefaultParameters()
+        protected static List<DataSourceParameterValue> CreateParameters(params DataSourceParameterValue[] additionalParameters)
         {
-            return new List<DataSourceParameterValue>(DefaultParameters);
+            var parameters = new List<DataSourceParameterValue>(DefaultParameters);
+            parameters.AddRange(additionalParameters);
+            return parameters;
         }
 
-        protected async Task<object> ExecuteSimpleTheme(Type dataSourceType, List<DataSourceParameterValue> parameters)
+        protected async Task<object> ExecuteSimpleTheme<T>(List<DataSourceParameterValue> parameters = null)
         {
-            var configuration = CreateConfiguration(dataSourceType, "SimpleTheme", parameters);
+            return await ExecuteSimpleTheme(typeof(T), parameters);
+        }
+
+        protected async Task<object> ExecuteSimpleTheme(Type dataSourceType, List<DataSourceParameterValue> parameters = null)
+        {
+            var configuration = CreateConfiguration(dataSourceType, "SimpleTheme", parameters ?? DefaultParameters);
             var result = await Fixture.Execute(configuration, UmbracoContext.Content.GetById(1000));
             return result;
         }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using ApprovalTests.Namers;
 using NUnit.Framework;
 using Our.Umbraco.ContentList.DataSources;
@@ -20,9 +16,11 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
         [Test]
         public async Task Lists_All_Selected_Nodes()
         {
-            var parameters = CreateDefaultParameters();
-            parameters.Add(new DataSourceParameterValue("nodes", "1001,1003"));
-            var result = await ExecuteSimpleTheme(typeof(IndividuallySelectedDataSource), parameters);
+            var result = await ExecuteSimpleTheme<IndividuallySelectedDataSource>(
+                CreateParameters(
+                    new DataSourceParameterValue("nodes", "1001,1003")
+                )
+            );
             
             using (ApprovalResults.ForScenario(IntegrationMode))
             { 
