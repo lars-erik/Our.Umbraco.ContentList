@@ -1,11 +1,12 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Our.Umbraco.ContentList.Models;
 
 namespace Our.Umbraco.ContentList.DataSources
 {
     public interface IListableDataSource
     {
-        IQueryable<IListableContent> Query(ContentListQuery query, QueryPaging queryPaging);
-        long Count(ContentListQuery query, long preSkip);
+        Task<IQueryable<IListableContent>> Query(ContentListQuery query, QueryPaging queryPaging);
+        Task<long> Count(ContentListQuery query, long preSkip);
     }
 }

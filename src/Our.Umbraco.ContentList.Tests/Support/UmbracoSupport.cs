@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CSharpTest.Net.Collections;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Primitives;
 using Moq;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Configuration.Models;
+using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Core.Scoping;
@@ -32,6 +34,7 @@ namespace Our.Umbraco.ContentList.Tests.Support
         private readonly BPlusTree<int, ContentNodeKit> localDb;
         private readonly Action<IDataTypeService, IContentTypeService> setupContentTypes;
         private readonly Action<IServiceCollection> configureServices;
+        private readonly Action<IUmbracoBuilder> configureUmbraco;
         private IPublishedSnapshot publishedSnapshot;
         private IPublishedSnapshotAccessor publishedSnapshotAccessor;
         private FakeDataTypeService dataTypeService;
@@ -42,19 +45,27 @@ namespace Our.Umbraco.ContentList.Tests.Support
         public UmbracoSupport(
             BPlusTree<int, ContentNodeKit> localDb = null, 
             Action<IDataTypeService, IContentTypeService> setupContentTypes = null,
-            Action<IServiceCollection> configureServices = null)
+            Action<IServiceCollection> configureServices = null,
+            Action<IUmbracoBuilder> configureUmbraco = null
+            )
         {
             this.localDb = localDb;
             this.setupContentTypes = setupContentTypes;
             this.configureServices = configureServices;
+            this.configureUmbraco = configureUmbraco;
         }
 
         public new IServiceProvider Services => base.Services;
 
+        public T GetService<T>()
+        {
+            return GetRequiredService<T>();
+        }
+
         public override void Setup()
         {
             base.Setup();
-            SetupRequest();
+            SetupHttpContext();
 
             StaticServiceProvider.Instance = Services;
 
@@ -65,9 +76,39 @@ namespace Our.Umbraco.ContentList.Tests.Support
             }
         }
 
-        public T GetService<T>()
+        protected override void CustomTestSetup(IUmbracoBuilder builder)
         {
-            return GetRequiredService<T>();
+            configureUmbraco?.Invoke(builder);
+        }
+
+        public override void ConfigureServices(IServiceCollection services)
+        {
+            base.ConfigureServices(services);
+
+            services.RemoveAll(x => x.ServiceType == typeof(IDataTypeService));
+            dataTypeService = new FakeDataTypeService();
+            services.AddSingleton<IDataTypeService>(dataTypeService);
+
+            services.RemoveAll(x => x.ServiceType == typeof(IContentTypeService));
+            contentTypeService = new FakeContentTypeService();
+            services.AddSingleton<IContentTypeService>(contentTypeService);
+
+            publishedSnapshot = Mock.Of<IPublishedSnapshot>();
+            Mock.Get(publishedSnapshot).Setup(x => x.SnapshotCache).Returns(NoAppCache.Instance);
+            services.AddSingleton(publishedSnapshot);
+
+            publishedSnapshotAccessor = Mock.Of<IPublishedSnapshotAccessor>();
+            Mock.Get(publishedSnapshotAccessor).Setup(x => x.TryGetPublishedSnapshot(out publishedSnapshot)).Returns(true);
+            services.AddSingleton(publishedSnapshotAccessor);
+
+            variationContextAccessor = new TestVariationContextAccessor();
+            variationContextAccessor.VariationContext = new VariationContext();
+            services.AddSingleton<IVariationContextAccessor>(variationContextAccessor);
+
+            var snapshotService = new FakePublishedSnapshotService(publishedSnapshot);
+            services.AddSingleton<IPublishedSnapshotService>(snapshotService);
+
+            configureServices?.Invoke(services);
         }
 
         public void SetupContentCache()
@@ -107,50 +148,19 @@ namespace Our.Umbraco.ContentList.Tests.Support
         }
 
         // TODO: Customizable URL
-        private void SetupRequest()
+
+        private void SetupHttpContext()
         {
-            var httpContext = GetRequiredService<IHttpContextAccessor>().HttpContext;
-            httpContext.Request.Scheme = "https";
-            httpContext.Request.Host = new HostString("localhost", 443);
-            httpContext.Request.PathBase = new PathString();
-            httpContext.Request.Path = new PathString("/");
-            httpContext.Request.QueryString = QueryString.Empty;
-        }
-
-        public override void ConfigureServices(IServiceCollection services)
-        {
-            base.ConfigureServices(services);
-
-            services.RemoveAll(x => x.ServiceType == typeof(IDataTypeService));
-            dataTypeService = new FakeDataTypeService();
-            services.AddSingleton<IDataTypeService>(dataTypeService);
-
-            services.RemoveAll(x => x.ServiceType == typeof(IContentTypeService));
-            contentTypeService = new FakeContentTypeService();
-            services.AddSingleton<IContentTypeService>(contentTypeService);
-
-            publishedSnapshot = Mock.Of<IPublishedSnapshot>();
-            Mock.Get(publishedSnapshot).Setup(x => x.SnapshotCache).Returns(NoAppCache.Instance);
-            services.AddSingleton(publishedSnapshot);
-
-            publishedSnapshotAccessor = Mock.Of<IPublishedSnapshotAccessor>();
-            Mock.Get(publishedSnapshotAccessor).Setup(x => x.TryGetPublishedSnapshot(out publishedSnapshot)).Returns(true);
-            services.AddSingleton(publishedSnapshotAccessor);
-
-            variationContextAccessor = new TestVariationContextAccessor();
-            variationContextAccessor.VariationContext = new VariationContext();
-                services.AddSingleton<IVariationContextAccessor>(variationContextAccessor);
-
-            var snapshotService = new FakePublishedSnapshotService(publishedSnapshot);
-            services.AddSingleton<IPublishedSnapshotService>(snapshotService);
-
-            configureServices?.Invoke(services);
+            ReplaceHttpRequest("", new Dictionary<string, StringValues>());
         }
 
         public IUmbracoContext GetUmbracoContext()
         {
             var ctxFact = GetRequiredService<IUmbracoContextFactory>();
             var ctxRef = ctxFact.EnsureUmbracoContext();
+
+            var accessor = GetRequiredService<IUmbracoContextAccessor>();
+
             var ctx = ctxRef.UmbracoContext;
             return ctx;
         }
@@ -164,20 +174,20 @@ namespace Our.Umbraco.ContentList.Tests.Support
 
         public void ReplaceHttpRequest(string path, Dictionary<string, StringValues> queryValues)
         {
-            var httpContext = CreateHttpContext(path, queryValues);
+            var httpContext = CreateHttpContext("example.com", path, queryValues);
             Mock.Get(GetService<IHttpContextAccessor>())
                 .Setup(x => x.HttpContext)
                 .Returns(httpContext);
         }
 
-        private DefaultHttpContext CreateHttpContext(string path, Dictionary<string, StringValues> queryValues)
+        private DefaultHttpContext CreateHttpContext(string host, string path, Dictionary<string, StringValues> queryValues)
         {
             var ctx = new DefaultHttpContext
             {
                 Request =
                 {
                     Scheme = "https",
-                    Host = new HostString("example.com"),
+                    Host = new HostString(host),
                     Path = new PathString(path),
                     Query = new QueryCollection(queryValues)
                 },

@@ -6,7 +6,7 @@ using Microsoft.Extensions.FileProviders;
 
 namespace Our.Umbraco.ContentList.Tests.Support
 {
-    public static class TestSupportExtensions
+    public static class RenderingExtensions
     {
         public static void AddRenderingSupport(this IServiceCollection services)
         {

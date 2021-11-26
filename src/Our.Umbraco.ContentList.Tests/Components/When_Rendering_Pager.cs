@@ -3,20 +3,18 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ApprovalTests;
 using ApprovalTests.Namers;
-using ApprovalTests.Reporters;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
-using Moq;
 using NUnit.Framework;
 using Our.Umbraco.ContentList.Components;
 using Our.Umbraco.ContentList.Controllers;
 using Our.Umbraco.ContentList.Models;
 using Our.Umbraco.ContentList.Tests.Support;
 
-namespace Our.Umbraco.ContentList.Tests
+namespace Our.Umbraco.ContentList.Tests.Components
 {
     [TestFixture]
+    [Category("Integrated")]
     public class When_Rendering_Pager
     {
         private UmbracoSupport support;

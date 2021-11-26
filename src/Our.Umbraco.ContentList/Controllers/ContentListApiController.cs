@@ -79,11 +79,6 @@ namespace Our.Umbraco.ContentList.Controllers
 
             if (templates.Count == 0)
             {
-                templates.Add(new ListTemplate("SimpleTheme")
-                {
-                    DisplayName = "Simple theme"
-                });
-
                 templates.Add(new ListTemplate("Sample")
                 {
                     DisplayName = "Sample"

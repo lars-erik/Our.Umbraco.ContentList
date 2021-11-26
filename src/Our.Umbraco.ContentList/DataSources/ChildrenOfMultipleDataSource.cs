@@ -28,21 +28,22 @@ namespace Our.Umbraco.ContentList.DataSources
             }
         }
 
-        public IQueryable<IListableContent> Query(ContentListQuery query, QueryPaging queryPaging)
+        public async Task<IQueryable<IListableContent>> Query(ContentListQuery query, QueryPaging queryPaging)
         {
-            return BaseQuery(query, (int)queryPaging.PreSkip)
+            var result = (await BaseQuery(query, (int)queryPaging.PreSkip))
                 .Skip((int)queryPaging.Skip)
                 .Take((int)queryPaging.Take)
                 .AsQueryable();
-
+            return result;
         }
 
-        public long Count(ContentListQuery query, long preSkip)
+        public async Task<long> Count(ContentListQuery query, long preSkip)
         {
-            return BaseQuery(query, (int)preSkip).Count();
+            var baseResult = await BaseQuery(query, (int)preSkip);
+            return baseResult.Count();
         }
 
-        private IEnumerable<IListableContent> BaseQuery(ContentListQuery query, int preSkip)
+        private async Task<IEnumerable<IListableContent>> BaseQuery(ContentListQuery query, int preSkip)
         {
             if (cachedResult == null)
             {
@@ -53,7 +54,7 @@ namespace Our.Umbraco.ContentList.DataSources
                     .Skip(preSkip);
                 cachedResult = result;
             }
-            return cachedResult;
+            return await Task.FromResult(cachedResult);
         }
     }
 

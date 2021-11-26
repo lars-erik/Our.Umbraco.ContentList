@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Our.Umbraco.ContentList.Tests.DataSources
+namespace Our.Umbraco.ContentList.Tests.Support
 {
     public static class JsonExtensions
     {

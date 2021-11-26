@@ -174,22 +174,22 @@ namespace Our.Umbraco.ContentList.Controllers
 
         public async Task<IViewComponentResult> InvokeAsync(ContentListConfiguration configuration, IPublishedContent contextContent)
         {
-            var model = Execute(configuration, contextContent);
+            var model = await Execute(configuration, contextContent);
 
             var viewName = FindView(configuration);
             var result = View(viewName, model);
             return await Task.FromResult(result);
         }
 
-        private ContentListModel Execute(ContentListConfiguration configuration, IPublishedContent contextContent)
+        private async Task<ContentListModel> Execute(ContentListConfiguration configuration, IPublishedContent contextContent)
         {
-            var datasource = contentListQueryHandler.CreateDataSource(configuration);
+            var dataSource = contentListQueryHandler.CreateDataSource(configuration);
 
             var query = contentListQueryHandler.CreateQuery(configuration, contextContent);
-            var total = datasource.Count(query, configuration.Skip);
+            var total = await dataSource.Count(query, configuration.Skip);
             var queryPaging = contentListQueryHandler.CreateQueryPaging(configuration, total);
 
-            var data = datasource.Query(query, queryPaging);
+            var data = await dataSource.Query(query, queryPaging);
 
             var model = new ContentListModel
             {

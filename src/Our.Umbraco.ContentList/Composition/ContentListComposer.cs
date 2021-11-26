@@ -19,20 +19,18 @@ using Umbraco.Extensions;
 
 namespace Our.Umbraco.ContentList.Composition
 {
-    public class ContentListComposer : IComposer
+    public static class ContentListRegistration
     {
-        public void Compose(IUmbracoBuilder builder)
+        public static void AddContentList(this IUmbracoBuilder builder)
         {
-            var allMeta = builder.TypeLoader.GetTypes<IDataSourceMetadata>();
-            builder
-                .WithListableDataSources()
-                .Add(allMeta);
+            builder.AddContentListDataSources();
+            builder.AddContentListEndpoints();
+            builder.Services.AddContentListServices();
+        }
 
-            builder.Services.AddTransient(typeof(DataSourceMetadataFactory));
-            builder.Services.AddTransient(typeof(ContentListQueryHandler));
-
+        public static void AddContentListEndpoints(this IUmbracoBuilder builder)
+        {
             builder.AddNotificationHandler<ServerVariablesParsingNotification, AddControllersToApiPaths>();
-
             builder.Services.Configure<UmbracoPipelineOptions>(options =>
                 {
                     options.AddFilter(new UmbracoPipelineFilter(nameof(ContentListController))
@@ -47,12 +45,28 @@ namespace Our.Umbraco.ContentList.Composition
                     });
                 }
             );
+        }
 
-            //builder.Services.AddMvc().AddRazorRuntimeCompilation(options =>
-            //{
-            //    options.FileProviders.Add(new InterceptedEmbeddedFileProvider(typeof(IListableContent).Assembly));
-            //});
+        public static void AddContentListDataSources(this IUmbracoBuilder builder)
+        {
+            var allMeta = builder.TypeLoader.GetTypes<IDataSourceMetadata>();
+            builder
+                .WithListableDataSources()
+                .Add(allMeta);
+        }
 
+        public static void AddContentListServices(this IServiceCollection services)
+        {
+            services.AddTransient(typeof(DataSourceMetadataFactory));
+            services.AddTransient(typeof(ContentListQueryHandler));
+        }
+    }
+
+    public class ContentListComposer : IComposer
+    {
+        public void Compose(IUmbracoBuilder builder)
+        {
+            builder.AddContentList();
         }
     }
 

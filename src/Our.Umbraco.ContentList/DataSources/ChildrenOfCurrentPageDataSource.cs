@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Our.Umbraco.ContentList.Models;
 using Our.Umbraco.ContentList.Parameters;
 using Umbraco.Cms.Core.Services;
@@ -8,13 +9,13 @@ using Umbraco.Extensions;
 
 namespace Our.Umbraco.ContentList.DataSources
 {
-    public class ListableChildrenDataSource : IListableDataSource
+    public class ChildrenOfCurrentPageDataSource : IListableDataSource
     {
-        public ListableChildrenDataSource()
+        public ChildrenOfCurrentPageDataSource()
         {
         }
 
-        public IQueryable<IListableContent> Query(ContentListQuery query, QueryPaging queryPaging)
+        public async Task<IQueryable<IListableContent>> Query(ContentListQuery query, QueryPaging queryPaging)
         {
             // TODO: Validate longs don't surpass ints (?)
 
@@ -23,28 +24,31 @@ namespace Our.Umbraco.ContentList.DataSources
 
             var culture = LanguageParameter.Culture(query);
             var listables = query.ContextContent.Children(culture).OfType<IListableContent>().Where(c => c.IsVisible());
-            listables = ListableSorting.ApplySorting(listables, query.CustomParameters);
+            listables = listables.ApplySorting(query.CustomParameters);
             listables = listables.Skip((int)queryPaging.PreSkip).Skip((int)queryPaging.Skip).Take((int)queryPaging.Take);
-            return listables.AsQueryable();
+            var result = listables.AsQueryable();
+            return await Task.FromResult(result);
         }
 
-        public long Count(ContentListQuery query, long preSkip)
+        public async Task<long> Count(ContentListQuery query, long preSkip)
         {
             if (preSkip > int.MaxValue)
             {
                 throw new Exception("Child lists does not support skipping more than 32 bit values");
             }
-            return query.ContextContent?.Children.Skip((int)preSkip).Count() ?? 0;
+
+            var result = query.ContextContent?.Children.Skip((int)preSkip).Count() ?? 0;
+            return await Task.FromResult(result);
         }
     }
 
-    public class ListableChildrenMetadata : DataSourceMetadata<ListableChildrenDataSource>
+    public class ChildrenOfCurrentPageMetadata : DataSourceMetadata<ChildrenOfCurrentPageDataSource>
     {
         private readonly ILocalizationService localizationService;
         private DataSourceParameterDefinition languageParameter;
         private bool loadLanguage = true;
 
-        public ListableChildrenMetadata(ILocalizationService localizationService)
+        public ChildrenOfCurrentPageMetadata(ILocalizationService localizationService)
         {
             this.localizationService = localizationService;
         }

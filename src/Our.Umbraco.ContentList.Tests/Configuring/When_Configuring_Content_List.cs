@@ -82,6 +82,7 @@ namespace Our.Umbraco.ContentList.Tests
         {
             Mock.Get(hostingEnvironment).Setup(x => x.MapPathContentRoot("~/Views/Partials/ContentList"))
                 .Returns<string>(s => AppDomain.CurrentDomain.BaseDirectory);
+
             Mock.Get(hostingEnvironment).Setup(x => x.MapPathContentRoot("~/App_Plugins/Our.Umbraco.ContentList/Views/ContentList/ListViews"))
                 .Returns<string>(s => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\Our.Umbraco.ContentList.Web\App_Plugins\Our.Umbraco.ContentList\Views\ContentList\Listviews"));
 
@@ -97,6 +98,7 @@ namespace Our.Umbraco.ContentList.Tests
         {
             Mock.Get(hostingEnvironment).Setup(x => x.MapPathContentRoot("~/Views/Partials/ContentList"))
                 .Returns<string>(s => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\Our.Umbraco.ContentList.Web\Views\Partials\ContentList"));
+
             Mock.Get(hostingEnvironment).Setup(x => x.MapPathContentRoot("~/App_Plugins/Our.Umbraco.ContentList/Views/ContentList/ListViews"))
                 .Returns<string>(s => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\Our.Umbraco.ContentList.Web\App_Plugins\Our.Umbraco.ContentList\Views\ContentList\Listviews"));
 

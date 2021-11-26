@@ -35,6 +35,11 @@ namespace Our.Umbraco.ContentList.Tests.Support
 
             if (!viewEngineResult.Success)
             {
+                viewEngineResult = viewEngine.GetView(null, name, false);
+            }
+
+            if (!viewEngineResult.Success)
+            {
                 throw new InvalidOperationException($"Couldn't find view '{name}'");
             }
 

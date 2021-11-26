@@ -6,7 +6,7 @@ using Newtonsoft.Json.Serialization;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 
-namespace Our.Umbraco.ContentList.Tests.DataSources
+namespace Our.Umbraco.ContentList.Tests.Support
 {
     public class PublishedContentContractResolver : DefaultContractResolver
     {
