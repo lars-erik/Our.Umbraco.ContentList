@@ -7,7 +7,7 @@ using Our.Umbraco.ContentList.Models;
 
 namespace Our.Umbraco.ContentList.Tests.DataSources
 {
-    [TestFixtureSource(typeof(TestFixtureModes))]
+    [TestFixtureSource(typeof(IntegrationModes))]
     class When_Listing_Children_Of_Selected_Nodes : DataSourceTestBase
     {
         public When_Listing_Children_Of_Selected_Nodes(string integrationMode) : base(integrationMode)
@@ -17,7 +17,7 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
         [Test]
         public async Task All_Published_Children_Are_Listed()
         {
-            var parameters = new List<DataSourceParameterValue>(DefaultParameters);
+            var parameters = CreateDefaultParameters();
             parameters.Add(new DataSourceParameterValue
             {
                 Key = "nodes",

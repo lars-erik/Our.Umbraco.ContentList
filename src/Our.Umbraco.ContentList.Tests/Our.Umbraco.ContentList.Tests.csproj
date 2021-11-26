@@ -5,21 +5,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Remove="umbraco\**" />
-        <EmbeddedResource Remove="umbraco\**" />
-        <None Remove="umbraco\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="DataSources\When_Listing_Children_Of_Selected_Nodes.Content.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <EmbeddedResource Include="DataSources\When_Listing_Children_Of_CurrentPage.Content.json" DependentUpon="When_Listing_Children_Of_CurrentPage.cs" />
-        <EmbeddedResource Include="DataSources\When_Listing_Children_Of_Selected_Nodes.Content.json" DependentUpon="When_Listing_Children_Of_Selected_Nodes.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="ApprovalTests" Version="5.7.1" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.11" />
         <PackageReference Include="Umbraco.Cms.Tests.Integration" Version="9.0.1" />
@@ -30,15 +15,26 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Our.Umbraco.ContentList.WebModels\Our.Umbraco.ContentList.WebModels.csproj" />
-        <ProjectReference Include="..\Our.Umbraco.ContentList.Web\Our.Umbraco.ContentList.Web.csproj" />
-        <ProjectReference Include="..\Our.Umbraco.ContentList\Our.Umbraco.ContentList.csproj" />
+        <Compile Remove="umbraco\**" />
+        <EmbeddedResource Remove="umbraco\**" />
+        <None Remove="umbraco\**" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="DataSources\When_Listing_Children_Of_CurrentPage.Data_Source_Lists_Children_Of_Requested_Page.approved.json">
-        <DependentUpon>When_Listing_Children_Of_CurrentPage.cs</DependentUpon>
-      </None>
+      <None Remove="DataSources\When_Listing_Children_Of_Selected_Nodes.Content.json" />
+      <None Remove="DataSources\When_Listing_Individually_Selected_Nodes.Content.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="DataSources\When_Listing_Children_Of_CurrentPage.Content.json" DependentUpon="When_Listing_Children_Of_CurrentPage.cs" />
+        <EmbeddedResource Include="DataSources\When_Listing_Children_Of_Selected_Nodes.Content.json" DependentUpon="When_Listing_Children_Of_Selected_Nodes.cs" />
+        <EmbeddedResource Include="DataSources\When_Listing_Individually_Selected_Nodes.Content.json" DependentUpon="When_Listing_Individually_Selected_Nodes.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Our.Umbraco.ContentList.WebModels\Our.Umbraco.ContentList.WebModels.csproj" />
+        <ProjectReference Include="..\Our.Umbraco.ContentList.Web\Our.Umbraco.ContentList.Web.csproj" />
+        <ProjectReference Include="..\Our.Umbraco.ContentList\Our.Umbraco.ContentList.csproj" />
     </ItemGroup>
 
 </Project>

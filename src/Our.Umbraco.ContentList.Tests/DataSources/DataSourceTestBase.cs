@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using Our.Umbraco.ContentList.Composition;
 using Our.Umbraco.ContentList.Models;
@@ -79,6 +80,18 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
                 View = themeName
             };
             return configuration;
+        }
+
+        protected static List<DataSourceParameterValue> CreateDefaultParameters()
+        {
+            return new List<DataSourceParameterValue>(DefaultParameters);
+        }
+
+        protected async Task<object> ExecuteSimpleTheme(Type dataSourceType, List<DataSourceParameterValue> parameters)
+        {
+            var configuration = CreateConfiguration(dataSourceType, "SimpleTheme", parameters);
+            var result = await Fixture.Execute(configuration, UmbracoContext.Content.GetById(1000));
+            return result;
         }
     }
 }

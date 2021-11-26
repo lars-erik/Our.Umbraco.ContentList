@@ -4,7 +4,7 @@ using NUnit.Framework.Internal;
 
 namespace Our.Umbraco.ContentList.Tests.DataSources
 {
-    public class TestFixtureModes : IEnumerable
+    public class IntegrationModes : IEnumerable
     {
         public IEnumerator GetEnumerator()
         {

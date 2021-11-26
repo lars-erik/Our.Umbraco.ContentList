@@ -8,7 +8,7 @@ using Our.Umbraco.ContentList.Web.Models;
 
 namespace Our.Umbraco.ContentList.Tests.DataSources
 {
-    [TestFixtureSource(typeof(TestFixtureModes))]
+    [TestFixtureSource(typeof(IntegrationModes))]
     public class When_Listing_Children_Of_CurrentPage : DataSourceTestBase
     {
         public When_Listing_Children_Of_CurrentPage(string integrationMode) : base(integrationMode)
