@@ -1,5 +1,12 @@
-﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<Our.Umbraco.ContentList.Web.Models.ContentModels.Page>
+﻿@inherits Umbraco.Web.Mvc.UmbracoViewPage<IPublishedContent>
 @{
 	Layout = "layout.cshtml";
 }
+@if (Model.HasProperty("layout"))
+{ 
 @Html.GetGridHtml(Model, "layout", "bootstrap3-fluid")
+}
+else if (Model.HasProperty("bodyText"))
+{
+@Html.GetGridHtml(Model, "bodyText", "bootstrap3-fluid")
+}

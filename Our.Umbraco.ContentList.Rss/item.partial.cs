@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml.Serialization;
 
 namespace Our.Umbraco.ContentList.Rss
 {
@@ -28,5 +29,8 @@ namespace Our.Umbraco.ContentList.Rss
         public string Author => author;
 
         public DateTime Date => SortDate;
+
+        [XmlIgnore]
+        public Dictionary<string, object> ExtraData { get; } = new Dictionary<string, object>();
     }
 }

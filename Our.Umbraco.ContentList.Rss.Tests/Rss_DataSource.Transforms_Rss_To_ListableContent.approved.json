@@ -20,7 +20,10 @@
         "Url": "http://blog.aabech.no/archive/ourumbracowysiwyggrid-100-beta-released/",
         "SortOrder": 0,
         "SortDate": "2020-04-23T14:09:36+02:00",
-        "Date": "2020-04-23T14:09:36+02:00"
+        "Date": "2020-04-23T14:09:36+02:00",
+        "ExtraData": {
+            "updated": "2020-04-23T12:09:36Z"
+        }
     },
     {
         "title": "The state of WYSIWYG grid editing in Umbraco - a prototype",
@@ -43,7 +46,10 @@
         "Url": "http://blog.aabech.no/archive/the-state-of-wysiwyg-grid-editing-in-umbraco-a-prototype/",
         "SortOrder": 0,
         "SortDate": "2020-04-03T15:26:14+02:00",
-        "Date": "2020-04-03T15:26:14+02:00"
+        "Date": "2020-04-03T15:26:14+02:00",
+        "ExtraData": {
+            "updated": "2020-04-03T13:26:14Z"
+        }
     },
     {
         "title": "Our Umbraco Community ContentList 1.0 (beta) released",
@@ -66,7 +72,10 @@
         "Url": "http://blog.aabech.no/archive/our-umbraco-community-contentlist-10-beta-released/",
         "SortOrder": 0,
         "SortDate": "2020-04-01T23:57:27+02:00",
-        "Date": "2020-04-01T23:57:27+02:00"
+        "Date": "2020-04-01T23:57:27+02:00",
+        "ExtraData": {
+            "updated": "2020-04-01T21:57:27Z"
+        }
     },
     {
         "title": "ARMLinker 1.0.0 released",
@@ -92,7 +101,10 @@
         "Url": "http://blog.aabech.no/archive/armlinker-100-released/",
         "SortOrder": 0,
         "SortDate": "2020-01-23T00:22:41+01:00",
-        "Date": "2020-01-23T00:22:41+01:00"
+        "Date": "2020-01-23T00:22:41+01:00",
+        "ExtraData": {
+            "updated": "2020-01-22T23:22:41Z"
+        }
     },
     {
         "title": "Environmental ApprovalTests",
@@ -115,7 +127,10 @@
         "Url": "http://blog.aabech.no/archive/environmental-approvaltests/",
         "SortOrder": 0,
         "SortDate": "2018-06-03T23:24:46+02:00",
-        "Date": "2018-06-03T23:24:46+02:00"
+        "Date": "2018-06-03T23:24:46+02:00",
+        "ExtraData": {
+            "updated": "2018-06-03T21:24:46Z"
+        }
     },
     {
         "title": "Morphing UCommerce Products",
@@ -141,7 +156,10 @@
         "Url": "http://blog.aabech.no/archive/morphing-ucommerce-products/",
         "SortOrder": 0,
         "SortDate": "2018-01-31T00:48:27+01:00",
-        "Date": "2018-01-31T00:48:27+01:00"
+        "Date": "2018-01-31T00:48:27+01:00",
+        "ExtraData": {
+            "updated": "2018-01-30T23:48:27Z"
+        }
     },
     {
         "title": "Umbraco Unit Testing Workshop Material",
@@ -167,7 +185,10 @@
         "Url": "http://blog.aabech.no/archive/umbraco-unit-testing-workshop-material/",
         "SortOrder": 0,
         "SortDate": "2017-11-09T11:09:16+01:00",
-        "Date": "2017-11-09T11:09:16+01:00"
+        "Date": "2017-11-09T11:09:16+01:00",
+        "ExtraData": {
+            "updated": "2017-11-09T10:09:16Z"
+        }
     },
     {
         "title": "Automating Umbraco with PowerShell",
@@ -193,7 +214,10 @@
         "Url": "http://blog.aabech.no/archive/automating-umbraco-with-powershell/",
         "SortOrder": 0,
         "SortDate": "2017-11-07T20:46:14+01:00",
-        "Date": "2017-11-07T20:46:14+01:00"
+        "Date": "2017-11-07T20:46:14+01:00",
+        "ExtraData": {
+            "updated": "2017-11-07T19:46:14Z"
+        }
     },
     {
         "title": "Exploiting ApprovalTests for clearer tests",
@@ -216,7 +240,10 @@
         "Url": "http://blog.aabech.no/archive/exploiting-approvaltests-for-clearer-tests/",
         "SortOrder": 0,
         "SortDate": "2017-10-23T22:14:08+02:00",
-        "Date": "2017-10-23T22:14:08+02:00"
+        "Date": "2017-10-23T22:14:08+02:00",
+        "ExtraData": {
+            "updated": "2017-10-23T20:14:08Z"
+        }
     },
     {
         "title": "UmbracoSupport got typed content",
@@ -242,6 +269,9 @@
         "Url": "http://blog.aabech.no/archive/umbracosupport-got-typed-content/",
         "SortOrder": 0,
         "SortDate": "2017-10-17T23:18:06+02:00",
-        "Date": "2017-10-17T23:18:06+02:00"
+        "Date": "2017-10-17T23:18:06+02:00",
+        "ExtraData": {
+            "updated": "2017-10-17T21:18:06Z"
+        }
     }
 ]

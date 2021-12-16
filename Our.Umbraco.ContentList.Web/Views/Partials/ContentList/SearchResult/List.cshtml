@@ -2,7 +2,7 @@
 @using Our.Umbraco.ContentList.Web
 
 @{
-    var queryParameterKey = Model.Query.CustomParameters["queryParameter"];
+    var queryParameterKey = Model.Query.CustomParameters["queryParameter"] as string;
 }
 @if (queryParameterKey != null)
 { 

@@ -659,6 +659,9 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\ContentModels\ContentBase.generated.cs" />
+    <Compile Include="Models\ContentModels\ContentPage.cs" />
+    <Compile Include="Models\ContentModels\ContentPage.generated.cs" />
     <Compile Include="Models\ContentModels\File.generated.cs" />
     <Compile Include="Models\ContentModels\Folder.generated.cs" />
     <Compile Include="Models\ContentModels\Image.generated.cs" />
@@ -666,6 +669,7 @@
     <Compile Include="Models\ContentModels\ListableContent.generated.cs" />
     <Compile Include="Models\ContentModels\Member.generated.cs" />
     <Compile Include="Models\ContentModels\Navigation.generated.cs" />
+    <Compile Include="Models\ContentModels\NavigationBase.generated.cs" />
     <Compile Include="Models\ContentModels\Page.cs" />
     <Compile Include="Models\ContentModels\Page.generated.cs" />
     <Compile Include="Models\ContentModels\Site.generated.cs" />

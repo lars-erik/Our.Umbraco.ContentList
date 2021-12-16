@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Serialization;
 using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.DataSources.Listables;
@@ -55,8 +56,26 @@ namespace Our.Umbraco.ContentList.Rss
             }
             var response = Task.Run(async () => await GetStream(query)).Result;
             var serializer = new XmlSerializer(typeof(rss));
-            cachedFeed = (rss) serializer.Deserialize(response);
+            cachedFeed = (rss) serializer.Deserialize(XmlReader.Create(response), new XmlDeserializationEvents
+            {
+                OnUnknownElement = AddUnknown
+            });
             return cachedFeed;
+        }
+
+        private void AddUnknown(object sender, XmlElementEventArgs e)
+        {
+            if (e.ObjectBeingDeserialized is item item)
+            {
+                if (item.ExtraData.ContainsKey(e.Element.LocalName))
+                {
+                    item.ExtraData[e.Element.LocalName] += "; " + e.Element.InnerText;
+                }
+                else
+                {
+                    item.ExtraData.Add(e.Element.LocalName, e.Element.InnerText);
+                }
+            }
         }
 
         private async Task<Stream> GetStream(ContentListQuery query)
