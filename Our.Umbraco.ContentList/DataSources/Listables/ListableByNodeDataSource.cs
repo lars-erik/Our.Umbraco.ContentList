@@ -42,9 +42,11 @@ namespace Our.Umbraco.ContentList.DataSources.Listables
             {
                 // TODO: Inject
                 var content = contentCache.GetById(contentId);
-                return content
+                var children = content
                     .Children(culture)
-                    .OfType<IListableContent>()
+                    .OfType<IListableContent>();
+                children = ListableSorting.Apply(children, query.CustomParameters);
+                return children
                     .Skip(preSkip);
             }
             return Enumerable.Empty<IListableContent>().AsQueryable();
