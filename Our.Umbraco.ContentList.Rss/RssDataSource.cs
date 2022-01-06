@@ -10,24 +10,27 @@ using System.Xml.Serialization;
 using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.DataSources.Listables;
 using Umbraco.Core;
+using Umbraco.Core.Cache;
 
 namespace Our.Umbraco.ContentList.Rss
 {
     [DataSourceMetadata(typeof(RssDataSourceMetaData))]
     public class RssDataSource : IListableDataSource, IDisposable
     {
+        private readonly AppCaches caches;
         private readonly HttpClient client;
         private bool shouldDispose = false;
         private rss cachedFeed;
 
-        public RssDataSource()
-            : this(new HttpClient())
+        public RssDataSource(AppCaches caches)
+            : this(caches, new HttpClient())
         {
             shouldDispose = true;
         }
 
-        public RssDataSource(HttpClient client)
+        public RssDataSource(AppCaches caches, HttpClient client)
         {
+            this.caches = caches;
             this.client = client;
         }
 
@@ -50,16 +53,26 @@ namespace Our.Umbraco.ContentList.Rss
 
         private rss GetFeed(ContentListQuery query)
         {
+            var url = query.CustomParameter<string>("url");
+            if (cachedFeed == null)
+            {
+                cachedFeed = caches.RuntimeCache.Get(url) as rss;
+            }
+
             if (cachedFeed != null)
             {
                 return cachedFeed;
             }
+
             var response = Task.Run(async () => await GetStream(query)).Result;
             var serializer = new XmlSerializer(typeof(rss));
             cachedFeed = (rss) serializer.Deserialize(XmlReader.Create(response), new XmlDeserializationEvents
             {
                 OnUnknownElement = AddUnknown
             });
+
+            caches.RuntimeCache.Insert(url, () => cachedFeed, TimeSpan.FromMinutes(10));
+
             return cachedFeed;
         }
 
