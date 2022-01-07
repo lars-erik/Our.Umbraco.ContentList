@@ -11,25 +11,28 @@ using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.DataSources.Listables;
 using Umbraco.Core;
 using Umbraco.Core.Cache;
+using Umbraco.Core.Logging;
 
 namespace Our.Umbraco.ContentList.Rss
 {
     [DataSourceMetadata(typeof(RssDataSourceMetaData))]
     public class RssDataSource : IListableDataSource, IDisposable
     {
+        private readonly ILogger logger;
         private readonly AppCaches caches;
         private readonly HttpClient client;
         private bool shouldDispose = false;
         private rss cachedFeed;
 
-        public RssDataSource(AppCaches caches)
-            : this(caches, new HttpClient())
+        public RssDataSource(AppCaches caches, ILogger logger)
+            : this(caches, logger, new HttpClient())
         {
             shouldDispose = true;
         }
 
-        public RssDataSource(AppCaches caches, HttpClient client)
+        public RssDataSource(AppCaches caches, ILogger logger, HttpClient client)
         {
+            this.logger = logger;
             this.caches = caches;
             this.client = client;
         }
@@ -57,6 +60,7 @@ namespace Our.Umbraco.ContentList.Rss
             if (cachedFeed == null)
             {
                 cachedFeed = caches.RuntimeCache.Get(url) as rss;
+                logger.Debug<RssDataSource>($"RSS Cache lookup for {url} yielded {(cachedFeed == null ? "nothing" : "stuff")}");
             }
 
             if (cachedFeed != null)
@@ -64,6 +68,7 @@ namespace Our.Umbraco.ContentList.Rss
                 return cachedFeed;
             }
 
+            logger.Debug<RssDataSource>($"No cache for {url}, so fetching new feed");
             var response = Task.Run(async () => await GetStream(query)).Result;
             var serializer = new XmlSerializer(typeof(rss));
             cachedFeed = (rss) serializer.Deserialize(XmlReader.Create(response), new XmlDeserializationEvents
