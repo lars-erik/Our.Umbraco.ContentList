@@ -15,6 +15,7 @@ using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Configuration.Models;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Cms.Core.Persistence.Repositories;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Core.Scoping;
 using Umbraco.Cms.Core.Services;
@@ -84,6 +85,9 @@ namespace Our.Umbraco.ContentList.Tests.Support
         public override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
+
+            services.RemoveAll(x => x.ServiceType == typeof(ILanguageRepository));
+            services.AddSingleton<ILanguageRepository>(new FakeLanguageRepository());
 
             services.RemoveAll(x => x.ServiceType == typeof(IDataTypeService));
             dataTypeService = new FakeDataTypeService();

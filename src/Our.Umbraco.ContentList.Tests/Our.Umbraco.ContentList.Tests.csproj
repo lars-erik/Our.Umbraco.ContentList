@@ -7,9 +7,9 @@
     <ItemGroup>
         <PackageReference Include="ApprovalTests" Version="5.7.1" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.11" />
-        <PackageReference Include="Umbraco.Cms.Tests.Integration" Version="9.0.1" />
+        <PackageReference Include="Umbraco.Cms.Tests.Integration" Version="9.5.3" />
 
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.0" />
         <PackageReference Include="NUnit" Version="3.13.2" />
         <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
     </ItemGroup>
@@ -35,6 +35,12 @@
         <ProjectReference Include="..\Our.Umbraco.ContentList.WebModels\Our.Umbraco.ContentList.WebModels.csproj" />
         <ProjectReference Include="..\Our.Umbraco.ContentList.Web\Our.Umbraco.ContentList.Web.csproj" />
         <ProjectReference Include="..\Our.Umbraco.ContentList\Our.Umbraco.ContentList.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update=".runsettings">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
