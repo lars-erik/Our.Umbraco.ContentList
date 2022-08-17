@@ -1,8 +1,6 @@
 {
-    "compatibleSources": [
-        "MultiPickerDataSource",
-        "ListablesByLuceneDataSource",
-        "ListableByNodeDataSource",
-        "ListableChildrenDataSource"
-    ] 
+  "compatibleSources": [
+    "ChildrenOfCurrentPageDataSource",
+    "ChildrenOfMultipleDataSource"
+  ] 
 }

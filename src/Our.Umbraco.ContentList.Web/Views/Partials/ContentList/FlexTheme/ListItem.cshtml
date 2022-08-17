@@ -1,4 +1,4 @@
-﻿@using Umbraco.Web.Models
+﻿@using Umbraco.Cms.Core.Models
 @model Our.Umbraco.ContentList.IListableContent
 @{
     var imageUrl = "";
@@ -16,7 +16,7 @@
                 @Model.ListHeading
             </h2>
             <div class="list-summary">
-                @Model.ListSummary
+                @Html.Raw(Model.ListSummary)
             </div>
             <div class="read-more">
                 <a href="@Model.Url" class="readmore">@Html.Raw(Model.ReadMoreText.IfNullOrWhiteSpace("Read more &rsaquo;"))</a>

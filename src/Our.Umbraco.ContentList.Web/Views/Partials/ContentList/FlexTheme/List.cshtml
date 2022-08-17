@@ -24,12 +24,12 @@
 
         @foreach(var item in list)
         {
-            /*@Html.ContentListItem(item)*/
+            @await Html.PartialAsync("ListItem.cshtml", item)
         }
     </div>
     <div>
         <nav>
-            @*@Html.ContentListPager(Model, "pagination", "", "", "ul", "li")*@
+            <vc:content-list-pager model="Model"></vc:content-list-pager>
         </nav>
     </div>
 
