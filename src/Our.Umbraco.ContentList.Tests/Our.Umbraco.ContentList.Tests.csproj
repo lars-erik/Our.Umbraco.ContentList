@@ -1,17 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="ApprovalTests" Version="5.7.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.11" />
-        <PackageReference Include="Umbraco.Cms.Tests.Integration" Version="9.5.3" />
+        <PackageReference Include="ApprovalTests" Version="5.7.3" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.8" />
+        <PackageReference Include="Umbraco.Cms.Tests.Integration" Version="10.1.0" />
 
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.0" />
-        <PackageReference Include="NUnit" Version="3.13.2" />
-        <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+        <PackageReference Include="NUnit" Version="3.13.3" />
+        <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -21,8 +21,19 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Remove="C:\Users\bi-lea\.nuget\packages\umbraco.cms.tests.integration\10.1.0\contentFiles\any\net6.0\appsettings.Tests.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="appSettings.Tests.json" />
       <None Remove="DataSources\When_Listing_Children_Of_Selected_Nodes.Content.json" />
       <None Remove="DataSources\When_Listing_Individually_Selected_Nodes.Content.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="appSettings.Tests.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>

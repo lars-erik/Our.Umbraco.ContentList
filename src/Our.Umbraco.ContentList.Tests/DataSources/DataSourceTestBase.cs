@@ -54,7 +54,7 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
                 _ => throw new NotImplementedException()
             };
 
-            Support.Setup();
+            Support.SetupUmbraco();
             UmbracoContext = Support.GetUmbracoContext();
         }
 

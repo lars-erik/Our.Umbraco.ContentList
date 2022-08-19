@@ -10,8 +10,30 @@ using Umbraco.Cms.Tests.Common.Testing;
 
 namespace Our.Umbraco.ContentList.Tests
 {
+    [SetUpFixture]
     public class Setup
     {
+        [OneTimeSetUp]
+        public void SetupUmbracoTests()
+        {
+            var umbracoSetup = new GlobalSetupTeardown();
+            umbracoSetup.SetUp();
+        }
+
+        [OneTimeTearDown]
+        public void TearDown()
+        {
+            var umbracoSetup = new GlobalSetupTeardown();
+            try
+            {
+                umbracoSetup.TearDown();
+            }
+            catch
+            {
+                // No worries...
+            }
+        }
+
         public static void ContentTypes(IDataTypeService dataTypeService, IContentTypeService contentTypeService)
         {
             var textDataType = new DataTypeBuilder()

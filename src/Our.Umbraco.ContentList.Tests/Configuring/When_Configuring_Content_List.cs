@@ -29,14 +29,12 @@ namespace Our.Umbraco.ContentList.Tests
     [UseReporter(typeof(VisualStudioReporter))]
     public class When_Configuring_Content_List
     {
-        private UmbracoSupport support;
         private IHostingEnvironment hostingEnvironment;
         private ServiceProvider provider;
 
         [SetUp]
         public void Setup()
         {
-            support = new UmbracoSupport();
 
             var typeLoader = new TypeLoader(
                 new TypeFinder(Mock.Of<ILogger<TypeFinder>>(), new DefaultUmbracoAssemblyProvider(GetType().Assembly, Mock.Of<ILoggerFactory>(), Enumerable.Empty<string>())),
@@ -64,7 +62,6 @@ namespace Our.Umbraco.ContentList.Tests
         [TearDown]
         public void TearDown()
         {
-            support.TearDownUmbraco();
         }
 
         [Test]

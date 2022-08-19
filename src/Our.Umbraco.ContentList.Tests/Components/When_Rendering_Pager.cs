@@ -29,7 +29,7 @@ namespace Our.Umbraco.ContentList.Tests.Components
 
                 services.AddRenderingSupport();
             });
-            support.Setup();
+            support.SetupUmbraco();
         }
 
         [Test]

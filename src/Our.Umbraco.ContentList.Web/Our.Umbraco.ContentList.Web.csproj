@@ -1,17 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <DefaultItemExcludes>$(DefaultItemExcludes);App_Plugins/**;</DefaultItemExcludes>
         <DefaultItemExcludes>$(DefaultItemExcludes);umbraco/**;</DefaultItemExcludes>
         <DefaultItemExcludes>$(DefaultItemExcludes);wwwroot/media/**;</DefaultItemExcludes>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="usync" Version="9.0.2">
+        <PackageReference Include="usync" Version="10.1.0">
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Umbraco.Cms" Version="9.5.3">
+        <PackageReference Include="Umbraco.Cms" Version="10.1.0">
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
     </ItemGroup>
@@ -19,17 +19,24 @@
     <!-- Force windows to use ICU. Otherwise Windows 10 2019H1+ will do it, but older windows 10 and most if not all winodws servers will run NLS -->
     <ItemGroup>
         <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="68.2" />
-        <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="68.2.0.6" />
+        <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="68.2.0.9" />
     </ItemGroup>
 
     <ItemGroup>
         <Content Include="App_Plugins/**" CopyToOutputDirectory="Always" />
         <Content Include="umbraco/**" CopyToOutputDirectory="Always" />
+        <Compile Remove="wwwroot\**" />
         <Content Remove="umbraco/Data/**" />
         <Content Remove="umbraco/Logs/**" />
         <Content Remove="umbraco/mediacache/**" />
         <Content Remove="umbraco/models/**" />
+        <Content Remove="wwwroot\**" />
         <Compile Include="umbraco/models/**" Exclude="**/*.flag" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="wwwroot\**" />
+      <None Remove="wwwroot\**" />
     </ItemGroup>
 
     <ItemGroup>

@@ -44,7 +44,7 @@ namespace Our.Umbraco.ContentList.Tests.Support
         private TestVariationContextAccessor variationContextAccessor;
 
         public UmbracoSupport(
-            BPlusTree<int, ContentNodeKit> localDb = null, 
+            BPlusTree<int, ContentNodeKit> localDb = null,
             Action<IDataTypeService, IContentTypeService> setupContentTypes = null,
             Action<IServiceCollection> configureServices = null,
             Action<IUmbracoBuilder> configureUmbraco = null
@@ -63,7 +63,7 @@ namespace Our.Umbraco.ContentList.Tests.Support
             return GetRequiredService<T>();
         }
 
-        public override void Setup()
+        public void SetupUmbraco()
         {
             base.Setup();
             SetupHttpContext();
@@ -82,10 +82,8 @@ namespace Our.Umbraco.ContentList.Tests.Support
             configureUmbraco?.Invoke(builder);
         }
 
-        public override void ConfigureServices(IServiceCollection services)
+        protected override void ConfigureTestServices(IServiceCollection services)
         {
-            base.ConfigureServices(services);
-
             services.RemoveAll(x => x.ServiceType == typeof(ILanguageRepository));
             services.AddSingleton<ILanguageRepository>(new FakeLanguageRepository());
 
@@ -173,7 +171,7 @@ namespace Our.Umbraco.ContentList.Tests.Support
         public void TearDownUmbraco()
         {
             base.TearDown_Logging();
-            Task.Run(async () => await base.TearDownAsync()).Wait();
+            base.TearDownAsync();
         }
 
         public void ReplaceHttpRequest(string path, Dictionary<string, StringValues> queryValues)

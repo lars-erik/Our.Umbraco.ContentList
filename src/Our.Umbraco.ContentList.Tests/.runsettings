@@ -2,7 +2,7 @@
 <RunSettings>
     <RunConfiguration>
         <EnvironmentVariables>
-            <IntegrationModes>component;dataSource</IntegrationModes>
+            <IntegrationModes>dataSource;component</IntegrationModes>
         </EnvironmentVariables>
     </RunConfiguration>
 </RunSettings>
