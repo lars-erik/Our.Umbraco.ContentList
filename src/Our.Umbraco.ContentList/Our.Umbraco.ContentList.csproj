@@ -32,9 +32,14 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.1.0" />
-        <PackageReference Include="Umbraco.Cms.Web.Common" Version="10.1.0" />
-        <PackageReference Include="Umbraco.Cms.Web.Website" Version="10.1.0" />
+      <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\datasource\blge-datasource.controller.js" />
+      <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\datasource\blge-datasource.html" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.3.0-rc" />
+        <PackageReference Include="Umbraco.Cms.Web.Common" Version="10.3.0-rc" />
+        <PackageReference Include="Umbraco.Cms.Web.Website" Version="10.3.0-rc" />
     </ItemGroup>
 
 

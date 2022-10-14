@@ -1,6 +1,7 @@
 ﻿{
   "javascript": [
-    "~/App_Plugins/Our.Umbraco.ContentList/grideditors/contentlist/contentlist.js"
+    "~/App_Plugins/Our.Umbraco.ContentList/grideditors/contentlist/contentlist.js",
+    "~/App_Plugins/Our.Umbraco.ContentList/propertyeditors/datasource/blge-datasource.controller.js"
   ],
   "css": [
     "~/App_Plugins/Our.Umbraco.ContentList/css/contentlist.css"
@@ -13,6 +14,19 @@
       "render": "~/App_Plugins/Our.Umbraco.ContentList/Views/ContentList.cshtml",
       "icon": "icon-list",
       "config": { "settings": {} }
+    }
+  ],
+  "propertyEditors": [
+    {
+      "alias": "our.umbraco.contentlist.datasource",
+      "name": "[ContentList] DataSource",
+      "editor": {
+        "view": "~/App_Plugins/Our.Umbraco.ContentList/propertyeditors/datasource/blge-datasource.html",
+        "valueType": "JSON",
+        "supportsReadOnly": false,
+        "hideLabel": true
+      },
+      "isParameterEditor": true
     }
   ]
 }
