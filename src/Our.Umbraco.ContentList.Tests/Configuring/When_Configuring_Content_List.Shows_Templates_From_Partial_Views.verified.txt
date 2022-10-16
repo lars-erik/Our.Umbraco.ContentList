@@ -1,7 +1,8 @@
 ﻿[
-  FlexTheme                     Two columns on top, then three,
-  NiceTheme                     ,
-  Rss                           ,
-  SearchResult                  ,
-  SimpleTheme                   
+  FlexTheme                      True  Flex Theme,
+  NiceTheme                      True  Nice Theme,
+  NoMetadata                     True  No Metadata,
+  Rss                            True  Rss,
+  SearchResult                   False ,
+  SimpleTheme                    True  Sample list view
 ]

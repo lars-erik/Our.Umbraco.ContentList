@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ApprovalTests;
 using ApprovalTests.Reporters;
+using Lucene.Net.Analysis.Cjk;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -39,8 +40,6 @@ namespace Our.Umbraco.ContentList.Tests
         [SetUp]
         public void Setup()
         {
-            hostingEnvironment = Mock.Of<IHostingEnvironment>();
-
             support = new UmbracoSupport(configureServices: services =>
             {
                 services.AddTransient(typeof(ContentListApiController));
@@ -92,6 +91,7 @@ namespace Our.Umbraco.ContentList.Tests
         [TearDown]
         public void TearDown()
         {
+            ContentListApiController.ResetMapPath();
         }
 
         [Test]
@@ -107,11 +107,13 @@ namespace Our.Umbraco.ContentList.Tests
         [Test]
         public async Task Shows_Sample_Template_When_None_Exist()
         {
-            Mock.Get(hostingEnvironment).Setup(x => x.MapPathContentRoot("~/Views/Partials/ContentList"))
-                .Returns<string>(s => AppDomain.CurrentDomain.BaseDirectory);
-
-            Mock.Get(hostingEnvironment).Setup(x => x.MapPathContentRoot("~/App_Plugins/Our.Umbraco.ContentList/Views/ContentList/ListViews"))
-                .Returns<string>(s => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\Our.Umbraco.ContentList.Web\App_Plugins\Our.Umbraco.ContentList\Views\ContentList\Listviews"));
+            ContentListApiController.MapPath = (env, relativePath) =>
+                relativePath switch
+                {
+                    "~/Views/Partials/ContentList" => AppDomain.CurrentDomain.BaseDirectory,
+                    "~/App_Plugins/Our.Umbraco.ContentList/Views/ContentList/ListViews" => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\Our.Umbraco.ContentList.Web\App_Plugins\Our.Umbraco.ContentList\Views\ContentList\Listviews"),
+                    _ => throw new Exception("Path not registered")
+                };
 
             var controller = provider.GetService<ContentListApiController>();
 
@@ -123,17 +125,19 @@ namespace Our.Umbraco.ContentList.Tests
         [Test]
         public async Task Shows_Templates_From_Partial_Views()
         {
-            Mock.Get(hostingEnvironment).Setup(x => x.MapPathContentRoot("~/Views/Partials/ContentList"))
-                .Returns<string>(s => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\Our.Umbraco.ContentList.Web\Views\Partials\ContentList"));
-
-            Mock.Get(hostingEnvironment).Setup(x => x.MapPathContentRoot("~/App_Plugins/Our.Umbraco.ContentList/Views/ContentList/ListViews"))
-                .Returns<string>(s => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\Our.Umbraco.ContentList.Web\App_Plugins\Our.Umbraco.ContentList\Views\ContentList\Listviews"));
+            ContentListApiController.MapPath = (env, relativePath) =>
+                relativePath switch
+                {
+                    "~/Views/Partials/ContentList" => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\Our.Umbraco.ContentList.Web\Views\Partials\ContentList"),
+                    "~/App_Plugins/Our.Umbraco.ContentList/Views/ContentList/ListViews" => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\Our.Umbraco.ContentList.Web\App_Plugins\Our.Umbraco.ContentList\Views\ContentList\Listviews"),
+                    _ => throw new Exception("Path not registered")
+                };
 
             var controller = provider.GetService<ContentListApiController>()!;
 
             var sourceTypes = controller.GetTemplates();
 
-            await Verifier.Verify(sourceTypes.Select(x => $"{x.Name,-30}{x.DisplayName}"));
+            await Verifier.Verify(sourceTypes.Select(x => $"{x.Name,-30} {x.Compiles,-5} {x.DisplayName}"));
         }
     }
 }

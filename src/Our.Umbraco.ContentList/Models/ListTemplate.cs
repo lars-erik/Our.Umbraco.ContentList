@@ -21,5 +21,6 @@ namespace Our.Umbraco.ContentList.Models
         public bool DisableColumnsSetting { get; set; }
 
         public string DisplayName { get; set; }
+        public bool Compiles { get; set; }
     }
 }

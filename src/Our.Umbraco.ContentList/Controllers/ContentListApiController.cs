@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.Models;
-using Umbraco.Cms.Core.Hosting;
-using Umbraco.Cms.Web.BackOffice.Controllers;
+using Umbraco.Cms.Core.Extensions;
 using Umbraco.Cms.Web.BackOffice.Filters;
 using Umbraco.Cms.Web.Common.Attributes;
 using Umbraco.Cms.Web.Common.Authorization;
@@ -34,21 +33,23 @@ namespace Our.Umbraco.ContentList.Controllers
     [MiddlewareFilter(typeof(UnhandledExceptionLoggerFilter))]
     public class ContentListApiController : UmbracoApiController
     {
+        public static Func<IWebHostEnvironment, string, string> MapPath = (env, relativePath) => env.MapPathContentRoot(path: relativePath);
+        public static void ResetMapPath() => MapPath = (env, relativePath) => env.MapPathContentRoot(path: relativePath);
+
         private readonly string path;
         private readonly IServiceProvider serviceProvider;
         private readonly IRazorViewEngine viewEngine;
 
         public ContentListApiController(
-            IServiceProvider serviceProvider, 
-            IHostingEnvironment env,
+            IServiceProvider serviceProvider,
+            IWebHostEnvironment env,
             IRazorViewEngine viewEngine
         )
         {
             this.serviceProvider = serviceProvider;
             this.viewEngine = viewEngine;
 
-            // TODO: Factory this...
-            path = env.MapPathContentRoot("~/Views/Partials/ContentList");
+            path = MapPath(env, "~/Views/Partials/ContentList");
         }
 
         [HttpGet]
@@ -100,15 +101,30 @@ namespace Our.Umbraco.ContentList.Controllers
                 MapFromJsonConfig(configPath, list);
             }
 
-            var viewPath = Path.Combine(p.FullName, "list.cshtml");
-            var viewResult = viewEngine.GetView(null, viewPath, false);
-            var metadata = ViewMetadata.GetMetadata(viewResult);
-            if (metadata != ViewMetadata.Unknown)
+            try
             {
-                list.DisplayName = metadata.Name;
-                list.CompatibleSources = metadata.CompatibleDataSources.Select(x => x.GetFullNameWithAssembly()).ToArray();
+                var viewPath = Path.Combine(p.FullName, "list.cshtml");
+                var viewResult = viewEngine.GetView(null, viewPath, false);
+                if (viewResult.Success)
+                {
+                    list.Compiles = true;
+                }
+                var metadata = ViewMetadata.GetMetadata(viewResult);
+                if (metadata != ViewMetadata.Unknown)
+                {
+                    list.DisplayName = metadata.Name;
+                    list.CompatibleSources = metadata.CompatibleDataSources.Select(x => x.GetFullNameWithAssembly())
+                        .ToArray();
+                    list.Compiles = true;
+                }
             }
-
+            catch (Exception ex)
+            {
+                if (ex is ICompilationException)
+                {
+                    list.Compiles = false;
+                }
+            }
             return list;
         }
 

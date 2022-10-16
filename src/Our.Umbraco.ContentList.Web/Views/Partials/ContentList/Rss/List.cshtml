@@ -1,4 +1,4 @@
-﻿@inherits UmbracoViewPage<ContentListModel>
+﻿@inherits UmbracoViewPage<Our.Umbraco.ContentList.Models.ContentListModel>
 @using Our.Umbraco.ContentList.Web
 
 @{
@@ -8,7 +8,7 @@
 <div class="contentlist">
 @if (!Model.Items.Any())
 {
-    if (UmbracoContext.IsFrontEndUmbracoRequest)
+    if (UmbracoContext.IsFrontEndUmbracoRequest())
     {
     <p>No items found...</p>
     }
@@ -26,7 +26,7 @@
 @foreach(var item in Model.Items)
 {
     <div class="@Model.ColumnStyling.ColumnClasses(" col-sm-", "col-md-" , "col-lg-" ) list-item @item.ContentTypeName ">
-        @Html.ContentListItem(item)
+        @await Html.PartialAsync("ListItem.cshtml", item)
     </div>
 
     if (Model.ColumnStyling.IsLargeBreak(i))
@@ -48,7 +48,7 @@
 }
     <div class="col-md-12">
         <nav>
-            @Html.ContentListPager(Model, pagerClasses: "pagination", pagerElement:"ul", itemElement:"li")
+            <vc:content-list-pager model="Model"></vc:content-list-pager>
         </nav>
     </div>
 </div>
