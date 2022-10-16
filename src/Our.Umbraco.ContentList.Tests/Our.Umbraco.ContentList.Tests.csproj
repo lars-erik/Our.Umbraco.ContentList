@@ -5,13 +5,14 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="ApprovalTests" Version="5.7.3" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.8" />
         <PackageReference Include="Umbraco.Cms.Tests.Integration" Version="10.2.1" />
 
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.0" />
         <PackageReference Include="NUnit" Version="3.13.3" />
         <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
+        <PackageReference Include="Verify.ApprovalTestsTransition" Version="18.0.0-beta.25" />
+        <PackageReference Include="Verify.NUnit" Version="18.0.0-beta.25" />
     </ItemGroup>
 
     <ItemGroup>
@@ -28,6 +29,7 @@
       <None Remove="appSettings.Tests.json" />
       <None Remove="DataSources\When_Listing_Children_Of_Selected_Nodes.Content.json" />
       <None Remove="DataSources\When_Listing_Individually_Selected_Nodes.Content.json" />
+      <None Remove="Default.Content.json" />
     </ItemGroup>
 
     <ItemGroup>
@@ -40,6 +42,7 @@
         <EmbeddedResource Include="DataSources\When_Listing_Children_Of_CurrentPage.Content.json" DependentUpon="When_Listing_Children_Of_CurrentPage.cs" />
         <EmbeddedResource Include="DataSources\When_Listing_Children_Of_Selected_Nodes.Content.json" DependentUpon="When_Listing_Children_Of_Selected_Nodes.cs" />
         <EmbeddedResource Include="DataSources\When_Listing_Individually_Selected_Nodes.Content.json" DependentUpon="When_Listing_Individually_Selected_Nodes.cs" />
+        <EmbeddedResource Include="Default.Content.json" />
     </ItemGroup>
 
     <ItemGroup>

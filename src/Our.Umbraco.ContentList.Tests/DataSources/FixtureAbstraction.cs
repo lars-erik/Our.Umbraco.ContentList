@@ -7,7 +7,7 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
 {
     public abstract class FixtureAbstraction
     {
-        public abstract Task VerifyResult(object resultObject);
+        public abstract Task VerifyResult(object resultObject, string scenario = null);
         public abstract Task<object> Execute(ContentListConfiguration configuration, IPublishedContent currentPage);
         public virtual void Setup(IServiceCollection services) {}
     }

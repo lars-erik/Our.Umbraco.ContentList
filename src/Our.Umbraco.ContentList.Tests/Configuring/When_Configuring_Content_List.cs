@@ -8,35 +8,59 @@ using ApprovalTests;
 using ApprovalTests.Reporters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using Our.Umbraco.ContentList.Composition;
 using Our.Umbraco.ContentList.Controllers;
 using Our.Umbraco.ContentList.DataSources;
+using Our.Umbraco.ContentList.Tests.DataSources;
 using Our.Umbraco.ContentList.Tests.Support;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
-using Umbraco.Cms.Core.Hosting;
 using Umbraco.Cms.Core.Logging;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Tests.Integration.Implementations;
+using VerifyNUnit;
+using IHostingEnvironment = Umbraco.Cms.Core.Hosting.IHostingEnvironment;
 
 namespace Our.Umbraco.ContentList.Tests
 {
     [TestFixture]
-    [UseReporter(typeof(VisualStudioReporter))]
     public class When_Configuring_Content_List
     {
         private IHostingEnvironment hostingEnvironment;
-        private ServiceProvider provider;
+        private IServiceProvider provider;
+        private UmbracoSupport support;
 
         [SetUp]
         public void Setup()
         {
+            hostingEnvironment = Mock.Of<IHostingEnvironment>();
 
-            var typeLoader = new TypeLoader(
+            support = new UmbracoSupport(configureServices: services =>
+            {
+                services.AddTransient(typeof(ContentListApiController));
+
+                services.AddRenderingSupport();
+
+                /*
+                services.Replace(
+                    new ServiceDescriptor(typeof(IHostingEnvironment), hostingEnvironment)
+                );
+                */
+            }, configureUmbraco: builder =>
+            {
+                new ContentListComposer().Compose(builder);
+            });
+
+            support.SetupUmbraco();
+
+            /*
+        var typeLoader = new TypeLoader(
                 new TypeFinder(Mock.Of<ILogger<TypeFinder>>(), new DefaultUmbracoAssemblyProvider(GetType().Assembly, Mock.Of<ILoggerFactory>(), Enumerable.Empty<string>())),
                 Mock.Of<IRuntimeHash>(),
                 Mock.Of<IAppPolicyCache>(),
@@ -51,12 +75,18 @@ namespace Our.Umbraco.ContentList.Tests
 
             services.AddSingleton(typeof(ILocalizationService), Mock.Of<ILocalizationService>());
             services.AddTransient(typeof(ContentListApiController));
-            hostingEnvironment = Mock.Of<IHostingEnvironment>();
             services.AddSingleton(typeof(IHostingEnvironment), hostingEnvironment);
+
+            services.AddRenderingSupport();
 
             builder.Build();
 
             provider = services.BuildServiceProvider();
+            */
+            provider = support.Services;
+
+            var env = provider.GetService<IHostingEnvironment>();
+            //var webEnv = provider.GetService<IWebHostingEnvironment>();
         }
 
         [TearDown]
@@ -65,17 +95,17 @@ namespace Our.Umbraco.ContentList.Tests
         }
 
         [Test]
-        public void Shows_Registered_DataSources()
+        public async Task Shows_Registered_DataSources()
         {
             var controller = provider.GetService<ContentListApiController>();
 
             var sourceTypes = controller?.GetDataSources();
             
-            Approvals.VerifyAll("Source types", sourceTypes, x => $"{x.Name,-46}{x.Key}");
+            await Verifier.Verify(sourceTypes.Select(x => $"{x.Name,-46}{x.Key}"));
         }
 
         [Test]
-        public void Shows_Sample_Template_When_None_Exist()
+        public async Task Shows_Sample_Template_When_None_Exist()
         {
             Mock.Get(hostingEnvironment).Setup(x => x.MapPathContentRoot("~/Views/Partials/ContentList"))
                 .Returns<string>(s => AppDomain.CurrentDomain.BaseDirectory);
@@ -86,12 +116,12 @@ namespace Our.Umbraco.ContentList.Tests
             var controller = provider.GetService<ContentListApiController>();
 
             var sourceTypes = controller?.GetTemplates();
-            
-            Approvals.VerifyAll("Templates", sourceTypes, x => $"{x.Name,-30}{x.DisplayName}");
+
+            await Verifier.Verify(sourceTypes.Select(x => $"{x.Name,-30}{x.DisplayName}"));
         }
 
         [Test]
-        public void Shows_Templates_From_Partial_Views()
+        public async Task Shows_Templates_From_Partial_Views()
         {
             Mock.Get(hostingEnvironment).Setup(x => x.MapPathContentRoot("~/Views/Partials/ContentList"))
                 .Returns<string>(s => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\Our.Umbraco.ContentList.Web\Views\Partials\ContentList"));
@@ -99,11 +129,11 @@ namespace Our.Umbraco.ContentList.Tests
             Mock.Get(hostingEnvironment).Setup(x => x.MapPathContentRoot("~/App_Plugins/Our.Umbraco.ContentList/Views/ContentList/ListViews"))
                 .Returns<string>(s => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\Our.Umbraco.ContentList.Web\App_Plugins\Our.Umbraco.ContentList\Views\ContentList\Listviews"));
 
-            var controller = provider.GetService<ContentListApiController>();
+            var controller = provider.GetService<ContentListApiController>()!;
 
-            var sourceTypes = controller?.GetTemplates();
-            
-            Approvals.VerifyAll("Templates", sourceTypes, x => $"{x.Name,-30}{x.DisplayName}");
+            var sourceTypes = controller.GetTemplates();
+
+            await Verifier.Verify(sourceTypes.Select(x => $"{x.Name,-30}{x.DisplayName}"));
         }
     }
 }

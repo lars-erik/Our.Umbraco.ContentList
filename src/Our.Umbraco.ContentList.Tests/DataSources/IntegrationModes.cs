@@ -8,6 +8,8 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
 {
     public class IntegrationModes : IEnumerable
     {
+        public const string DataSource = "dataSource";
+        public const string Component = "component";
         private string[] modes;
 
         public IntegrationModes()
@@ -18,16 +20,16 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
 
         public IEnumerator GetEnumerator()
         {
-            if (modes.Contains("dataSource"))
+            if (modes.Contains(DataSource))
             {
-                var dataSource = new TestFixtureData("dataSource");
+                var dataSource = new TestFixtureData(DataSource);
                 dataSource.Properties.Add(PropertyNames.Category, "Unit");
                 yield return dataSource;
             }
 
-            if (modes.Contains("component"))
+            if (modes.Contains(Component))
             {
-                var component = new TestFixtureData("component");
+                var component = new TestFixtureData(Component);
                 component.Properties.Add(PropertyNames.Category, "Integrated");
                 yield return component;
             }

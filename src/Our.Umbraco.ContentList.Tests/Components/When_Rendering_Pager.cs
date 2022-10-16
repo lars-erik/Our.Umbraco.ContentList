@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using ApprovalTests;
-using ApprovalTests.Namers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using NUnit.Framework;
@@ -10,6 +9,7 @@ using Our.Umbraco.ContentList.Components;
 using Our.Umbraco.ContentList.Controllers;
 using Our.Umbraco.ContentList.Models;
 using Our.Umbraco.ContentList.Tests.Support;
+using VerifyNUnit;
 
 namespace Our.Umbraco.ContentList.Tests.Components
 {
@@ -86,10 +86,7 @@ namespace Our.Umbraco.ContentList.Tests.Components
 
             Console.WriteLine("\n" + result);
 
-            using (ApprovalResults.ForScenario(page))
-            {
-                Approvals.VerifyHtml(result);
-            }
+            await Verifier.Verify(target:result, extension:"html").UseParameters(page);
         }
 
         [TearDown]

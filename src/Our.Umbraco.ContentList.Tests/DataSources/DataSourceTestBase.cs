@@ -32,7 +32,12 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
         public void Setup()
         {
             var cacheSupport = new ContentCacheSupport();
-            var tree = cacheSupport.GetFromJsonResource(GetType().FullName);
+            var tree = cacheSupport.GetFromJsonResource(GetType().FullName)
+                    ?? cacheSupport.GetFromJsonResource("Our.Umbraco.ContentList.Tests.Default.Content.json");
+            if (tree == null)
+            {
+                throw new Exception($"Failed to find content at {GetType().FullName} or Our.Umbraco.ContentList.Tests.Default.Content.json");
+            }
 
             Support = new UmbracoSupport(
                 tree, 

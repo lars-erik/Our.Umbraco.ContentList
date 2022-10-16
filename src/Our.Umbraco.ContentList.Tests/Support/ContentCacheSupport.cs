@@ -30,16 +30,23 @@ namespace Our.Umbraco.ContentList.Tests.Support
 
         public BPlusTree<int, ContentNodeKit> GetFromJsonResource(string resourceName)
         {
-            using var resource = typeof(ContentCacheSupport).Assembly.GetManifestResourceStream(resourceName);
-            using var reader = new StreamReader(resource);
-            var json = reader.ReadToEnd();
-            var content = JsonConvert.DeserializeObject<Dictionary<int, ContentNodeKit>>(
-                json,
-                new ContentNodeSerializer()
-            );
-            var tree = new BPlusTree<int, ContentNodeKit>();
-            tree.AddRange(content);
-            return tree;
+            try
+            {
+                using var resource = typeof(ContentCacheSupport).Assembly.GetManifestResourceStream(resourceName);
+                using var reader = new StreamReader(resource);
+                var json = reader.ReadToEnd();
+                var content = JsonConvert.DeserializeObject<Dictionary<int, ContentNodeKit>>(
+                    json,
+                    new ContentNodeSerializer()
+                );
+                var tree = new BPlusTree<int, ContentNodeKit>();
+                tree.AddRange(content);
+                return tree;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

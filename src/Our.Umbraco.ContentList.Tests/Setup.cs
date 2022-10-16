@@ -1,4 +1,5 @@
 ﻿using ApprovalTests.Reporters;
+using DiffEngine;
 using NUnit.Framework;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
@@ -6,13 +7,17 @@ using Umbraco.Cms.Tests.Common.Builders;
 using Umbraco.Cms.Tests.Common.Builders.Extensions;
 using Umbraco.Cms.Tests.Common.Testing;
 
-[assembly:UseReporter(typeof(VisualStudioReporter))]
-
 namespace Our.Umbraco.ContentList.Tests
 {
     [SetUpFixture]
     public class Setup
     {
+        [OneTimeSetUp]
+        public void SetupVerifier()
+        {
+            DiffTools.UseOrder(DiffTool.VisualStudio, DiffTool.Rider, DiffTool.VisualStudioCode);
+        }
+
         [OneTimeSetUp]
         public void SetupUmbracoTests()
         {

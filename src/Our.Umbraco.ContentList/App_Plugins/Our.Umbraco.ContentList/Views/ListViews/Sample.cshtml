@@ -1,7 +1,25 @@
-﻿@using Umbraco.Extensions
+﻿@using System.Reflection
+@using Our.Umbraco.ContentList
+@using Our.Umbraco.ContentList.Components
+@using Our.Umbraco.ContentList.DataSources
+@using Our.Umbraco.ContentList.Models
+@using Umbraco.Extensions
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Our.Umbraco.ContentList.Models.ContentListModel>
 @addTagHelper *, Our.Umbraco.ContentList
-
+@functions
+{
+    public static ViewMetadata Metadata => new ViewMetadata
+    (
+        name: "Sample list view",
+        description: "Built-in sample view for the content list",
+        compatibleDataSources: new Type[]
+        {
+            typeof(ChildrenOfCurrentPageDataSource),
+            typeof(ChildrenOfMultipleDataSource),
+            typeof(IndividuallySelectedDataSource)
+        }
+    );
+}
 <div class="contentlist">
     <div class="alert alert-info">This is an example of a list view. List views should be created as ~/Views/Partials/ContentList/[ThemeName]/List.cshtml</div>
 

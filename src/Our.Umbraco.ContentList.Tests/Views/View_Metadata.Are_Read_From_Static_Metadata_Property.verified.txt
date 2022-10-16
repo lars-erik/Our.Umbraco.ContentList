@@ -1,0 +1,9 @@
+﻿{
+  Name: Sample list view,
+  Description: Built-in sample view for the content list,
+  CompatibleDataSources: [
+    ChildrenOfCurrentPageDataSource,
+    ChildrenOfMultipleDataSource,
+    IndividuallySelectedDataSource
+  ]
+}

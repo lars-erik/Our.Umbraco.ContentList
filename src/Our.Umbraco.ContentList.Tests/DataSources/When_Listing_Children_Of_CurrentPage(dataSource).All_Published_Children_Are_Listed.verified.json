@@ -1,0 +1,30 @@
+﻿[
+  {
+    "ContentTypeName": "page",
+    "ListImageUrl": null,
+    "Url": "/about-us/",
+    "SortDate": "0001-01-01T00:00:00",
+    "Layout": null,
+    "ListHeading": "About us",
+    "ListImage": null,
+    "ListSummary": {},
+    "ReadMoreText": null,
+    "Name": "About us",
+    "UrlSegment": "about-us",
+    "SortOrder": 0
+  },
+  {
+    "ContentTypeName": "page",
+    "ListImageUrl": null,
+    "Url": "/contact-us/",
+    "SortDate": "0001-01-01T00:00:00",
+    "Layout": null,
+    "ListHeading": "Contact us",
+    "ListImage": null,
+    "ListSummary": {},
+    "ReadMoreText": null,
+    "Name": "Contact us",
+    "UrlSegment": "contact-us",
+    "SortOrder": 1
+  }
+]

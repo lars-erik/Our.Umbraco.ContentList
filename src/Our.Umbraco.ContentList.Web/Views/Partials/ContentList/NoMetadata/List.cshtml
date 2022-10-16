@@ -3,20 +3,6 @@
 @using Our.Umbraco.ContentList.Models
 @using Our.Umbraco.ContentList.DataSources
 @addTagHelper *, Our.Umbraco.ContentList
-@functions
-{
-    public static ViewMetadata Metadata => new ViewMetadata(
-        name: "Sample list view",
-        description: "Built-in sample view for the content list",
-        compatibleDataSources: new Type[]
-        {
-            typeof(ChildrenOfCurrentPageDataSource),
-            typeof(ChildrenOfMultipleDataSource),
-            typeof(IndividuallySelectedDataSource)
-        }
-    );
-}
-
 @{
     var i = 0;
 }

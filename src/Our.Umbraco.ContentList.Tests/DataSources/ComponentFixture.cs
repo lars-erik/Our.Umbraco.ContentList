@@ -7,6 +7,7 @@ using Our.Umbraco.ContentList.Controllers;
 using Our.Umbraco.ContentList.Models;
 using Our.Umbraco.ContentList.Tests.Support;
 using Umbraco.Cms.Core.Models.PublishedContent;
+using VerifyNUnit;
 
 namespace Our.Umbraco.ContentList.Tests.DataSources
 {
@@ -26,11 +27,14 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
             services.AddTransient<PagerComponent>();
         }
 
-        public override async Task VerifyResult(object resultObject)
+        public override async Task VerifyResult(object resultObject, string scenario = null)
         {
             var viewComponentResult = (ViewViewComponentResult) resultObject;
             var result = await support.GetService<ViewRenderer>().Render(viewComponentResult.ViewName, viewComponentResult.ViewData.Model);
-            Approvals.VerifyHtml(result);
+            var verifyTask = Verifier.Verify(target: result.Trim(), extension: "html");
+            if (scenario != null)
+                verifyTask = verifyTask.UseParameters(scenario);
+            await verifyTask;
         }
 
         public override async Task<object> Execute(ContentListConfiguration configuration, IPublishedContent currentPage)

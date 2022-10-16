@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using ApprovalTests;
 using Our.Umbraco.ContentList.Controllers;
 using Our.Umbraco.ContentList.Models;
 using Our.Umbraco.ContentList.Tests.Support;
 using Umbraco.Cms.Core.Models.PublishedContent;
+using VerifyNUnit;
 
 namespace Our.Umbraco.ContentList.Tests.DataSources
 {
@@ -28,11 +28,12 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
 
         }
 
-        public override async Task VerifyResult(object resultObject)
+        public override async Task VerifyResult(object resultObject, string scenario = null)
         {
-            Approvals.VerifyJson(resultObject.ToJson());
-
-            await Task.CompletedTask;
+            var verifyTask = Verifier.Verify(target: resultObject.ToJson(true), extension: "json");
+            if (scenario != null)
+                verifyTask = verifyTask.UseParameters(scenario);
+            await verifyTask;
         }
     }
 }

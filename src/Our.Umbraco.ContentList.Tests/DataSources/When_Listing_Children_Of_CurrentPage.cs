@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using ApprovalTests.Namers;
 using NUnit.Framework;
 using Our.Umbraco.ContentList.DataSources;
 using Umbraco.Cms.Tests.Common.Testing;
@@ -18,10 +17,7 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
         {
             var result = await ExecuteSimpleTheme<ChildrenOfCurrentPageDataSource>();
 
-            using (ApprovalResults.ForScenario(IntegrationMode))
-            { 
-                await Fixture.VerifyResult(result);
-            }
+            await Fixture.VerifyResult(result, IntegrationMode);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using ApprovalTests.Namers;
 using NUnit.Framework;
 using Our.Umbraco.ContentList.DataSources;
 using Our.Umbraco.ContentList.Models;
@@ -22,10 +21,7 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
                 )
             );
             
-            using (ApprovalResults.ForScenario(IntegrationMode))
-            { 
-                await Fixture.VerifyResult(result);
-            }
+            await Fixture.VerifyResult(result, IntegrationMode);
         }
     }
 
