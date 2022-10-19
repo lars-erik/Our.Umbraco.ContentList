@@ -1,0 +1,16 @@
+﻿<div ng-controller="our.umbraco.contentlist.query.editor.controller" class="contentlist-query-editor">
+    
+    <div ng-if="properties">
+        <div class="inner-property" ng-repeat="(key, property) in properties">
+            <umb-property property="property">
+                <div style="position: relative;">
+                    <umb-editor model="property" is-pre-value="true"></umb-editor>
+                </div>
+            </umb-property>
+            <div style="float: none; display: block;"></div>
+        </div>
+    </div>
+    
+    <pre>{{model.value | json}}</pre>
+
+</div>

@@ -32,9 +32,20 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Content Remove="compilerconfig.json" />
+    </ItemGroup>
+
+    <ItemGroup>
       <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\datasource\blge-datasource.controller.js" />
       <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\datasource\blge-datasource.html" />
       <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\query\contentlist.query.controller.js" />
+      <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\query\contentlist.query.html" />
+      <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\theme\blge-theme.controller.js" />
+      <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\theme\blge-theme.html" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="compilerconfig.json" />
     </ItemGroup>
 
     <ItemGroup>
