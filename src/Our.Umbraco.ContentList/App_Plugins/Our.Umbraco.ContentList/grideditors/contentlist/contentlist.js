@@ -405,7 +405,7 @@
       "label": "Show paging",
       "key": "showPaging",
       "description": "",
-      "view": "/app_plugins/our.umbraco.contentlist/propertyeditors/boolean/boolean.html"
+      "view": "/umbraco/views/propertyeditors/boolean/boolean.html"
     },
     skip: {
       "label": "Skip items",

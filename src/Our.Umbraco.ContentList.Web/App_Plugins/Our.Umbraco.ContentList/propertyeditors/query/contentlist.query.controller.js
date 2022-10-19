@@ -48,12 +48,23 @@
         scope.properties = Object.assign({}, defaultSettings);
 
         for (var key in scope.properties) {
-          scope.properties[key].value = scope.model.value[key];
+          if (typeof (scope.model.value[key]) === 'boolean') {
+            scope.properties[key].value = scope.model.value[key] ? "1" : "0";
+          } else {
+            scope.properties[key].value = scope.model.value[key];
+          }
           scope.$watch("properties." + key + ".value",
             ((subKey) => (val) => {
               scope.model.value[subKey] = val;
             })(key));
         }
+
+        scope.$watch("model.value.showPaging",
+          function(val) {
+            if (!(val instanceof Boolean)) {
+              scope.model.value.showPaging = new Boolean(val === "1");
+            }
+          });
 
       }
     ]);
