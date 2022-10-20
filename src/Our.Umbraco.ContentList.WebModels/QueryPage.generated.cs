@@ -55,6 +55,6 @@ namespace Our.Umbraco.ContentList.Web.Models
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.3.0-rc+ed66fe1")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("query")]
-		public virtual global::Newtonsoft.Json.Linq.JToken Query => this.Value<global::Newtonsoft.Json.Linq.JToken>(_publishedValueFallback, "query");
+		public virtual global::Our.Umbraco.ContentList.Models.ContentListConfiguration Query => this.Value<global::Our.Umbraco.ContentList.Models.ContentListConfiguration>(_publishedValueFallback, "query");
 	}
 }

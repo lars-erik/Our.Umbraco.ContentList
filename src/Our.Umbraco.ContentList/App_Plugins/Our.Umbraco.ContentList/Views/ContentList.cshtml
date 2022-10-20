@@ -6,3 +6,5 @@
 }
 
 @await Component.InvokeAsync("ContentList", new {configuration, contextContent=Umbraco.AssignedContentItem})
+
+<vc:content-list configuration="configuration" context-content="Umbraco.AssignedContentItem"/>

@@ -1,27 +1,11 @@
-﻿.contentlist-query-editor .umb-editor {
+﻿.contentlist-query-editor .umb-editor,
+.contentlist-datasource-property .umb-editor {
   position: relative;
   background-color: transparent;
   box-shadow: 0 0 0 0;
 }
-.umb-editors .contentlist-datasource-property .parameters-property {
-  position: relative !important;
-}
-.umb-editors .contentlist-datasource-property .parameters-property .umb-editor {
-  background-color: transparent;
-  position: relative !important;
-  box-shadow: 0 0 0 0 !important;
-}
-.umb-editors .contentlist-datasource-property .inner-property {
-  position: relative !important;
-  padding-bottom: 20px;
-}
-.umb-editors .contentlist-datasource-property .inner-property .umb-editor {
-  background-color: transparent;
-  position: relative !important;
-  box-shadow: 0 0 0 0 !important;
-}
-.umb-editors .contentlist-datasource-property label.control-label {
-  float: none;
+.contentlist-parameter {
+  margin-bottom: 1rem;
 }
 .our-content-list .new-contentlist {
   min-height: 100px;

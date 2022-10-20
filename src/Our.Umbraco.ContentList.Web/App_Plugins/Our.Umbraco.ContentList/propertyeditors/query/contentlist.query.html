@@ -1,16 +1,18 @@
 ﻿<div ng-controller="our.umbraco.contentlist.query.editor.controller" class="contentlist-query-editor">
-    
-    <div ng-if="properties">
-        <div class="inner-property" ng-repeat="(key, property) in properties">
-            <umb-property property="property">
-                <div style="position: relative;">
-                    <umb-editor model="property" is-pre-value="true"></umb-editor>
-                </div>
-            </umb-property>
-            <div style="float: none; display: block;"></div>
-        </div>
+
+    <div ng-if="enableGui">
+        <umb-property property="property" ng-repeat="(key, property) in properties">
+            <umb-editor model="property" is-pre-value="true"></umb-editor>
+        </umb-property>
     </div>
-    
+    <div ng-if="!enableGui">
+        <pre style="font-family: monospace;">
+ ooo 0 0 ooo  | 
+------O------ | Lars-Erik was here!
+        </pre>
+    </div>
+
+    <pre>{{properties | json}}</pre>
     <pre>{{model.value | json}}</pre>
 
 </div>

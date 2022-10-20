@@ -1,0 +1,12 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.QueryPage>
+@using ContentModels = Our.Umbraco.ContentList.Web.Models;
+@using Newtonsoft.Json
+@{
+}
+
+<vc:content-list configuration="Model.Query" context-content="Umbraco.AssignedContentItem"/>
+
+<pre>
+@JsonConvert.SerializeObject(Model.Query, Formatting.Indented)
+</pre>

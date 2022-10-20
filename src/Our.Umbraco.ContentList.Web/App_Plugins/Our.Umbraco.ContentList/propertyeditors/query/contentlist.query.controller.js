@@ -42,7 +42,15 @@
     [
       "$scope",
       "our.umbraco.contentlist.defaultSettings",
-      function (scope, defaultSettings) {
+      "editorState",
+      function (scope, defaultSettings, editorState) {
+
+        console.log('current', editorState.current);
+
+        scope.enableGui = editorState.current.udi.indexOf("umb://document/") === 0;
+        if (!scope.enableGui) {
+          return;
+        }
 
         scope.model.value = scope.model.value || createConfig();
         scope.properties = Object.assign({}, defaultSettings);

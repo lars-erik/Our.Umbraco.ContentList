@@ -17,8 +17,15 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Version>2.0.0-alpha-03</Version>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <AppDesignerFolder>PropertyEditors</AppDesignerFolder>
 
     </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.3.0-rc" />
+        <PackageReference Include="Umbraco.Cms.Web.Common" Version="10.3.0-rc" />
+        <PackageReference Include="Umbraco.Cms.Web.Website" Version="10.3.0-rc" />
+    </ItemGroup>
 
     <ItemGroup>
         <Content Include="App_Plugins\Our.Umbraco.ContentList\**\*.*" Exclude="App_Plugins\Our.Umbraco.ContentList\Views\**\*.*">
@@ -29,29 +36,6 @@
             <Pack>True</Pack>
             <PackagePath>buildTransitive</PackagePath>
         </None>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Remove="compilerconfig.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\datasource\blge-datasource.controller.js" />
-      <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\datasource\blge-datasource.html" />
-      <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\query\contentlist.query.controller.js" />
-      <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\query\contentlist.query.html" />
-      <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\theme\blge-theme.controller.js" />
-      <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\theme\blge-theme.html" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Include="compilerconfig.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.3.0-rc" />
-        <PackageReference Include="Umbraco.Cms.Web.Common" Version="10.3.0-rc" />
-        <PackageReference Include="Umbraco.Cms.Web.Website" Version="10.3.0-rc" />
     </ItemGroup>
 
 

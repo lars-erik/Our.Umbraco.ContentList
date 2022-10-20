@@ -10,6 +10,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Primitives;
 using Our.Umbraco.ContentList.Controllers;
 using Our.Umbraco.ContentList.DataSources;
+using Our.Umbraco.ContentList.PropertyEditors;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Events;
@@ -26,6 +27,8 @@ namespace Our.Umbraco.ContentList.Composition
             builder.AddContentListDataSources();
             builder.AddContentListEndpoints();
             builder.Services.AddContentListServices();
+
+            builder.PropertyValueConverters().Append<QueryConverter>();
         }
 
         public static void AddContentListEndpoints(this IUmbracoBuilder builder)

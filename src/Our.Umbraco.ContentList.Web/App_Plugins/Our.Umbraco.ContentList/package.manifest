@@ -37,7 +37,7 @@
         "view": "~/App_Plugins/Our.Umbraco.ContentList/propertyeditors/query/contentlist.query.html",
         "valueType": "JSON",
         "supportsReadOnly": false,
-        "hideLabel": true
+        "hideLabel": false
       },
       "isParameterEditor": true
     }
