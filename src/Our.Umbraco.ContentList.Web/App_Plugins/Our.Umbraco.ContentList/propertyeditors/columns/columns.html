@@ -15,8 +15,8 @@
                 <span class="help-inline" ng-message="valServer">{{integerFieldForm.integerField.errorMsg}}</span>
             </span>
         </ng-form>
-        <div class="controls">
-            <label for="advancedColumns">
+        <div class="">
+            <label>
                 <input type="checkbox" id="advancedColumns" name="advancedColumns" ng-model="model.advancedColumns" />
                 Show advanced column settings
             </label>
@@ -28,7 +28,7 @@
                 <label for="mediumColumns">Tablet</label>
                 <input type="number" id="mediumColumns" name="mediumColumns" ng-model="model.value.medium" class="umb-property-editor-tiny" />
                 <label for="largeColumns">Desktop</label>
-                <input type="number" id="largeColumns" name="largeColumns" ng-model="model.value.large" class="umb-property-editor-tiny" />
+                <input type="number" id="largeColumns" name="largeColumns" ng-model="model.value.large" class="umb-property-editor-tiny" ng-attr-min="{{model.value.medium}}" />
             </div>
         </div>
     </div>

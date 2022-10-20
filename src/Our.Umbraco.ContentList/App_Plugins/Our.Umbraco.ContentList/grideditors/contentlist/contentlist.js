@@ -310,6 +310,11 @@
         function () {
           scope.supportColumns = !(templateState.currentTemplate || {}).disableColumnsSetting;
         });
+
+      scope.$watch("model.value.medium",
+        function() {
+          scope.model.value.large = Math.max(scope.model.value.medium, scope.model.value.large);
+        });
     }
   ]);
 
@@ -381,16 +386,6 @@
         "all": []
       }
     },
-    pagesize: {
-      "label": "Page Size",
-      "key": "pagesize",
-      "description": "Count of items per page",
-      "view": "/umbraco/views/propertyeditors/integer/integer.html",
-      "config": {
-        "min": 1,
-        "max": 100
-      }
-    },
     columns: {
       "label": "Columns",
       "key": "columns",
@@ -401,17 +396,27 @@
         "max": 100
       }
     },
-    showPaging: {
-      "label": "Show paging",
-      "key": "showPaging",
-      "description": "",
-      "view": "/umbraco/views/propertyeditors/boolean/boolean.html"
+    pagesize: {
+      "label": "Page Size",
+      "key": "pagesize",
+      "description": "Count of items per page",
+      "view": "/umbraco/views/propertyeditors/integer/integer.html",
+      "config": {
+        "min": 1,
+        "max": 100
+      }
     },
     skip: {
       "label": "Skip items",
       "key": "skip",
       "description": "Enter a number of items to skip.",
       "view": "/umbraco/views/propertyeditors/integer/integer.html",
+    },
+    showPaging: {
+      "label": "Show paging",
+      "key": "showPaging",
+      "description": "",
+      "view": "/umbraco/views/propertyeditors/boolean/boolean.html"
     }
   });
 

@@ -73,7 +73,6 @@
               scope.model.value.showPaging = new Boolean(val === "1");
             }
           });
-
       }
     ]);
 
