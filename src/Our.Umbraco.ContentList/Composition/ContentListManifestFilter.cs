@@ -28,17 +28,7 @@ namespace Our.Umbraco.ContentList.Composition
                 },
                 Scripts = new[]
                 {
-                    "/App_Plugins/Our.Umbraco.ContentList/common/datasource.service.js",
-                    "/App_Plugins/Our.Umbraco.ContentList/common/query.properties.js",
-                    "/App_Plugins/Our.Umbraco.ContentList/common/state.js",
-                    "/App_Plugins/Our.Umbraco.ContentList/common/template.service.js",
-                    "/App_Plugins/Our.Umbraco.ContentList/grideditors/contentlist/contentlist.js",
-                    "/App_Plugins/Our.Umbraco.ContentList/propertyeditors/columns/columns.controller.js",
-                    "/App_Plugins/Our.Umbraco.ContentList/propertyeditors/datasource/blge.datasource.controller.js",
-                    "/App_Plugins/Our.Umbraco.ContentList/propertyeditors/datasource/grid.datasource.controller.js",
-                    "/App_Plugins/Our.Umbraco.ContentList/propertyeditors/theme/blge.theme.controller.js",
-                    "/App_Plugins/Our.Umbraco.ContentList/propertyeditors/theme/grid.theme.controller.js",
-                    "/App_Plugins/Our.Umbraco.ContentList/propertyeditors/query/contentlist.query.controller.js"
+                    "/App_Plugins/Our.Umbraco.ContentList/our.umbraco.contentlist.umd.js"
                 },
                 GridEditors = new[]
                 {

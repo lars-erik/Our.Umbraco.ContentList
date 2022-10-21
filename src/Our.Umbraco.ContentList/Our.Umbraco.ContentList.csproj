@@ -40,14 +40,25 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="wwwroot\common\datasource.service.js" />
-      <None Remove="wwwroot\common\query.properties.js" />
-      <None Remove="wwwroot\common\state.js" />
-      <None Remove="wwwroot\common\template.service.js" />
-      <None Remove="wwwroot\common\test.js" />
-      <None Remove="wwwroot\propertyeditors\columns\columns.controller.js" />
-      <None Remove="wwwroot\propertyeditors\datasource\grid.datasource.controller.js" />
-      <None Remove="wwwroot\propertyeditors\theme\grid.theme.controller.js" />
+      <None Remove="Scripts\common\datasource.service.js" />
+      <None Remove="Scripts\common\query.properties.js" />
+      <None Remove="Scripts\common\state.js" />
+      <None Remove="Scripts\common\template.service.js" />
+      <None Remove="Scripts\common\test.js" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Scripts\common\datasource.service.js" />
+      <Content Include="Scripts\common\query.properties.js" />
+      <Content Include="Scripts\common\state.js" />
+      <Content Include="Scripts\common\template.service.js" />
+      <Content Include="Scripts\grideditor\contentlist.js" />
+      <Content Include="Scripts\propertyeditors\blge.datasource.controller.js" />
+      <Content Include="Scripts\propertyeditors\blge.theme.controller.js" />
+      <Content Include="Scripts\propertyeditors\columns.controller.js" />
+      <Content Include="Scripts\propertyeditors\contentlist.query.controller.js" />
+      <Content Include="Scripts\propertyeditors\grid.datasource.controller.js" />
+      <Content Include="Scripts\propertyeditors\grid.theme.controller.js" />
     </ItemGroup>
 
     <ItemGroup>
@@ -55,24 +66,19 @@
       <None Include="wwwroot\css\contentlist.less" />
       <None Include="wwwroot\css\contentlist.min.css" />
       <None Include="wwwroot\grideditors\contentlist\contentlist.html" />
-      <None Include="wwwroot\grideditors\contentlist\contentlist.js" />
-      <None Include="wwwroot\grideditors\contentlist\tests\contentlist.tests.js" />
       <None Include="wwwroot\propertyeditors\boolean\boolean.html" />
       <None Include="wwwroot\propertyeditors\columns\columns.html" />
       <None Include="wwwroot\propertyeditors\datasource\blge-datasource.html" />
-      <None Include="wwwroot\propertyeditors\datasource\blge.datasource.controller.js" />
       <None Include="wwwroot\propertyeditors\datasource\datasource.html" />
       <None Include="wwwroot\propertyeditors\dropdown\dropdown.html" />
       <None Include="wwwroot\propertyeditors\parameters\parameters.html" />
-      <None Include="wwwroot\propertyeditors\query\contentlist.query.controller.js" />
       <None Include="wwwroot\propertyeditors\query\contentlist.query.html" />
       <None Include="wwwroot\propertyeditors\theme\blge-theme.html" />
-      <None Include="wwwroot\propertyeditors\theme\blge.theme.controller.js" />
       <None Include="wwwroot\propertyeditors\theme\theme.html" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Scripts\" />
+      <Folder Include="wwwroot\scripts\" />
     </ItemGroup>
 
 

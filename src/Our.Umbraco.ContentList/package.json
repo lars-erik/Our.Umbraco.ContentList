@@ -1,0 +1,14 @@
+{
+  "name": "our.umbraco.contentlist",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "vite build",
+    "watch": "vite build --watch"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "3.1.8"
+  }
+}
