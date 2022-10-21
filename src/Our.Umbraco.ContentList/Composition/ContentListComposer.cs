@@ -29,6 +29,8 @@ namespace Our.Umbraco.ContentList.Composition
             builder.Services.AddContentListServices();
 
             builder.PropertyValueConverters().Append<QueryConverter>();
+
+            builder.ManifestFilters().Append<ContentListManifestFilter>();
         }
 
         public static void AddContentListEndpoints(this IUmbracoBuilder builder)

@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+        <StaticWebAssetBasePath>App_Plugins/Our.Umbraco.ContentList</StaticWebAssetBasePath>
 
         <ContentTargetFolders>.</ContentTargetFolders>
 
@@ -39,13 +40,39 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="App_Plugins\Our.Umbraco.ContentList\common\datasource.service.js" />
-      <None Remove="App_Plugins\Our.Umbraco.ContentList\common\query.properties.js" />
-      <None Remove="App_Plugins\Our.Umbraco.ContentList\common\state.js" />
-      <None Remove="App_Plugins\Our.Umbraco.ContentList\common\template.service.js" />
-      <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\columns\columns.controller.js" />
-      <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\datasource\grid.datasource.controller.js" />
-      <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\theme\grid.theme.controller.js" />
+      <None Remove="wwwroot\common\datasource.service.js" />
+      <None Remove="wwwroot\common\query.properties.js" />
+      <None Remove="wwwroot\common\state.js" />
+      <None Remove="wwwroot\common\template.service.js" />
+      <None Remove="wwwroot\common\test.js" />
+      <None Remove="wwwroot\propertyeditors\columns\columns.controller.js" />
+      <None Remove="wwwroot\propertyeditors\datasource\grid.datasource.controller.js" />
+      <None Remove="wwwroot\propertyeditors\theme\grid.theme.controller.js" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="wwwroot\css\contentlist.css" />
+      <None Include="wwwroot\css\contentlist.less" />
+      <None Include="wwwroot\css\contentlist.min.css" />
+      <None Include="wwwroot\grideditors\contentlist\contentlist.html" />
+      <None Include="wwwroot\grideditors\contentlist\contentlist.js" />
+      <None Include="wwwroot\grideditors\contentlist\tests\contentlist.tests.js" />
+      <None Include="wwwroot\propertyeditors\boolean\boolean.html" />
+      <None Include="wwwroot\propertyeditors\columns\columns.html" />
+      <None Include="wwwroot\propertyeditors\datasource\blge-datasource.html" />
+      <None Include="wwwroot\propertyeditors\datasource\blge.datasource.controller.js" />
+      <None Include="wwwroot\propertyeditors\datasource\datasource.html" />
+      <None Include="wwwroot\propertyeditors\dropdown\dropdown.html" />
+      <None Include="wwwroot\propertyeditors\parameters\parameters.html" />
+      <None Include="wwwroot\propertyeditors\query\contentlist.query.controller.js" />
+      <None Include="wwwroot\propertyeditors\query\contentlist.query.html" />
+      <None Include="wwwroot\propertyeditors\theme\blge-theme.html" />
+      <None Include="wwwroot\propertyeditors\theme\blge.theme.controller.js" />
+      <None Include="wwwroot\propertyeditors\theme\theme.html" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Scripts\" />
     </ItemGroup>
 
 

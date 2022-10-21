@@ -52,8 +52,5 @@
         <RazorCompileOnBuild>false</RazorCompileOnBuild>
         <RazorCompileOnPublish>false</RazorCompileOnPublish>
     </PropertyGroup>
-    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-      <Exec Command="rmdir &quot;$(ProjectDir)App_Plugins\Our.Umbraco.ContentList&quot; /s /q&#xD;&#xA;mkdir &quot;$(ProjectDir)App_Plugins\Our.Umbraco.ContentList&quot;&#xD;&#xA;xcopy &quot;$(SolutionDir)Our.Umbraco.ContentList\App_Plugins\Our.Umbraco.ContentList\*.*&quot; &quot;$(ProjectDir)App_Plugins\Our.Umbraco.ContentList&quot; /y /s&#xD;&#xA;rmdir &quot;$(ProjectDir)App_Plugins\Our.Umbraco.ContentList\Views&quot; /s /q&#xD;&#xA;" />
-    </Target>
 
 </Project>
