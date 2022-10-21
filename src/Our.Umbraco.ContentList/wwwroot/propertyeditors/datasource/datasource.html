@@ -3,16 +3,14 @@
     <div class="inner-property">
         <umb-property property="datasourceProperty">
             <div style="position: relative;">
-                <umb-editor model="datasourceProperty" is-pre-value="true"></umb-editor>
+                <umb-property-editor model="datasourceProperty" is-pre-value="true"></umb-property-editor>
             </div>
         </umb-property>
     </div>
 
     <div ng-if="parametersProperty.config.items.length" class="parameters-property">
         <umb-property property="parametersProperty">
-            <div style="position: relative;">
-                <umb-editor model="parametersProperty" is-pre-value="true"></umb-editor>
-            </div>
+            <umb-property-editor model="parametersProperty" is-pre-value="true"></umb-property-editor>
         </umb-property>
     </div>
 
