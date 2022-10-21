@@ -38,5 +38,15 @@
         </None>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="App_Plugins\Our.Umbraco.ContentList\common\datasource.service.js" />
+      <None Remove="App_Plugins\Our.Umbraco.ContentList\common\query.properties.js" />
+      <None Remove="App_Plugins\Our.Umbraco.ContentList\common\state.js" />
+      <None Remove="App_Plugins\Our.Umbraco.ContentList\common\template.service.js" />
+      <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\columns\columns.controller.js" />
+      <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\datasource\grid.datasource.controller.js" />
+      <None Remove="App_Plugins\Our.Umbraco.ContentList\propertyeditors\theme\grid.theme.controller.js" />
+    </ItemGroup>
+
 
 </Project>
