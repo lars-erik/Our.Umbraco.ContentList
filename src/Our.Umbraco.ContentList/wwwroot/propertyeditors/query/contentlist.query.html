@@ -2,7 +2,7 @@
 
     <div ng-if="enableGui">
         <umb-property property="property" ng-repeat="(key, property) in properties">
-            <umb-editor model="property" is-pre-value="true"></umb-editor>
+            <umb-property-editor model="property" is-pre-value="true"></umb-property-editor>
         </umb-property>
     </div>
     <div ng-if="!enableGui">

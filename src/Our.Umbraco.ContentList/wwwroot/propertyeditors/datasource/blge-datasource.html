@@ -1,13 +1,13 @@
 ﻿<div ng-controller="our.umbraco.contentlist.blge.datasource.controller" class="contentlist-datasource-property">
 
     <umb-property property="datasourceProperty">
-        <umb-editor model="datasourceProperty" is-pre-value="true"></umb-editor>
+        <umb-property-editor model="datasourceProperty" is-pre-value="true"></umb-property-editor>
     </umb-property>
 
     <div ng-if="parametersProperty && parametersProperty.config.items.length">
         <umb-property property="parametersProperty">
-            <umb-editor model="parametersProperty" is-pre-value="true"></umb-editor>
+            <umb-property-editor model="parametersProperty" is-pre-value="true"></umb-property-editor>
         </umb-property>
     </div>
-    
+
 </div>
