@@ -1,11 +1,12 @@
-﻿.contentlist-query-editor .umb-editor,
-.contentlist-datasource-property .umb-editor {
-  position: relative;
-  background-color: transparent;
-  box-shadow: 0 0 0 0;
-}
-.contentlist-parameter {
+﻿.contentlist-parameter {
   margin-bottom: 1rem;
+}
+.contentlist-columns-editor {
+  margin-bottom: 1rem;
+}
+.contentlist-columns-editor .checkbox-container {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 .our-content-list .new-contentlist {
   min-height: 100px;

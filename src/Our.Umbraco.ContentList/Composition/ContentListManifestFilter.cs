@@ -28,7 +28,7 @@ namespace Our.Umbraco.ContentList.Composition
                 },
                 Scripts = new[]
                 {
-                    "/App_Plugins/Our.Umbraco.ContentList/our.umbraco.contentlist.umd.js"
+                    "/App_Plugins/Our.Umbraco.ContentList/scripts/our.umbraco.contentlist.umd.js"
                 },
                 GridEditors = new[]
                 {

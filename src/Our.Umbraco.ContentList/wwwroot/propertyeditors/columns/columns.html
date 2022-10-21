@@ -1,4 +1,4 @@
-﻿<div class="umb-property-editor" ng-controller="our.umbraco.contentlist.columnssettingcontroller">
+﻿<div class="contentlist-columns-editor" ng-controller="our.umbraco.contentlist.columnssettingcontroller">
     <div ng-show="supportColumns">
         <ng-form name="integerFieldForm">
             <input name="integerField"
@@ -15,7 +15,7 @@
                 <span class="help-inline" ng-message="valServer">{{integerFieldForm.integerField.errorMsg}}</span>
             </span>
         </ng-form>
-        <div class="">
+        <div class="checkbox-container">
             <label>
                 <input type="checkbox" id="advancedColumns" name="advancedColumns" ng-model="model.advancedColumns" />
                 Show advanced column settings
