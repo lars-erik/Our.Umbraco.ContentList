@@ -16,7 +16,7 @@
         <PackageTags>umbraco plugin package grid contentlist</PackageTags>
         <RootNamespace>Our.Umbraco.ContentList</RootNamespace>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>2.0.0-alpha-03</Version>
+        <Version>2.0.0-beta-03</Version>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <AppDesignerFolder>PropertyEditors</AppDesignerFolder>
 
