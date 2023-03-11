@@ -18,7 +18,7 @@ namespace Our.Umbraco.ContentList.DataSources
 
         public ChildrenOfMultipleDataSource(IPublishedSnapshotAccessor accessor)
         {
-            if (accessor.TryGetPublishedSnapshot(out var snapshot))
+            if (accessor.TryGetPublishedSnapshot(out var snapshot) && snapshot != null)
             { 
                 cache = snapshot.Content;
             }
@@ -49,7 +49,7 @@ namespace Our.Umbraco.ContentList.DataSources
             {
                 var result = (query.CustomParameter<string>("nodes") ?? "")
                     .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                    .SelectMany(id => cache.GetById(Convert.ToInt32(id)).Children.OfType<IListableContent>())
+                    .SelectMany(id => cache.GetById(Convert.ToInt32(id))?.Children?.OfType<IListableContent>() ?? Enumerable.Empty<IListableContent>())
                     .ApplySorting(query.CustomParameters)
                     .Skip(preSkip);
                 cachedResult = result;
