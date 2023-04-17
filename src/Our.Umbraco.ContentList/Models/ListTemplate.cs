@@ -11,7 +11,8 @@ namespace Our.Umbraco.ContentList.Models
         public ListTemplate(string name)
         {
             Name = name;
-            CompatibleSources = new string[0];
+            CompatibleSources = Array.Empty<string>();
+            Parameters = Array.Empty<DataSourceParameterDefinition>();
         }
 
         public string Name { get; set; }
@@ -22,5 +23,6 @@ namespace Our.Umbraco.ContentList.Models
 
         public string DisplayName { get; set; }
         public bool Compiles { get; set; }
+        public DataSourceParameterDefinition[] Parameters { get; set; }
     }
 }

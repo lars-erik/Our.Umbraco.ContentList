@@ -13,6 +13,15 @@
             typeof(ChildrenOfCurrentPageDataSource),
             typeof(ChildrenOfMultipleDataSource),
             typeof(IndividuallySelectedDataSource)
+        },
+        parameters: new []
+        {
+            new DataSourceParameterDefinition
+            {
+                Key = "toggle",
+                Label = "Toggle something",
+                View = "/Umbraco/Views/propertyeditors/boolean/boolean.html"
+            }
         }
     );
 }

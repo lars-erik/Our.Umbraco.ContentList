@@ -137,7 +137,7 @@ namespace Our.Umbraco.ContentList.Tests
 
             var sourceTypes = controller.GetTemplates();
 
-            await Verifier.Verify(sourceTypes.Select(x => $"{x.Name,-30} {x.Compiles,-5} {x.DisplayName}"));
+            await Verifier.Verify(sourceTypes.Select(x => $"{x.Name,-30} {x.Compiles,-5} {x.DisplayName} ({x.Parameters.Length})"));
         }
     }
 }

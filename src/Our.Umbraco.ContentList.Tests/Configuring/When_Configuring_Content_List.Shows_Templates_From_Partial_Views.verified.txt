@@ -1,8 +1,8 @@
 ﻿[
-  FlexTheme                      True  Flex Theme,
-  NiceTheme                      True  Nice Theme,
-  NoMetadata                     True  No Metadata,
-  Rss                            True  Rss,
-  SearchResult                   False ,
-  SimpleTheme                    True  Sample list view
+  FlexTheme                      True  Flex Theme (0),
+  NiceTheme                      True  Nice Theme (0),
+  NoMetadata                     True  No Metadata (0),
+  Rss                            True  Rss (0),
+  SearchResult                   False  (0),
+  SimpleTheme                    True  Sample list view (1)
 ]

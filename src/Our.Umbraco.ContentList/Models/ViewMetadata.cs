@@ -26,17 +26,20 @@ namespace Our.Umbraco.ContentList.Models
         public string Description { get; }
         public Type[] CompatibleDataSources { get; }
         public Type[] IncompatibleDataSources { get; }
+        public DataSourceParameterDefinition[] Parameters { get; } 
 
         public ViewMetadata(
             string name, 
             string description = "", 
             Type[] compatibleDataSources = null, 
-            Type[] incompatibleDataSources = null)
+            Type[] incompatibleDataSources = null,
+            DataSourceParameterDefinition[] parameters = null)
         {
             Name = name;
             Description = description;
             CompatibleDataSources = compatibleDataSources ?? Array.Empty<Type>();
             IncompatibleDataSources = incompatibleDataSources ?? Array.Empty<Type>();
+            Parameters = parameters ?? Array.Empty<DataSourceParameterDefinition>();
         }
 
         public static ViewMetadata GetMetadata(ViewEngineResult viewResult)
@@ -59,7 +62,8 @@ namespace Our.Umbraco.ContentList.Models
                     name: shortStringHelper.SplitPascalCasing(Directory.GetParent(view.Path)?.Name ?? "Invalid Path", ' '),
                     description: "",
                     compatibleDataSources: Array.Empty<Type>(),
-                    incompatibleDataSources: Array.Empty<Type>()
+                    incompatibleDataSources: Array.Empty<Type>(),
+                    parameters: Array.Empty<DataSourceParameterDefinition>()
                 );
             }
             return value;

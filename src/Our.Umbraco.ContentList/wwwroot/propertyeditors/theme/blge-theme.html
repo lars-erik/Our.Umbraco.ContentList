@@ -1,4 +1,16 @@
-﻿<div class="umb-property-editor" ng-controller="our.umbraco.contentlist.blge.theme.controller">
+﻿<div class="contentlist-theme-property" ng-controller="our.umbraco.contentlist.blge.theme.controller">
+
+    <umb-property property="themeProperty">
+        <umb-property-editor model="themeProperty" is-pre-value="true"></umb-property-editor>
+    </umb-property>
+
+    <!--
     <select class="umb-property-editor umb-dropdown" ng-options="item.id as item.value for item in model.config.items | filter:shouldShow" ng-model="model.value">
     </select>
+    -->
+    <div ng-if="parametersProperty && parametersProperty.config.items.length">
+        <umb-property property="parametersProperty">
+            <umb-property-editor model="parametersProperty" is-pre-value="true"></umb-property-editor>
+        </umb-property>
+    </div>
 </div>

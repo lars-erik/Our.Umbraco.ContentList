@@ -103,8 +103,9 @@ namespace Our.Umbraco.ContentList.Controllers
 
             try
             {
-                var viewPath = Path.Combine(p.FullName, "list.cshtml");
-                var viewResult = viewEngine.GetView(null, viewPath, false);
+                var viewPath = Path.Combine(p.FullName, "List.cshtml");
+                viewPath = viewPath.Replace(path, "/Views/Partials/ContentList").Replace("\\", "/");
+                var viewResult = viewEngine.GetView("", viewPath, false);
                 if (viewResult.Success)
                 {
                     list.Compiles = true;
@@ -116,6 +117,7 @@ namespace Our.Umbraco.ContentList.Controllers
                     list.CompatibleSources = metadata.CompatibleDataSources.Select(x => x.GetFullNameWithAssembly())
                         .ToArray();
                     list.Compiles = true;
+                    list.Parameters = metadata.Parameters;
                 }
             }
             catch (Exception ex)

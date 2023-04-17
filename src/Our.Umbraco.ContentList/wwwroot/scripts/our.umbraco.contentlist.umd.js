@@ -286,7 +286,6 @@
           type: "",
           parameters: []
         };
-        dataSourceService.getDataSources().then(dataSourcesLoaded);
         scope.datasourceProperty = {
           "label": "Source Type",
           "alias": "datasourceType",
@@ -309,6 +308,7 @@
             "items": scope.model.value.parameters || []
           }
         };
+        dataSourceService.getDataSources().then(dataSourcesLoaded);
         scope.$watch("datasourceProperty.value", function(newVal, oldVal) {
           if (newVal !== oldVal && scope.datasourceProperty.value) {
             scope.model.value.type = scope.datasourceProperty.value;
@@ -348,6 +348,28 @@
       scope.dsState = dsState;
       scope.type = dsState.ds.type;
       scope.shortType = getName(scope.type);
+      scope.themeProperty = {
+        "label": "Theme",
+        "alias": "theme",
+        "key": "theme",
+        "description": "How the list should look.",
+        "view": "/app_plugins/our.umbraco.contentlist/propertyeditors/dropdown/dropdown.html",
+        "config": {
+          "items": scope.model.config.items
+        },
+        "value": scope.model.value
+      };
+      scope.parametersProperty = {
+        "label": "Parameters",
+        "alias": "parameters",
+        "key": "parameters",
+        "description": "Parameters for the data source.",
+        "view": "/app_plugins/our.umbraco.contentlist/propertyeditors/parameters/parameters.html",
+        "hideLabel": true,
+        "config": {
+          "items": scope.model.value.parameters || []
+        }
+      };
       scope.$watch(
         "dsState.ds.type",
         function() {
@@ -372,13 +394,17 @@
         "model.value",
         function() {
           templateState.currentTemplate = findTemplate(scope.model.value);
+          scope.parametersProperty.config.items = templateState.currentTemplate.parameters;
         }
       );
       templateService.getTemplates().then((templates) => {
         scope.model.config.all = templates;
         scope.model.config.items = templates.map(
           function(t) {
-            return { id: t.name, value: t.displayName || t.name };
+            return {
+              id: t.name,
+              value: t.displayName || t.name
+            };
           }
         );
       });

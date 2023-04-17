@@ -50,8 +50,6 @@ module.controller("our.umbraco.contentlist.blge.datasource.controller",
         parameters: []
       };
 
-      dataSourceService.getDataSources().then(dataSourcesLoaded);
-
       scope.datasourceProperty = {
         "label": "Source Type",
         "alias": "datasourceType",
@@ -75,6 +73,8 @@ module.controller("our.umbraco.contentlist.blge.datasource.controller",
           "items": scope.model.value.parameters || []
         }
       };
+
+      dataSourceService.getDataSources().then(dataSourcesLoaded);
 
       scope.$watch("datasourceProperty.value", function (newVal, oldVal) {
         if (newVal !== oldVal && scope.datasourceProperty.value) {
