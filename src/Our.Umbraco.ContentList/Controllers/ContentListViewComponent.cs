@@ -30,10 +30,9 @@ public class ContentListViewComponent : ViewComponent
     public async Task<IViewComponentResult> InvokeAsync(ContentListConfiguration configuration, IPublishedContent contextContent)
     {
         var model = await Execute(configuration, contextContent);
-
         var viewName = FindView(configuration);
         var result = View(viewName, model);
-        return await Task.FromResult(result);
+        return result;
     }
 
     private async Task<ContentListModel> Execute(ContentListConfiguration configuration, IPublishedContent contextContent)
