@@ -27,5 +27,21 @@ namespace Our.Umbraco.ContentList.Tests.DataSources
 
             await Fixture.VerifyResult(result, IntegrationMode);
         }
+
+        [Test]
+        public async Task Shows_Empty_List_When_Parameter_Is_Missing()
+        {
+            var result = await ExecuteSimpleTheme<ChildrenOfMultipleDataSource>(
+                CreateParameters(
+                    new DataSourceParameterValue
+                    {
+                        Key = "",
+                        Value = ""
+                    }
+                )
+            );
+
+            await Fixture.VerifyResult(result, IntegrationMode);
+        }
     }
 }
